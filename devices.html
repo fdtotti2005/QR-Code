@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>تست تاریخ شمسی</title>
-  <script src="https://cdn.jsdelivr.net/npm/jalaali-js@1.1.0/dist/jalaali.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jalaali-js@1.1.0/index.min.js"></script>
 </head>
 <body>
   <h2>اطلاعات دستگاه</h2>
@@ -52,7 +52,7 @@
 
     function toJalali(gDate) {
       const [y, m, d] = gDate.split('-').map(Number);
-      const j = jalaali.toJalaali(y, m, d);
+      const j = toJalaali(y, m, d);
       return `${j.jy}/${String(j.jm).padStart(2, '0')}/${String(j.jd).padStart(2, '0')}`;
     }
 
@@ -80,7 +80,7 @@
 
       form.style.display = 'block';
     } else {
-      infoDiv.innerHTML = `<p style="color:red;">❌ دستگاه پیدا نشد.</p>`;
+      infoDiv.innerHTML = `<p style="color:red;">❌ دستگاه با شناسه "${deviceId}" پیدا نشد.</p>`;
     }
 
     document.getElementById('editForm').addEventListener('submit', function(e) {
