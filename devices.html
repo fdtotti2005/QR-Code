@@ -185,7 +185,8 @@
         status: document.getElementById('status').value,
         lastUpdated: document.getElementById('lastUpdated').value
       };
-      document.getElementById('output').textContent = JSON.stringify(updatedDevice, null, 2);
+      const jalaliDate = toJalali(updatedDevice.lastUpdated);
+      document.getElementById('output').textContent = JSON.stringify(updatedDevice, null, 2) + `\n📅 تاریخ شمسی: ${jalaliDate}`;
       document.getElementById('successMsg').style.display = 'block';
     });
   </script>
