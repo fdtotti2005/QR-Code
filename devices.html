@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>اطلاعات دستگاه</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/jalaali-js@1.1.0/dist/jalaali.min.js"></script>
+  <style>
+    :root {
+      --bg-light: #f0f2f5;
+      --bg-dark: #1e1e1e;
+      --text-light: #333;
+      --text-dark: #eee;
+      --card-light: #fff;
+      --card-dark: #2c2c2c;
+      --accent: #3498db;
+    }
+    body {
+      font-family: 'Vazir', 'Tahoma', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-light);
+      margin: 0;
+      padding: 20px;
+      transition: background 0.3s ease, color 0.3s ease;
+      scroll-behavior: smooth;
+    }
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: var(--bg-dark);
+        color: var(--text-dark);
+      }
+      .container {
+        background: var(--card-dark);
+      }
+      input, pre {
+        background: #444;
+        color: #eee;
+        border: 1px solid #666;
+      }
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: var(--card-light);
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      transition: background 0.3s ease;
+    }
+    h2, h3 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin: 14px 0 6px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: 15px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      width: 100%;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #2980b9;
+    }
+    pre {
+      background: #ecf0f1;
+      padding: 10px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    .success {
+      color: green;
+      text-align: center;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    p {
+      margin: 6px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>اطلاعات دستگاه</h2>
+    <div id="info">در حال بارگذاری...</div>
+
+    <h3>ویرایش اطلاعات</h3>
+    <form id="editForm" style="display:none;">
+      <label>شناسه دستگاه</label>
+      <input type="text" id="id" readonly>
+
+      <label>مدل</label>
+      <input type="text" id="model">
+
+      <label>مشکل</label>
+      <input type="text" id="issue">
+
+      <label>وضعیت</label>
+      <input type="text" id="status">
+
+      <label>آخرین بروزرسانی</label>
+      <input type="date" id="lastUpdated">
+
+      <button type="submit">
+        <span>💾</span> ذخیره و تولید JSON
+      </button>
+    </form>
+
+    <div class="success" id="successMsg" style="display:none;">✅ اطلاعات با موفقیت تولید شد</div>
+
+    <h3>خروجی JSON</h3>
+    <pre id="output"></pre>
+  </div>
+
+  <script>
+    function toJalali(gDate) {
+      const [y, m, d] = gDate.split('-').map(Number);
+      const j = jalaali.toJalaali(y, m, d);
+      return `${j.jy}/${String(j.jm).padStart(2, '0')}/${String(j.jd).padStart(2, '0')}`;
+    }
+
+    async function loadDevice() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const deviceId = urlParams.get('id');
+      const res = await fetch('./devices.json');
+      const devices = await res.json();
+      const device = devices.find(d => d.id === deviceId);
+
+      const infoDiv = document.getElementById('info');
+      const form = document.getElementById('editForm');
+
+      if (device) {
+        const jalaliDate = toJalali(device.lastUpdated);
+        infoDiv.innerHTML = `
+          <p><strong>شناسه:</strong> ${device.id}</p>
+          <p><strong>مدل:</strong> ${device.model}</p>
+          <p><strong>مشکل:</strong> ${device.issue}</p>
+          <p><strong>وضعیت:</strong> ${device.status}</p>
+          <p><strong>آخرین بروزرسانی (شمسی):</strong> ${jalaliDate}</p>
+        `;
+
+        document.getElementById('id').value = device.id;
+        document.getElementById('model').value = device.model;
+        document.getElementById('issue').value = device.issue;
+        document.getElementById('status').value = device.status;
+        document.getElementById('lastUpdated').value = device.lastUpdated;
+
+        form.style.display = 'block';
+      } else {
+        infoDiv.innerHTML = `<p style="color:red;">دستگاه پیدا نشد.</p>`;
+      }
+    }
+
+    document.getElementById('editForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const updatedDevice = {
+        id: document.getElementById('id').value,
+        model: document.getElementById('model').value,
+        issue: document.getElementById('issue').value,
+        status: document.getElementById('status').value,
+        lastUpdated: document.getElementById('lastUpdated').value
+      };
+      document.getElementById('output').textContent = JSON.stringify(updatedDevice, null, 2);
+      document.getElementById('successMsg').style.display = 'block';
+    });
+
+    loadDevice();
+  </script>
+</body>
+</html>
