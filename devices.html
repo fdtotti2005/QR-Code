@@ -161,45 +161,50 @@
       return `${j.jy}/${String(j.jm).padStart(2, '0')}/${String(j.jd).padStart(2, '0')}`;
     }
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const deviceId = urlParams.get('id');
-    const device = devices.find(d => d.id === deviceId);
-    const infoDiv = document.getElementById('info');
-    const form = document.getElementById('editForm');
+    window.onload = function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const deviceId = (urlParams.get('id') || '').trim(); // اطمینان از مقدار صحیح
+      const device = devices.find(d => d.id === deviceId);
+      const infoDiv = document.getElementById('info');
+      const form = document.getElementById('editForm');
 
-    if (device) {
-      const jalaliDate = toJalali(device.lastUpdated);
-      infoDiv.innerHTML = `
-        <p><strong>شناسه:</strong> ${device.id}</p>
-        <p><strong>مدل:</strong> ${device.model}</p>
-        <p><strong>مشکل:</strong> ${device.issue}</p>
-        <p><strong>وضعیت:</strong> ${device.status}</p>
-        <p><strong>آخرین بروزرسانی (شمسی):</strong> ${jalaliDate}</p>
-      `;
+      if (device) {
+        const jalaliDate = toJalali(device.lastUpdated);
+        infoDiv.innerHTML = `
+          <p><strong>شناسه:</strong> ${device.id}</p>
+          <p><strong>مدل:</strong> ${device.model}</p>
+          <p><strong>مشکل:</strong> ${device.issue}</p>
+          <p><strong>وضعیت:</strong> ${device.status}</p>
+          <p><strong>آخرین بروزرسانی (شمسی):</strong> ${jalaliDate}</p>
+        `;
 
-      document.getElementById('id').value = device.id;
-      document.getElementById('model').value = device.model;
-      document.getElementById('issue').value = device.issue;
-      document.getElementById('status').value = device.status;
-      document.getElementById('lastUpdated').value = device.lastUpdated;
+        document.getElementById('id').value = device.id;
+        document.getElementById('model').value = device.model;
+        document.getElementById('issue').value = device.issue;
+        document.getElementById('status').value = device.status;
+        document.getElementById('lastUpdated').value = device.lastUpdated;
 
-      form.style.display = 'block';
-    } else {
-      infoDiv.innerHTML = `<p style="color:red;">❌ دستگاه با شناسه "${deviceId}" پیدا نشد.</p>`;
-    }
+        form.style.display = 'block';
 
-    document.getElementById('editForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const updatedDevice = {
-        id: document.getElementById('id').value,
-        model: document.getElementById('model').value,
-        issue: document.getElementById('issue').value,
-        status: document.getElementById('status').value,
-        lastUpdated: document.getElementById('lastUpdated').value
-      };
-      document.getElementById('output').textContent = JSON.stringify(updatedDevice, null, 2);
-      document.getElementById('successMsg').style.display = 'block';
-    });
+        // نمایش JSON اولیه دستگاه
+        document.getElementById('output').textContent = JSON.stringify(device, null, 2);
+      } else {
+        infoDiv.innerHTML = `<p style="color:red;">❌ دستگاه با شناسه "${deviceId}" پیدا نشد.</p>`;
+      }
+
+      document.getElementById('editForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const updatedDevice = {
+          id: document.getElementById('id').value,
+          model: document.getElementById('model').value,
+          issue: document.getElementById('issue').value,
+          status: document.getElementById('status').value,
+          lastUpdated: document.getElementById('lastUpdated').value
+        };
+        document.getElementById('output').textContent = JSON.stringify(updatedDevice, null, 2);
+        document.getElementById('successMsg').style.display = 'block';
+      });
+    };
   </script>
 </body>
 </html>
