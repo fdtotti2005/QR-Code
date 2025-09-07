@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>تست فرم ویرایش</title>
+  <title>تست خروجی JSON</title>
 </head>
 <body>
   <h2>اطلاعات دستگاه</h2>
@@ -27,6 +27,9 @@
 
     <button type="submit">ذخیره</button>
   </form>
+
+  <h3>خروجی JSON</h3>
+  <pre id="output"></pre>
 
   <script>
     const devices = [
@@ -71,6 +74,18 @@
     } else {
       infoDiv.innerHTML = `<p style="color:red;">❌ دستگاه پیدا نشد.</p>`;
     }
+
+    document.getElementById('editForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const updatedDevice = {
+        id: document.getElementById('id').value,
+        model: document.getElementById('model').value,
+        issue: document.getElementById('issue').value,
+        status: document.getElementById('status').value,
+        lastUpdated: document.getElementById('lastUpdated').value
+      };
+      document.getElementById('output').textContent = JSON.stringify(updatedDevice, null, 2);
+    });
   </script>
 </body>
 </html>
