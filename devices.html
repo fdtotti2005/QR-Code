@@ -2,38 +2,23 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>اطلاعات دستگاه</title>
+  <title>تست تقویم شمسی</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/jalaali-js@1.1.0/index.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css" rel="stylesheet">
   <style>
-    :root {
-      --bg: #f0f2f5;
-      --text: #333;
-      --card: #fff;
-      --accent: #3498db;
-    }
     body {
-      font-family: 'Vazir', Tahoma, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      margin: 0;
+      font-family: Tahoma, sans-serif;
+      background: #f9f9f9;
+      color: #333;
       padding: 20px;
-      scroll-behavior: smooth;
     }
     .container {
-      max-width: 500px;
+      max-width: 400px;
       margin: auto;
-      background: var(--card);
-      padding: 25px;
+      background: #fff;
+      padding: 20px;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      transition: background 0.3s ease;
-    }
-    h2, h3 {
-      text-align: center;
-      margin-bottom: 20px;
-      animation: fadeIn 0.6s ease;
     }
     label {
       display: block;
@@ -47,164 +32,64 @@
       border: 1px solid #ccc;
       border-radius: 6px;
       box-sizing: border-box;
-      font-family: inherit;
-      transition: border 0.3s ease;
-    }
-    input:focus {
-      border-color: var(--accent);
-      outline: none;
     }
     button {
       margin-top: 20px;
       padding: 10px;
       width: 100%;
-      background: var(--accent);
+      background: #3498db;
       color: white;
       border: none;
       border-radius: 6px;
       font-size: 16px;
       cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    button:hover {
-      background: #2980b9;
     }
     pre {
-      background: #ecf0f1;
+      background: #eee;
       padding: 10px;
       border-radius: 6px;
       margin-top: 10px;
       overflow-x: auto;
-      animation: fadeIn 0.5s ease;
-    }
-    .error {
-      color: red;
-      text-align: center;
-    }
-    .success {
-      color: green;
-      text-align: center;
-      margin-top: 10px;
-      font-weight: bold;
-      animation: fadeIn 0.4s ease;
-    }
-    #jalaliPreview {
-      margin-top: 6px;
-      font-weight: bold;
-      color: #555;
-    }
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>اطلاعات دستگاه</h2>
-    <div id="info">در حال بارگذاری...</div>
+    <h2>تست تقویم شمسی</h2>
+    <form id="form">
+      <label>تاریخ شمسی</label>
+      <input type="text" id="jalaliDate" readonly>
 
-    <h3>ویرایش اطلاعات</h3>
-    <form id="editForm" style="display:none;">
-      <label>شناسه</label>
-      <input type="text" id="id" readonly>
-
-      <label>مدل</label>
-      <input type="text" id="model">
-
-      <label>مشکل</label>
-      <input type="text" id="issue">
-
-      <label>وضعیت</label>
-      <input type="text" id="status">
-
-      <label>آخرین بروزرسانی</label>
-      <input type="date" id="lastUpdated">
-      <p id="jalaliPreview"></p>
-
-      <button type="submit">💾 ذخیره</button>
+      <button type="submit">ذخیره</button>
     </form>
-
-    <div class="success" id="successMsg" style="display:none;">✅ اطلاعات با موفقیت ذخیره شد</div>
 
     <h3>خروجی JSON</h3>
     <pre id="output"></pre>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/persian-date@1.0.6/dist/persian-date.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
   <script>
-    const devices = [
-      {
-        id: "device001",
-        model: "X100",
-        issue: "Battery low",
-        status: "Pending",
-        lastUpdated: "2025-09-07"
-      },
-      {
-        id: "device002",
-        model: "Z200",
-        issue: "Screen cracked",
-        status: "In repair",
-        lastUpdated: "2025-09-06"
-      }
-    ];
+    $(document).ready(function() {
+      $("#jalaliDate").persianDatepicker({
+        format: "YYYY/MM/DD",
+        autoClose: true,
+        initialValue: false
+      });
 
-    function toJalali(gDate) {
-      const [y, m, d] = gDate.split('-').map(Number);
-      const j = toJalaali(y, m, d);
-      return `${j.jy}/${String(j.jm).padStart(2, '0')}/${String(j.jd).padStart(2, '0')}`;
-    }
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const deviceId = urlParams.get('id');
-    const device = devices.find(d => d.id === deviceId);
-    const infoDiv = document.getElementById('info');
-    const form = document.getElementById('editForm');
-    const jalaliPreview = document.getElementById('jalaliPreview');
-
-    if (device) {
-      const jalaliDate = toJalali(device.lastUpdated);
-      infoDiv.innerHTML = `
-        <p><strong>شناسه:</strong> ${device.id}</p>
-        <p><strong>مدل:</strong> ${device.model}</p>
-        <p><strong>مشکل:</strong> ${device.issue}</p>
-        <p><strong>وضعیت:</strong> ${device.status}</p>
-        <p><strong>آخرین بروزرسانی (شمسی):</strong> ${jalaliDate}</p>
-      `;
-
-      document.getElementById('id').value = device.id;
-      document.getElementById('model').value = device.model;
-      document.getElementById('issue').value = device.issue;
-      document.getElementById('status').value = device.status;
-      document.getElementById('lastUpdated').value = device.lastUpdated;
-      jalaliPreview.textContent = "تاریخ شمسی: " + jalaliDate;
-
-      form.style.display = 'block';
-    } else {
-      infoDiv.innerHTML = `<p class="error">❌ دستگاه با شناسه "${deviceId}" پیدا نشد.</p>`;
-    }
-
-    document.getElementById('lastUpdated').addEventListener('input', function(e) {
-      const val = e.target.value;
-      if (val) {
-        jalaliPreview.textContent = "تاریخ شمسی: " + toJalali(val);
-      } else {
-        jalaliPreview.textContent = "";
-      }
-    });
-
-    document.getElementById('editForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const updatedDevice = {
-        id: document.getElementById('id').value,
-        model: document.getElementById('model').value,
-        issue: document.getElementById('issue').value,
-        status: document.getElementById('status').value,
-        lastUpdated: document.getElementById('lastUpdated').value
-      };
-      const jalaliDate = toJalali(updatedDevice.lastUpdated);
-      document.getElementById('output').textContent = JSON.stringify(updatedDevice, null, 2) + `\n📅 تاریخ شمسی: ${jalaliDate}`;
-      document.getElementById('successMsg').style.display = 'block';
+      $("#form").on("submit", function(e) {
+        e.preventDefault();
+        const jalali = $("#jalaliDate").val();
+        const pd = new persianDate().parse(jalali, "YYYY/MM/DD");
+        const gregorian = pd.toGregorian();
+        const gDate = `${gregorian.gYear}-${String(gregorian.gMonth).padStart(2, '0')}-${String(gregorian.gDay).padStart(2, '0')}`;
+        const output = {
+          jalali: jalali,
+          gregorian: gDate
+        };
+        document.getElementById("output").textContent = JSON.stringify(output, null, 2);
+      });
     });
   </script>
 </body>
