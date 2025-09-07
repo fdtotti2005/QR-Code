@@ -2,16 +2,47 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>تست شناسه</title>
+  <title>تست دستگاه</title>
 </head>
 <body>
-  <h2>شناسه دریافتی:</h2>
+  <h2>تست اطلاعات دستگاه</h2>
   <div id="output">در حال بررسی...</div>
 
   <script>
+    const devices = [
+      {
+        id: "device001",
+        model: "X100",
+        issue: "Battery low",
+        status: "Pending",
+        lastUpdated: "2025-09-07"
+      },
+      {
+        id: "device002",
+        model: "Z200",
+        issue: "Screen cracked",
+        status: "In repair",
+        lastUpdated: "2025-09-06"
+      }
+    ];
+
     const urlParams = new URLSearchParams(window.location.search);
     const deviceId = urlParams.get('id');
-    document.getElementById('output').textContent = deviceId || 'هیچ شناسه‌ای دریافت نشد';
+    const device = devices.find(d => d.id === deviceId);
+
+    const output = document.getElementById('output');
+
+    if (device) {
+      output.innerHTML = `
+        <p><strong>شناسه دریافتی:</strong> ${deviceId}</p>
+        <p><strong>مدل:</strong> ${device.model}</p>
+        <p><strong>مشکل:</strong> ${device.issue}</p>
+        <p><strong>وضعیت:</strong> ${device.status}</p>
+        <p><strong>آخرین بروزرسانی:</strong> ${device.lastUpdated}</p>
+      `;
+    } else {
+      output.innerHTML = `<p style="color:red;">❌ دستگاه با شناسه "${deviceId}" پیدا نشد.</p>`;
+    }
   </script>
 </body>
 </html>
