@@ -2,35 +2,98 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>تست تاریخ شمسی</title>
+  <title>اطلاعات دستگاه</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/jalaali-js@1.1.0/index.min.js"></script>
+  <style>
+    body {
+      font-family: 'Vazir', Tahoma, sans-serif;
+      background: #f0f2f5;
+      color: #333;
+      padding: 20px;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2, h3 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #2980b9;
+    }
+    pre {
+      background: #ecf0f1;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 10px;
+      overflow-x: auto;
+    }
+    .error {
+      color: red;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <h2>اطلاعات دستگاه</h2>
-  <div id="info">در حال بارگذاری...</div>
+  <div class="container">
+    <h2>اطلاعات دستگاه</h2>
+    <div id="info">در حال بارگذاری...</div>
 
-  <h3>ویرایش اطلاعات</h3>
-  <form id="editForm" style="display:none;">
-    <label>شناسه</label>
-    <input type="text" id="id" readonly>
+    <h3>ویرایش اطلاعات</h3>
+    <form id="editForm" style="display:none;">
+      <label>شناسه</label>
+      <input type="text" id="id" readonly>
 
-    <label>مدل</label>
-    <input type="text" id="model">
+      <label>مدل</label>
+      <input type="text" id="model">
 
-    <label>مشکل</label>
-    <input type="text" id="issue">
+      <label>مشکل</label>
+      <input type="text" id="issue">
 
-    <label>وضعیت</label>
-    <input type="text" id="status">
+      <label>وضعیت</label>
+      <input type="text" id="status">
 
-    <label>آخرین بروزرسانی</label>
-    <input type="date" id="lastUpdated">
+      <label>آخرین بروزرسانی</label>
+      <input type="date" id="lastUpdated">
 
-    <button type="submit">ذخیره</button>
-  </form>
+      <button type="submit">💾 ذخیره</button>
+    </form>
 
-  <h3>خروجی JSON</h3>
-  <pre id="output"></pre>
+    <h3>خروجی JSON</h3>
+    <pre id="output"></pre>
+  </div>
 
   <script>
     const devices = [
@@ -65,11 +128,11 @@
     if (device) {
       const jalaliDate = toJalali(device.lastUpdated);
       infoDiv.innerHTML = `
-        <p>شناسه: ${device.id}</p>
-        <p>مدل: ${device.model}</p>
-        <p>مشکل: ${device.issue}</p>
-        <p>وضعیت: ${device.status}</p>
-        <p>آخرین بروزرسانی (شمسی): ${jalaliDate}</p>
+        <p><strong>شناسه:</strong> ${device.id}</p>
+        <p><strong>مدل:</strong> ${device.model}</p>
+        <p><strong>مشکل:</strong> ${device.issue}</p>
+        <p><strong>وضعیت:</strong> ${device.status}</p>
+        <p><strong>آخرین بروزرسانی (شمسی):</strong> ${jalaliDate}</p>
       `;
 
       document.getElementById('id').value = device.id;
@@ -80,7 +143,7 @@
 
       form.style.display = 'block';
     } else {
-      infoDiv.innerHTML = `<p style="color:red;">❌ دستگاه با شناسه "${deviceId}" پیدا نشد.</p>`;
+      infoDiv.innerHTML = `<p class="error">❌ دستگاه با شناسه "${deviceId}" پیدا نشد.</p>`;
     }
 
     document.getElementById('editForm').addEventListener('submit', function(e) {
