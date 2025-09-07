@@ -81,6 +81,13 @@
       color: red;
       text-align: center;
     }
+    .success {
+      color: green;
+      text-align: center;
+      margin-top: 10px;
+      font-weight: bold;
+      animation: fadeIn 0.4s ease;
+    }
     @keyframes fadeIn {
       from {opacity: 0;}
       to {opacity: 1;}
@@ -111,6 +118,8 @@
 
       <button type="submit">💾 ذخیره</button>
     </form>
+
+    <div class="success" id="successMsg" style="display:none;">✅ اطلاعات با موفقیت ذخیره شد</div>
 
     <h3>خروجی JSON</h3>
     <pre id="output"></pre>
@@ -177,6 +186,7 @@
         lastUpdated: document.getElementById('lastUpdated').value
       };
       document.getElementById('output').textContent = JSON.stringify(updatedDevice, null, 2);
+      document.getElementById('successMsg').style.display = 'block';
     });
   </script>
 </body>
