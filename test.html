@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>تست شناسه</title>
+</head>
+<body>
+  <h2>شناسه دریافتی:</h2>
+  <div id="output">در حال بررسی...</div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const deviceId = urlParams.get('id');
+    document.getElementById('output').textContent = deviceId || 'هیچ شناسه‌ای دریافت نشد';
+  </script>
+</body>
+</html>
