@@ -6,17 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
   <style>
+    :root {
+      --bg: #f0f2f5;
+      --text: #333;
+      --card: #fff;
+      --accent: #3498db;
+    }
     body {
       font-family: 'Vazir', Tahoma, sans-serif;
-      background: #f0f2f5;
-      color: #333;
+      background: var(--bg);
+      color: var(--text);
       margin: 0;
       padding: 20px;
     }
     .container {
       max-width: 600px;
       margin: auto;
-      background: #fff;
+      background: var(--card);
       padding: 25px;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -46,7 +52,7 @@
       margin-top: 20px;
       padding: 10px;
       width: 100%;
-      background: #3498db;
+      background: var(--accent);
       color: white;
       border: none;
       border-radius: 6px;
@@ -100,28 +106,39 @@
   </div>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbzqyzm2mN5rUYk3Tn0lMsPmXMpSqeLu73rpolqC8fU3ArCrhf5qpbf4hdwn_VQ9d9Rp/exec"; // ← آدرس واقعی اسکریپت رو اینجا بذار
+    // ⚠️ اینجا آدرس Web App خودت رو بذار (از Deploy → Web App → URL قسمت /exec)
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwpvULiXYSY31kgYiqZvrsXp9T_2leUoz1sLO1xaKBogQORuaTx3UVYkB4J31V-Ubhx/exec";
 
-    document.getElementById('deviceForm').addEventListener('submit', function(e) {
+    document.getElementById('deviceForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-
       const form = e.target;
       const formData = new FormData(form);
 
-      fetch(scriptURL, {
-        method: 'POST',
-        body: formData
-      })
-      .then(() => {
+      try {
+        const body = new URLSearchParams([...formData]);
+
+        const res = await fetch(scriptURL, {
+          method: 'POST',
+          body: body
+        });
+
+        const text = await res.text();
+        console.log('Response:', text);
+
+        let data;
+        try { data = JSON.parse(text); } catch(err) { data = {raw: text}; }
+
+        if (!res.ok || (data && data.status === 'error')) {
+          throw new Error(data.message || ('HTTP ' + res.status));
+        }
+
         document.getElementById('successMsg').style.display = 'block';
         form.reset();
-      })
-      .catch(err => {
-        alert("❌ خطا در ثبت اطلاعات");
-        console.error("Error!", err.message);
-      });
+      } catch (err) {
+        alert("❌ خطا در ثبت اطلاعات: " + err.message);
+        console.error("Full error:", err);
+      }
     });
   </script>
 </body>
 </html>
-
