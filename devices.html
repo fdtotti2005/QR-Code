@@ -2,10 +2,9 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>اطلاعات دستگاه</title>
+  <title>ثبت اطلاعات دیوایس</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/jalaali-js@1.1.0/index.min.js"></script>
   <style>
     :root {
       --bg: #f0f2f5;
@@ -19,27 +18,25 @@
       color: var(--text);
       margin: 0;
       padding: 20px;
-      scroll-behavior: smooth;
     }
     .container {
-      max-width: 500px;
+      max-width: 600px;
       margin: auto;
       background: var(--card);
       padding: 25px;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    h2, h3 {
+    h2 {
       text-align: center;
       margin-bottom: 20px;
-      animation: fadeIn 0.6s ease;
     }
     label {
       display: block;
       margin-top: 12px;
       font-weight: bold;
     }
-    input {
+    input, textarea {
       width: 100%;
       padding: 10px;
       margin-top: 4px;
@@ -48,9 +45,8 @@
       box-sizing: border-box;
       font-family: inherit;
     }
-    input:focus {
-      border-color: var(--accent);
-      outline: none;
+    textarea {
+      resize: vertical;
     }
     button {
       margin-top: 20px;
@@ -66,161 +62,80 @@
     button:hover {
       background: #2980b9;
     }
-    pre {
-      background: #ecf0f1;
-      padding: 10px;
-      border-radius: 6px;
-      margin-top: 10px;
-      overflow-x: auto;
-    }
-    .error {
-      color: red;
-      text-align: center;
-    }
     .success {
       color: green;
       text-align: center;
-      margin-top: 10px;
+      margin-top: 15px;
       font-weight: bold;
-    }
-    #jalaliPreview {
-      margin-top: 6px;
-      font-weight: bold;
-      color: #555;
-    }
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>اطلاعات دستگاه</h2>
-    <div id="info">در حال بارگذاری...</div>
+    <h2>فرم ثبت اطلاعات دیوایس</h2>
 
-    <button id="editToggle" style="display:none;">✏️ ویرایش اطلاعات</button>
+    <form id="deviceForm">
+      <label>نام دیوایس</label>
+      <input type="text" id="deviceName" required>
 
-    <form id="editForm" style="display:none;">
-      <h3>ویرایش اطلاعات</h3>
-      <label>شناسه</label>
-      <input type="text" id="id" readonly>
+      <label>کد دیوایس</label>
+      <input type="text" id="deviceCode" required>
 
-      <label>مدل</label>
-      <input type="text" id="model">
+      <label>ایراد</label>
+      <input type="text" id="issue" required>
 
-      <label>مشکل</label>
-      <input type="text" id="issue">
+      <label>تاریخ گزارش ایراد</label>
+      <input type="date" id="issueDate" required>
 
-      <label>وضعیت</label>
-      <input type="text" id="status">
+      <label>شرح ایراد</label>
+      <textarea id="issueDescription" rows="2"></textarea>
 
-      <label>آخرین بروزرسانی</label>
-      <input type="date" id="lastUpdated">
-      <p id="jalaliPreview"></p>
+      <label>اقدامات انجام شده</label>
+      <textarea id="actionsTaken" rows="2"></textarea>
 
-      <button type="submit">💾 ذخیره</button>
+      <label>وضعیت فعلی</label>
+      <input type="text" id="currentStatus">
+
+      <label>توضیحات تکمیلی</label>
+      <textarea id="notes" rows="2"></textarea>
+
+      <button type="submit">💾 ذخیره اطلاعات</button>
     </form>
 
-    <div class="success" id="successMsg" style="display:none;">✅ اطلاعات با موفقیت ذخیره شد</div>
-
-    <h3>خروجی JSON</h3>
-    <pre id="output"></pre>
+    <div class="success" id="successMsg" style="display:none;">✅ اطلاعات با موفقیت ثبت شد</div>
   </div>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycby8eFjX97_Nnl-tNRE-gun_R4R7qvayymCVKHOMCYvbNoMvhdFfLe1YRbKX4BWceyC3/exec"; // ← اینجا آدرس واقعی اسکریپت رو بذار
+    const scriptURL = "https://script.google.com/macros/s/AKfycby8eFjX97_Nnl-tNRE-gun_R4R7qvayymCVKHOMCYvbNoMvhdFfLe1YRbKX4BWceyC3/exec"; // ← آدرس واقعی اسکریپت رو اینجا بذار
 
-    const devices = [
-      {
-        id: "device001",
-        model: "X100",
-        issue: "Battery low",
-        status: "Pending",
-        lastUpdated: "2025-09-07"
-      },
-      {
-        id: "device002",
-        model: "Z200",
-        issue: "Screen cracked",
-        status: "In repair",
-        lastUpdated: "2025-09-06"
-      }
-    ];
-
-    function toJalali(gDate) {
-      const [y, m, d] = gDate.split('-').map(Number);
-      const j = toJalaali(y, m, d);
-      return `${j.jy}/${String(j.jm).padStart(2, '0')}/${String(j.jd).padStart(2, '0')}`;
-    }
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const deviceId = urlParams.get('id');
-    const device = devices.find(d => d.id === deviceId);
-    const infoDiv = document.getElementById('info');
-    const form = document.getElementById('editForm');
-    const toggleBtn = document.getElementById('editToggle');
-    const jalaliPreview = document.getElementById('jalaliPreview');
-
-    if (device) {
-      const jalaliDate = toJalali(device.lastUpdated);
-      infoDiv.innerHTML = `
-        <p><strong>شناسه:</strong> ${device.id}</p>
-        <p><strong>مدل:</strong> ${device.model}</p>
-        <p><strong>مشکل:</strong> ${device.issue}</p>
-        <p><strong>وضعیت:</strong> ${device.status}</p>
-        <p><strong>آخرین بروزرسانی (شمسی):</strong> ${jalaliDate}</p>
-      `;
-
-      document.getElementById('id').value = device.id;
-      document.getElementById('model').value = device.model;
-      document.getElementById('issue').value = device.issue;
-      document.getElementById('status').value = device.status;
-      document.getElementById('lastUpdated').value = device.lastUpdated;
-      jalaliPreview.textContent = "تاریخ شمسی: " + jalaliDate;
-
-      toggleBtn.style.display = 'block';
-    } else {
-      infoDiv.innerHTML = `<p class="error">❌ دستگاه با شناسه "${deviceId}" پیدا نشد.</p>`;
-    }
-
-    toggleBtn.addEventListener('click', () => {
-      form.style.display = 'block';
-      toggleBtn.style.display = 'none';
-    });
-
-    document.getElementById('lastUpdated').addEventListener('input', function(e) {
-      const val = e.target.value;
-      jalaliPreview.textContent = val ? "تاریخ شمسی: " + toJalali(val) : "";
-    });
-
-    document.getElementById('editForm').addEventListener('submit', function(e) {
+    document.getElementById('deviceForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const updatedDevice = {
-        id: document.getElementById('id').value,
-        model: document.getElementById('model').value,
+
+      const data = {
+        deviceName: document.getElementById('deviceName').value,
+        deviceCode: document.getElementById('deviceCode').value,
         issue: document.getElementById('issue').value,
-        status: document.getElementById('status').value,
-        lastUpdated: document.getElementById('lastUpdated').value
+        issueDate: document.getElementById('issueDate').value,
+        issueDescription: document.getElementById('issueDescription').value,
+        actionsTaken: document.getElementById('actionsTaken').value,
+        currentStatus: document.getElementById('currentStatus').value,
+        notes: document.getElementById('notes').value
       };
-      const jalaliDate = toJalali(updatedDevice.lastUpdated);
 
       fetch(scriptURL, {
         method: 'POST',
-        body: JSON.stringify(updatedDevice),
+        body: JSON.stringify(data),
         headers: { 'Content-Type': 'application/json' }
       })
-      .then(response => {
+      .then(() => {
         document.getElementById('successMsg').style.display = 'block';
-        document.getElementById('output').textContent =
-          JSON.stringify(updatedDevice, null, 2) + `\n📅 تاریخ شمسی: ${jalaliDate}`;
+        document.getElementById('deviceForm').reset();
       })
-      .catch(error => {
-        alert("❌ خطا در ارسال اطلاعات");
-        console.error("Error!", error.message);
+      .catch(err => {
+        alert("❌ خطا در ثبت اطلاعات");
+        console.error("Error!", err.message);
       });
     });
   </script>
 </body>
 </html>
-
