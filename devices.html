@@ -13,19 +13,39 @@
     .container { max-width: 700px; margin: auto; background: var(--card); padding: 25px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
     h2 { text-align: center; margin-bottom: 20px; }
     label { display: block; margin-top: 12px; font-weight: bold; }
-    input, textarea { width: 100%; padding: 10px; margin-top: 4px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-family: inherit; }
+    input, textarea, select, button { font-family: 'Vazir', Tahoma, sans-serif; }
+    input, textarea, select { width: 100%; padding: 10px; margin-top: 4px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
     textarea { resize: vertical; }
     button { margin-top: 12px; padding: 10px; width: 100%; background: var(--accent); color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; }
     button:hover { background: #2980b9; }
     .success { color: green; text-align: center; margin-top: 15px; font-weight: bold; }
     .searchContainer { margin-top: 20px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 10px; text-align: center; }
+    table, th, td { border: 1px solid #ccc; padding: 6px; }
+    th { background: #f7f7f7; }
   </style>
 </head>
 <body>
 <div class="container">
   <h2>فرم ثبت اطلاعات دیوایس</h2>
   <form id="deviceForm">
-    <label>نام دیوایس</label><input type="text" name="deviceName" required>
+    <label>نام دیوایس</label>
+    <select name="deviceName" required>
+      <option value="">انتخاب کنید</option>
+      <option>Multi Media</option>
+      <option>Multi Media Metal</option>
+      <option>Soul</option>
+      <option>Smart Player</option>
+      <option>TDA</option>
+      <option>RFID</option>
+      <option>Serial GSM</option>
+      <option>Smart GSM</option>
+      <option>MP3</option>
+      <option>IR</option>
+      <option>B1</option>
+      <option>Smart Plug</option>
+    </select>
+
     <label>کد دیوایس</label><input type="text" name="deviceCode" required>
     <label>ایراد</label><input type="text" name="issue" required>
     <label>تاریخ گزارش ایراد</label><input type="date" name="issueDate" required>
@@ -46,56 +66,53 @@
 </div>
 
 <script>
-  const scriptURL = "https://script.google.com/macros/s/AKfycbxEn3Bvb2lISnKOMN3uXOLE2KHjAa9mExVlRk_pwQnwwrDqcl_gIXDiLpOD6TeTbmFj/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbxEn3Bvb2lISnKOMN3uXOLE2KHjAa9mExVlRk_pwQnwwrDqcl_gIXDiLpOD6TeTbmFj/exec";
 
-  // ارسال فرم
-  document.getElementById('deviceForm').addEventListener('submit', async function(e){
-    e.preventDefault();
-    const formData = new URLSearchParams(new FormData(e.target));
-    try {
-      const res = await fetch(scriptURL, {method:'POST', body: formData});
-      const data = await res.json();
-      if(data.status !== 'success') throw new Error(data.message || 'خطا در ثبت اطلاعات');
-      document.getElementById('successMsg').style.display='block';
-      e.target.reset();
-    } catch(err){ alert('❌ خطا: '+err.message); console.error(err); }
-  });
+document.getElementById('deviceForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const formData = new URLSearchParams(new FormData(e.target));
+  try {
+    const res = await fetch(scriptURL, {method:'POST', body: formData});
+    const data = await res.json();
+    if(data.status !== 'success') throw new Error(data.message || 'خطا در ثبت اطلاعات');
+    document.getElementById('successMsg').style.display='block';
+    e.target.reset();
+  } catch(err){ alert('❌ خطا: '+err.message); console.error(err); }
+});
 
-  async function searchDevice(){
-    const code = document.getElementById('searchCode').value.trim();
-    if(!code){ alert('لطفا کد دیوایس را وارد کنید'); return; }
-    try {
-      const res = await fetch(`${scriptURL}?deviceCode=${encodeURIComponent(code)}`);
-      const data = await res.json();
-      const container = document.getElementById('searchResult');
-      if(data.status !== 'success') throw new Error(data.message || 'خطا در دریافت اطلاعات');
-      if(data.records.length===0){ container.innerHTML="هیچ رکوردی با این کد پیدا نشد"; return; }
-      const r = data.records[0];
-      let html = `<table border="1" style="width:100%;border-collapse:collapse;text-align:center">
-        <tr><th>نام دیوایس</th><td>${r["نام دیوایس"]||''}</td></tr>
-        <tr><th>کد دیوایس</th><td>${r["کد دیوایس"]||''}</td></tr>
-        <tr><th>ایراد</th><td>${r["ایراد"]||''}</td></tr>
-        <tr><th>تاریخ گزارش ایراد</th><td>${r["تاریخ گزارش ایراد"]||''}</td></tr>
-        <tr><th>شرح ایراد</th><td>${r["شرح ایراد"]||''}</td></tr>
-        <tr><th>اقدامات انجام شده</th><td>${r["اقدامات انجام شده"]||''}</td></tr>
-        <tr><th>وضعیت فعلی</th><td>${r["وضعیت فعلی"]||''}</td></tr>
-        <tr><th>توضیحات تکمیلی</th><td>${r["توضیحات تکمیلی"]||''}</td></tr>
-      </table>`;
-      container.innerHTML = html;
-    } catch(err){ alert('❌ خطا در جستجو: '+err.message); console.error(err); }
-  }
-  window.addEventListener('load', () => {
+async function searchDevice(){
+  const code = document.getElementById('searchCode').value.trim();
+  if(!code){ alert('لطفا کد دیوایس را وارد کنید'); return; }
+  try {
+    const res = await fetch(`${scriptURL}?deviceCode=${encodeURIComponent(code)}`);
+    const data = await res.json();
+    const container = document.getElementById('searchResult');
+    if(data.status !== 'success') throw new Error(data.message || 'خطا در دریافت اطلاعات');
+    if(data.records.length===0){ container.innerHTML="هیچ رکوردی با این کد پیدا نشد"; return; }
+    const r = data.records[0];
+    let html = `<table border="1" style="width:100%;border-collapse:collapse;text-align:center">
+      <tr><th>نام دیوایس</th><td>${r["نام دیوایس"]||''}</td></tr>
+      <tr><th>کد دیوایس</th><td>${r["کد دیوایس"]||''}</td></tr>
+      <tr><th>ایراد</th><td>${r["ایراد"]||''}</td></tr>
+      <tr><th>تاریخ گزارش ایراد</th><td>${r["تاریخ گزارش ایراد"]||''}</td></tr>
+      <tr><th>شرح ایراد</th><td>${r["شرح ایراد"]||''}</td></tr>
+      <tr><th>اقدامات انجام شده</th><td>${r["اقدامات انجام شده"]||''}</td></tr>
+      <tr><th>وضعیت فعلی</th><td>${r["وضعیت فعلی"]||''}</td></tr>
+      <tr><th>توضیحات تکمیلی</th><td>${r["توضیحات تکمیلی"]||''}</td></tr>
+    </table>`;
+    container.innerHTML = html;
+  } catch(err){ alert('❌ خطا در جستجو: '+err.message); console.error(err); }
+}
+
+// پر کردن خودکار فیلد جستجو از پارامتر id در URL
+window.addEventListener('load', () => {
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
   if(id){
     document.getElementById('searchCode').value = id;
-    searchDevice(); // اجرا کردن جستجو خودکار
+    searchDevice();
   }
 });
 </script>
 </body>
 </html>
-
-
-
-
