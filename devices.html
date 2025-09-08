@@ -12,61 +12,15 @@
       --card: #fff;
       --accent: #3498db;
     }
-    body {
-      font-family: 'Vazir', Tahoma, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      margin: 0;
-      padding: 20px;
-    }
-    .container {
-      max-width: 600px;
-      margin: auto;
-      background: var(--card);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 18px;
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-      font-weight: bold;
-      font-size: 14px;
-    }
-    input, textarea, select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 4px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      box-sizing: border-box;
-      font-family: inherit;
-      font-size: 14px;
-    }
+    body { font-family: 'Vazir', Tahoma, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+    .container { max-width: 600px; margin: auto; background: var(--card); padding: 20px; border-radius: 10px; box-shadow: 0 0 8px rgba(0,0,0,0.1); }
+    h2 { text-align: center; margin-bottom: 20px; font-size: 18px; }
+    label { display: block; margin-top: 10px; font-weight: bold; font-size: 14px; }
+    input, textarea, select { width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-family: inherit; font-size: 14px; }
     textarea { resize: vertical; }
-    button {
-      margin-top: 15px;
-      padding: 10px;
-      width: 100%;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 14px;
-      cursor: pointer;
-    }
+    button { margin-top: 15px; padding: 10px; width: 100%; background: var(--accent); color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; }
     button:hover { background: #2980b9; }
-    .success, .error {
-      text-align: center;
-      margin-top: 12px;
-      font-weight: bold;
-      font-size: 14px;
-    }
+    .success, .error { text-align: center; margin-top: 12px; font-weight: bold; font-size: 14px; }
     .success { color: green; }
     .error { color: red; }
   </style>
@@ -127,12 +81,10 @@
   <script>
     const scriptURL = "https://script.google.com/macros/s/AKfycbxEn3Bvb2lISnKOMN3uXOLE2KHjAa9mExVlRk_pwQnwwrDqcl_gIXDiLpOD6TeTbmFj/exec";
 
-    // گرفتن barcodeId از URL
     const urlParams = new URLSearchParams(window.location.search);
     const barcodeId = urlParams.get("barcodeId");
     document.getElementById("barcodeId").value = barcodeId;
 
-    // لود اطلاعات موجود
     if (barcodeId) {
       fetch(`${scriptURL}?action=get&barcodeId=${barcodeId}`)
         .then(res => res.json())
@@ -151,7 +103,6 @@
         .catch(err => console.error("خطا در دریافت اطلاعات", err));
     }
 
-    // ذخیره/ویرایش
     document.getElementById("deviceForm").addEventListener("submit", e => {
       e.preventDefault();
       const formData = new FormData(e.target);
@@ -167,15 +118,11 @@
         });
     });
 
-    // حذف
     document.getElementById("deleteBtn").addEventListener("click", () => {
       if (!barcodeId) return;
       if (!confirm("آیا مطمئن هستید که می‌خواهید این رکورد حذف شود؟")) return;
       fetch(`${scriptURL}?action=delete&barcodeId=${barcodeId}`)
-        .then(() => {
-          alert("رکورد حذف شد");
-          location.reload();
-        })
+        .then(() => { alert("رکورد حذف شد"); location.reload(); })
         .catch(err => alert("خطا در حذف رکورد"));
     });
   </script>
