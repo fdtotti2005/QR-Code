@@ -76,28 +76,28 @@
 
     <form id="deviceForm">
       <label>نام دیوایس</label>
-      <input type="text" id="deviceName" required>
+      <input type="text" name="deviceName" required>
 
       <label>کد دیوایس</label>
-      <input type="text" id="deviceCode" required>
+      <input type="text" name="deviceCode" required>
 
       <label>ایراد</label>
-      <input type="text" id="issue" required>
+      <input type="text" name="issue" required>
 
       <label>تاریخ گزارش ایراد</label>
-      <input type="date" id="issueDate" required>
+      <input type="date" name="issueDate" required>
 
       <label>شرح ایراد</label>
-      <textarea id="issueDescription" rows="2"></textarea>
+      <textarea name="issueDescription" rows="2"></textarea>
 
       <label>اقدامات انجام شده</label>
-      <textarea id="actionsTaken" rows="2"></textarea>
+      <textarea name="actionsTaken" rows="2"></textarea>
 
       <label>وضعیت فعلی</label>
-      <input type="text" id="currentStatus">
+      <input type="text" name="currentStatus">
 
       <label>توضیحات تکمیلی</label>
-      <textarea id="notes" rows="2"></textarea>
+      <textarea name="notes" rows="2"></textarea>
 
       <button type="submit">💾 ذخیره اطلاعات</button>
     </form>
@@ -111,25 +111,16 @@
     document.getElementById('deviceForm').addEventListener('submit', function(e) {
       e.preventDefault();
 
-      const data = {
-        deviceName: document.getElementById('deviceName').value,
-        deviceCode: document.getElementById('deviceCode').value,
-        issue: document.getElementById('issue').value,
-        issueDate: document.getElementById('issueDate').value,
-        issueDescription: document.getElementById('issueDescription').value,
-        actionsTaken: document.getElementById('actionsTaken').value,
-        currentStatus: document.getElementById('currentStatus').value,
-        notes: document.getElementById('notes').value
-      };
+      const form = e.target;
+      const formData = new FormData(form);
 
       fetch(scriptURL, {
         method: 'POST',
-        body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json' }
+        body: formData
       })
       .then(() => {
         document.getElementById('successMsg').style.display = 'block';
-        document.getElementById('deviceForm').reset();
+        form.reset();
       })
       .catch(err => {
         alert("❌ خطا در ثبت اطلاعات");
