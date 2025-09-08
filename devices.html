@@ -6,24 +6,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
   <style>
-    :root {
-      --bg: #f0f2f5; --text: #333; --card: #fff; --accent: #3498db;
-    }
-    body { font-family: 'Vazir', Tahoma, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; font-size:14px; }
-    .container { max-width: 700px; margin: auto; background: var(--card); padding: 20px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    h2 { text-align: center; margin-bottom: 15px; font-size:18px; }
-    label { display: block; margin-top: 10px; font-weight: bold; font-size:14px; }
+    :root { --bg: #f0f2f5; --text: #333; --card: #fff; --accent: #3498db; }
+    body { font-family: 'Vazir', Tahoma, sans-serif; background: var(--bg); color: var(--text); margin:0; padding:20px; font-size:14px; }
+    .container { max-width:700px; margin:auto; background: var(--card); padding:20px; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.1); }
+    h2 { text-align:center; margin-bottom:15px; font-size:18px; }
+    label { display:block; margin-top:10px; font-weight:bold; font-size:14px; }
     input, textarea, select, button { font-family: 'Vazir', Tahoma, sans-serif; font-size:14px; }
-    input, textarea, select { width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
-    textarea { resize: vertical; }
-    button { margin-top: 10px; padding: 8px; width: 100%; background: var(--accent); color: white; border: none; border-radius: 6px; cursor: pointer; }
-    button:hover { background: #2980b9; }
-    .success { color: green; text-align: center; margin-top: 10px; font-weight: bold; font-size:14px; }
-    .searchContainer { margin-top: 20px; }
-    table { border-collapse: collapse; width: 100%; margin-top: 10px; text-align: center; font-size:13px; }
-    table, th, td { border: 1px solid #ccc; padding: 5px; }
-    th { background: #f7f7f7; }
-    .actionBtn { width: auto; padding: 4px 8px; margin: 2px; font-size:13px; }
+    input, textarea, select { width:100%; padding:8px; margin-top:4px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box; }
+    textarea { resize:vertical; }
+    button { margin-top:10px; padding:8px; width:100%; background: var(--accent); color:white; border:none; border-radius:6px; cursor:pointer; }
+    button:hover { background:#2980b9; }
+    .success { color:green; text-align:center; margin-top:10px; font-weight:bold; font-size:14px; }
+    .searchContainer { margin-top:20px; }
+    table { border-collapse:collapse; width:100%; margin-top:10px; text-align:center; font-size:13px; }
+    table, th, td { border:1px solid #ccc; padding:5px; }
+    th { background:#f7f7f7; }
+    .actionBtn { width:auto; padding:4px 8px; margin:2px; font-size:13px; }
   </style>
 </head>
 <body>
@@ -81,7 +79,7 @@ document.getElementById('deviceForm').addEventListener('submit', async function(
   } catch(err){ alert('❌ خطا: '+err.message); console.error(err); }
 });
 
-let currentRecordCode = null; // نگهداری رکورد انتخاب شده
+let currentRecordCode = null;
 
 async function searchDevice(){
   const code = document.getElementById('searchCode').value.trim();
@@ -96,7 +94,7 @@ async function searchDevice(){
     const r = data.records[0];
     currentRecordCode = r["کد دیوایس"];
 
-    // پر کردن فرم برای ویرایش
+    // پر کردن فرم
     document.querySelector('[name="deviceName"]').value = r["نام دیوایس"] || '';
     document.querySelector('[name="deviceCode"]').value = r["کد دیوایس"] || '';
     document.querySelector('[name="issue"]').value = r["ایراد"] || '';
@@ -106,7 +104,7 @@ async function searchDevice(){
     document.querySelector('[name="currentStatus"]').value = r["وضعیت فعلی"] || '';
     document.querySelector('[name="notes"]').value = r["توضیحات تکمیلی"] || '';
 
-    // جدول نمایش داده‌ها + دکمه حذف
+    // جدول + دکمه حذف
     let html = `<table>
       <tr><th>ستون</th><th>مقدار</th></tr>
       <tr><td>نام دیوایس</td><td>${r["نام دیوایس"]||''}</td></tr>
@@ -118,7 +116,7 @@ async function searchDevice(){
       <tr><td>وضعیت فعلی</td><td>${r["وضعیت فعلی"]||''}</td></tr>
       <tr><td>توضیحات تکمیلی</td><td>${r["توضیحات تکمیلی"]||''}</td></tr>
     </table>
-    <button class="actionBtn" onclick="deleteDevice()">🗑 حذف رکورد</button>`;
+    <button class="actionBtn" onclick="deleteDevice()">حذف</button>`;
     container.innerHTML = html;
 
   } catch(err){ alert('❌ خطا در جستجو: '+err.message); console.error(err); }
@@ -141,7 +139,6 @@ async function deleteDevice(){
   } catch(err){ alert('❌ خطا در حذف: '+err.message); console.error(err); }
 }
 
-// پر کردن خودکار فیلد جستجو از پارامتر id در URL
 window.addEventListener('load', () => {
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
