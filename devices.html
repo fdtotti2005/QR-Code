@@ -2,127 +2,88 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>ثبت و مشاهده اطلاعات دیوایس</title>
+  <title>ثبت و جستجوی دیوایس</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
   <style>
     :root {
-      --bg: #f0f2f5;
-      --text: #333;
-      --card: #fff;
-      --accent: #3498db;
+      --bg: #f0f2f5; --text: #333; --card: #fff; --accent: #3498db;
     }
     body { font-family: 'Vazir', Tahoma, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
-    .container { max-width: 900px; margin: auto; background: var(--card); padding: 25px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .container { max-width: 700px; margin: auto; background: var(--card); padding: 25px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
     h2 { text-align: center; margin-bottom: 20px; }
     label { display: block; margin-top: 12px; font-weight: bold; }
     input, textarea { width: 100%; padding: 10px; margin-top: 4px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-family: inherit; }
     textarea { resize: vertical; }
-    button { margin-top: 20px; padding: 10px; width: 100%; background: var(--accent); color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; }
+    button { margin-top: 12px; padding: 10px; width: 100%; background: var(--accent); color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; }
     button:hover { background: #2980b9; }
     .success { color: green; text-align: center; margin-top: 15px; font-weight: bold; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; cursor: pointer; }
-    table, th, td { border: 1px solid #ccc; }
-    th, td { padding: 8px; text-align: center; }
-    th { background: #f7f7f7; }
+    .searchContainer { margin-top: 20px; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>فرم ثبت اطلاعات دیوایس</h2>
-    <form id="deviceForm">
-      <label>نام دیوایس</label><input type="text" name="deviceName" required>
-      <label>کد دیوایس</label><input type="text" name="deviceCode" required>
-      <label>ایراد</label><input type="text" name="issue" required>
-      <label>تاریخ گزارش ایراد</label><input type="date" name="issueDate" required>
-      <label>شرح ایراد</label><textarea name="issueDescription" rows="2"></textarea>
-      <label>اقدامات انجام شده</label><textarea name="actionsTaken" rows="2"></textarea>
-      <label>وضعیت فعلی</label><input type="text" name="currentStatus">
-      <label>توضیحات تکمیلی</label><textarea name="notes" rows="2"></textarea>
-      <button type="submit">💾 ذخیره اطلاعات</button>
-    </form>
-    <div class="success" id="successMsg" style="display:none;">✅ اطلاعات با موفقیت ثبت شد</div>
+<div class="container">
+  <h2>فرم ثبت اطلاعات دیوایس</h2>
+  <form id="deviceForm">
+    <label>نام دیوایس</label><input type="text" name="deviceName" required>
+    <label>کد دیوایس</label><input type="text" name="deviceCode" required>
+    <label>ایراد</label><input type="text" name="issue" required>
+    <label>تاریخ گزارش ایراد</label><input type="date" name="issueDate" required>
+    <label>شرح ایراد</label><textarea name="issueDescription" rows="2"></textarea>
+    <label>اقدامات انجام شده</label><textarea name="actionsTaken" rows="2"></textarea>
+    <label>وضعیت فعلی</label><input type="text" name="currentStatus">
+    <label>توضیحات تکمیلی</label><textarea name="notes" rows="2"></textarea>
+    <button type="submit">💾 ذخیره اطلاعات</button>
+  </form>
+  <div class="success" id="successMsg" style="display:none;">✅ اطلاعات با موفقیت ثبت شد</div>
 
-    <h2>📋 لیست دیوایس‌ها (برای ویرایش روی ردیف کلیک کنید)</h2>
-    <div id="dataContainer">در حال بارگذاری...</div>
+  <div class="searchContainer">
+    <h2>🔍 جستجوی دیوایس بر اساس کد</h2>
+    <input type="text" id="searchCode" placeholder="کد دیوایس را وارد کنید">
+    <button onclick="searchDevice()">جستجو</button>
+    <div id="searchResult" style="margin-top:10px;"></div>
   </div>
+</div>
 
-  <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwpvULiXYSY31kgYiqZvrsXp9T_2leUoz1sLO1xaKBogQORuaTx3UVYkB4J31V-Ubhx/exec";
-    let currentRecords = [];
+<script>
+  const scriptURL = "https://script.google.com/macros/s/AKfycbwpvULiXYSY31kgYiqZvrsXp9T_2leUoz1sLO1xaKBogQORuaTx3UVYkB4J31V-Ubhx/exec";
 
-    // ارسال فرم
-    document.getElementById('deviceForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const form = e.target;
-      const formData = new FormData(form);
+  // ارسال فرم
+  document.getElementById('deviceForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const formData = new URLSearchParams(new FormData(e.target));
+    try {
+      const res = await fetch(scriptURL, {method:'POST', body: formData});
+      const data = await res.json();
+      if(data.status !== 'success') throw new Error(data.message || 'خطا در ثبت اطلاعات');
+      document.getElementById('successMsg').style.display='block';
+      e.target.reset();
+    } catch(err){ alert('❌ خطا: '+err.message); console.error(err); }
+  });
 
-      try {
-        const body = new URLSearchParams([...formData]);
-        const res = await fetch(scriptURL, { method: 'POST', body: body });
-        const text = await res.text();
-        const data = JSON.parse(text);
-
-        if (data.status !== "success") throw new Error(data.message || "خطا در ثبت اطلاعات");
-
-        document.getElementById('successMsg').style.display = 'block';
-        form.reset();
-        loadData(); // بروزرسانی جدول بعد از ثبت
-      } catch (err) {
-        alert("❌ خطا در ثبت اطلاعات: " + err.message);
-        console.error(err);
-      }
-    });
-
-    // دریافت و نمایش داده‌ها
-    async function loadData() {
-      try {
-        const res = await fetch(scriptURL);
-        const data = await res.json();
-        if (data.status !== "success") throw new Error(data.message);
-
-        currentRecords = data.records; // ذخیره رکوردها برای ویرایش
-
-        if (data.records.length === 0) {
-          document.getElementById("dataContainer").innerHTML = "هیچ رکوردی ثبت نشده است.";
-          return;
-        }
-
-        let html = "<table><tr>";
-        Object.keys(data.records[0]).forEach(h => { html += `<th>${h}</th>`; });
-        html += "</tr>";
-        data.records.forEach(row => {
-          html += "<tr onclick='editRecord(\""+row["کد دیوایس"]+"\")'>";
-          Object.values(row).forEach(v => { html += `<td>${v || ''}</td>`; });
-          html += "</tr>";
-        });
-        html += "</table>";
-
-        document.getElementById("dataContainer").innerHTML = html;
-
-      } catch (err) {
-        document.getElementById("dataContainer").innerHTML = "❌ خطا در دریافت اطلاعات: " + err.message;
-        console.error(err);
-      }
-    }
-
-    // پر کردن فرم با داده رکورد برای ویرایش
-    function editRecord(code) {
-      const record = currentRecords.find(r => r["کد دیوایس"] === code);
-      if (!record) return;
-
-      document.querySelector('[name="deviceName"]').value = record["نام دیوایس"] || '';
-      document.querySelector('[name="deviceCode"]').value = record["کد دیوایس"] || '';
-      document.querySelector('[name="issue"]').value = record["ایراد"] || '';
-      document.querySelector('[name="issueDate"]').value = record["تاریخ گزارش ایراد"] || '';
-      document.querySelector('[name="issueDescription"]').value = record["شرح ایراد"] || '';
-      document.querySelector('[name="actionsTaken"]').value = record["اقدامات انجام شده"] || '';
-      document.querySelector('[name="currentStatus"]').value = record["وضعیت فعلی"] || '';
-      document.querySelector('[name="notes"]').value = record["توضیحات تکمیلی"] || '';
-      window.scrollTo({ top: 0, behavior: 'smooth' }); // اسکرول فرم
-    }
-
-    loadData();
-  </script>
+  async function searchDevice(){
+    const code = document.getElementById('searchCode').value.trim();
+    if(!code){ alert('لطفا کد دیوایس را وارد کنید'); return; }
+    try {
+      const res = await fetch(`${scriptURL}?deviceCode=${encodeURIComponent(code)}`);
+      const data = await res.json();
+      const container = document.getElementById('searchResult');
+      if(data.status !== 'success') throw new Error(data.message || 'خطا در دریافت اطلاعات');
+      if(data.records.length===0){ container.innerHTML="هیچ رکوردی با این کد پیدا نشد"; return; }
+      const r = data.records[0];
+      let html = `<table border="1" style="width:100%;border-collapse:collapse;text-align:center">
+        <tr><th>نام دیوایس</th><td>${r["نام دیوایس"]||''}</td></tr>
+        <tr><th>کد دیوایس</th><td>${r["کد دیوایس"]||''}</td></tr>
+        <tr><th>ایراد</th><td>${r["ایراد"]||''}</td></tr>
+        <tr><th>تاریخ گزارش ایراد</th><td>${r["تاریخ گزارش ایراد"]||''}</td></tr>
+        <tr><th>شرح ایراد</th><td>${r["شرح ایراد"]||''}</td></tr>
+        <tr><th>اقدامات انجام شده</th><td>${r["اقدامات انجام شده"]||''}</td></tr>
+        <tr><th>وضعیت فعلی</th><td>${r["وضعیت فعلی"]||''}</td></tr>
+        <tr><th>توضیحات تکمیلی</th><td>${r["توضیحات تکمیلی"]||''}</td></tr>
+      </table>`;
+      container.innerHTML = html;
+    } catch(err){ alert('❌ خطا در جستجو: '+err.message); console.error(err); }
+  }
+</script>
 </body>
 </html>
