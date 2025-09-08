@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>ثبت اطلاعات دیوایس</title>
+  <title>ثبت و مشاهده اطلاعات دیوایس</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
   <style>
@@ -12,103 +12,45 @@
       --card: #fff;
       --accent: #3498db;
     }
-    body {
-      font-family: 'Vazir', Tahoma, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      margin: 0;
-      padding: 20px;
-    }
-    .container {
-      max-width: 600px;
-      margin: auto;
-      background: var(--card);
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin-top: 12px;
-      font-weight: bold;
-    }
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 4px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      box-sizing: border-box;
-      font-family: inherit;
-    }
-    textarea {
-      resize: vertical;
-    }
-    button {
-      margin-top: 20px;
-      padding: 10px;
-      width: 100%;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #2980b9;
-    }
-    .success {
-      color: green;
-      text-align: center;
-      margin-top: 15px;
-      font-weight: bold;
-    }
+    body { font-family: 'Vazir', Tahoma, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+    .container { max-width: 900px; margin: auto; background: var(--card); padding: 25px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    h2 { text-align: center; margin-bottom: 20px; }
+    label { display: block; margin-top: 12px; font-weight: bold; }
+    input, textarea { width: 100%; padding: 10px; margin-top: 4px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-family: inherit; }
+    textarea { resize: vertical; }
+    button { margin-top: 20px; padding: 10px; width: 100%; background: var(--accent); color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; }
+    button:hover { background: #2980b9; }
+    .success { color: green; text-align: center; margin-top: 15px; font-weight: bold; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    table, th, td { border: 1px solid #ccc; }
+    th, td { padding: 8px; text-align: center; }
+    th { background: #f7f7f7; }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>فرم ثبت اطلاعات دیوایس</h2>
-
     <form id="deviceForm">
-      <label>نام دیوایس</label>
-      <input type="text" name="deviceName" required>
-
-      <label>کد دیوایس</label>
-      <input type="text" name="deviceCode" required>
-
-      <label>ایراد</label>
-      <input type="text" name="issue" required>
-
-      <label>تاریخ گزارش ایراد</label>
-      <input type="date" name="issueDate" required>
-
-      <label>شرح ایراد</label>
-      <textarea name="issueDescription" rows="2"></textarea>
-
-      <label>اقدامات انجام شده</label>
-      <textarea name="actionsTaken" rows="2"></textarea>
-
-      <label>وضعیت فعلی</label>
-      <input type="text" name="currentStatus">
-
-      <label>توضیحات تکمیلی</label>
-      <textarea name="notes" rows="2"></textarea>
-
+      <label>نام دیوایس</label><input type="text" name="deviceName" required>
+      <label>کد دیوایس</label><input type="text" name="deviceCode" required>
+      <label>ایراد</label><input type="text" name="issue" required>
+      <label>تاریخ گزارش ایراد</label><input type="date" name="issueDate" required>
+      <label>شرح ایراد</label><textarea name="issueDescription" rows="2"></textarea>
+      <label>اقدامات انجام شده</label><textarea name="actionsTaken" rows="2"></textarea>
+      <label>وضعیت فعلی</label><input type="text" name="currentStatus">
+      <label>توضیحات تکمیلی</label><textarea name="notes" rows="2"></textarea>
       <button type="submit">💾 ذخیره اطلاعات</button>
     </form>
-
     <div class="success" id="successMsg" style="display:none;">✅ اطلاعات با موفقیت ثبت شد</div>
+
+    <h2>📋 لیست دیوایس‌ها</h2>
+    <div id="dataContainer">در حال بارگذاری...</div>
   </div>
 
   <script>
-    // ⚠️ اینجا آدرس Web App خودت رو بذار (از Deploy → Web App → URL قسمت /exec)
     const scriptURL = "https://script.google.com/macros/s/AKfycbwpvULiXYSY31kgYiqZvrsXp9T_2leUoz1sLO1xaKBogQORuaTx3UVYkB4J31V-Ubhx/exec";
 
+    // ارسال فرم
     document.getElementById('deviceForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       const form = e.target;
@@ -116,29 +58,53 @@
 
       try {
         const body = new URLSearchParams([...formData]);
-
-        const res = await fetch(scriptURL, {
-          method: 'POST',
-          body: body
-        });
-
+        const res = await fetch(scriptURL, { method: 'POST', body: body });
         const text = await res.text();
-        console.log('Response:', text);
+        const data = JSON.parse(text);
 
-        let data;
-        try { data = JSON.parse(text); } catch(err) { data = {raw: text}; }
-
-        if (!res.ok || (data && data.status === 'error')) {
-          throw new Error(data.message || ('HTTP ' + res.status));
-        }
+        if (data.status !== "success") throw new Error(data.message || "خطا در ثبت اطلاعات");
 
         document.getElementById('successMsg').style.display = 'block';
         form.reset();
+        loadData(); // بعد از ثبت، جدول بروز شود
       } catch (err) {
         alert("❌ خطا در ثبت اطلاعات: " + err.message);
-        console.error("Full error:", err);
+        console.error(err);
       }
     });
+
+    // دریافت و نمایش داده‌ها
+    async function loadData() {
+      try {
+        const res = await fetch(scriptURL);
+        const data = await res.json();
+        if (data.status !== "success") throw new Error(data.message);
+
+        if (data.records.length === 0) {
+          document.getElementById("dataContainer").innerHTML = "هیچ رکوردی ثبت نشده است.";
+          return;
+        }
+
+        let html = "<table><tr>";
+        Object.keys(data.records[0]).forEach(h => { html += `<th>${h}</th>`; });
+        html += "</tr>";
+        data.records.forEach(row => {
+          html += "<tr>";
+          Object.values(row).forEach(v => { html += `<td>${v || ''}</td>`; });
+          html += "</tr>";
+        });
+        html += "</table>";
+
+        document.getElementById("dataContainer").innerHTML = html;
+
+      } catch (err) {
+        document.getElementById("dataContainer").innerHTML = "❌ خطا در دریافت اطلاعات: " + err.message;
+        console.error(err);
+      }
+    }
+
+    // بارگذاری اولیه جدول
+    loadData();
   </script>
 </body>
 </html>
