@@ -21,7 +21,7 @@
     button { margin-top: 20px; padding: 10px; width: 100%; background: var(--accent); color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; }
     button:hover { background: #2980b9; }
     .success { color: green; text-align: center; margin-top: 15px; font-weight: bold; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; cursor: pointer; }
     table, th, td { border: 1px solid #ccc; }
     th, td { padding: 8px; text-align: center; }
     th { background: #f7f7f7; }
@@ -43,12 +43,13 @@
     </form>
     <div class="success" id="successMsg" style="display:none;">✅ اطلاعات با موفقیت ثبت شد</div>
 
-    <h2>📋 لیست دیوایس‌ها</h2>
+    <h2>📋 لیست دیوایس‌ها (برای ویرایش روی ردیف کلیک کنید)</h2>
     <div id="dataContainer">در حال بارگذاری...</div>
   </div>
 
   <script>
     const scriptURL = "https://script.google.com/macros/s/AKfycbwpvULiXYSY31kgYiqZvrsXp9T_2leUoz1sLO1xaKBogQORuaTx3UVYkB4J31V-Ubhx/exec";
+    let currentRecords = [];
 
     // ارسال فرم
     document.getElementById('deviceForm').addEventListener('submit', async function(e) {
@@ -66,7 +67,7 @@
 
         document.getElementById('successMsg').style.display = 'block';
         form.reset();
-        loadData(); // بعد از ثبت، جدول بروز شود
+        loadData(); // بروزرسانی جدول بعد از ثبت
       } catch (err) {
         alert("❌ خطا در ثبت اطلاعات: " + err.message);
         console.error(err);
@@ -80,6 +81,8 @@
         const data = await res.json();
         if (data.status !== "success") throw new Error(data.message);
 
+        currentRecords = data.records; // ذخیره رکوردها برای ویرایش
+
         if (data.records.length === 0) {
           document.getElementById("dataContainer").innerHTML = "هیچ رکوردی ثبت نشده است.";
           return;
@@ -89,7 +92,7 @@
         Object.keys(data.records[0]).forEach(h => { html += `<th>${h}</th>`; });
         html += "</tr>";
         data.records.forEach(row => {
-          html += "<tr>";
+          html += "<tr onclick='editRecord(\""+row["کد دیوایس"]+"\")'>";
           Object.values(row).forEach(v => { html += `<td>${v || ''}</td>`; });
           html += "</tr>";
         });
@@ -103,7 +106,22 @@
       }
     }
 
-    // بارگذاری اولیه جدول
+    // پر کردن فرم با داده رکورد برای ویرایش
+    function editRecord(code) {
+      const record = currentRecords.find(r => r["کد دیوایس"] === code);
+      if (!record) return;
+
+      document.querySelector('[name="deviceName"]').value = record["نام دیوایس"] || '';
+      document.querySelector('[name="deviceCode"]').value = record["کد دیوایس"] || '';
+      document.querySelector('[name="issue"]').value = record["ایراد"] || '';
+      document.querySelector('[name="issueDate"]').value = record["تاریخ گزارش ایراد"] || '';
+      document.querySelector('[name="issueDescription"]').value = record["شرح ایراد"] || '';
+      document.querySelector('[name="actionsTaken"]').value = record["اقدامات انجام شده"] || '';
+      document.querySelector('[name="currentStatus"]').value = record["وضعیت فعلی"] || '';
+      document.querySelector('[name="notes"]').value = record["توضیحات تکمیلی"] || '';
+      window.scrollTo({ top: 0, behavior: 'smooth' }); // اسکرول فرم
+    }
+
     loadData();
   </script>
 </body>
