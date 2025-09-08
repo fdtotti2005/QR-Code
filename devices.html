@@ -88,6 +88,11 @@
       font-weight: bold;
       animation: fadeIn 0.4s ease;
     }
+    #jalaliPreview {
+      margin-top: 6px;
+      font-weight: bold;
+      color: #555;
+    }
     @keyframes fadeIn {
       from {opacity: 0;}
       to {opacity: 1;}
@@ -99,8 +104,10 @@
     <h2>اطلاعات دستگاه</h2>
     <div id="info">در حال بارگذاری...</div>
 
-    <h3>ویرایش اطلاعات</h3>
+    <button id="editToggle" style="display:none;">✏️ ویرایش اطلاعات</button>
+
     <form id="editForm" style="display:none;">
+      <h3>ویرایش اطلاعات</h3>
       <label>شناسه</label>
       <input type="text" id="id" readonly>
 
@@ -115,6 +122,7 @@
 
       <label>آخرین بروزرسانی</label>
       <input type="date" id="lastUpdated">
+      <p id="jalaliPreview"></p>
 
       <button type="submit">💾 ذخیره</button>
     </form>
@@ -154,6 +162,8 @@
     const device = devices.find(d => d.id === deviceId);
     const infoDiv = document.getElementById('info');
     const form = document.getElementById('editForm');
+    const toggleBtn = document.getElementById('editToggle');
+    const jalaliPreview = document.getElementById('jalaliPreview');
 
     if (device) {
       const jalaliDate = toJalali(device.lastUpdated);
@@ -170,11 +180,26 @@
       document.getElementById('issue').value = device.issue;
       document.getElementById('status').value = device.status;
       document.getElementById('lastUpdated').value = device.lastUpdated;
+      jalaliPreview.textContent = "تاریخ شمسی: " + jalaliDate;
 
-      form.style.display = 'block';
+      toggleBtn.style.display = 'block';
     } else {
       infoDiv.innerHTML = `<p class="error">❌ دستگاه با شناسه "${deviceId}" پیدا نشد.</p>`;
     }
+
+    toggleBtn.addEventListener('click', () => {
+      form.style.display = 'block';
+      toggleBtn.style.display = 'none';
+    });
+
+    document.getElementById('lastUpdated').addEventListener('input', function(e) {
+      const val = e.target.value;
+      if (val) {
+        jalaliPreview.textContent = "تاریخ شمسی: " + toJalali(val);
+      } else {
+        jalaliPreview.textContent = "";
+      }
+    });
 
     document.getElementById('editForm').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -185,7 +210,8 @@
         status: document.getElementById('status').value,
         lastUpdated: document.getElementById('lastUpdated').value
       };
-      document.getElementById('output').textContent = JSON.stringify(updatedDevice, null, 2);
+      const jalaliDate = toJalali(updatedDevice.lastUpdated);
+      document.getElementById('output').textContent = JSON.stringify(updatedDevice, null, 2) + `\n📅 تاریخ شمسی: ${jalaliDate}`;
       document.getElementById('successMsg').style.display = 'block';
     });
   </script>
