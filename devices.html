@@ -28,7 +28,6 @@
       padding: 25px;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      transition: background 0.3s ease;
     }
     h2, h3 {
       text-align: center;
@@ -48,7 +47,6 @@
       border-radius: 6px;
       box-sizing: border-box;
       font-family: inherit;
-      transition: border 0.3s ease;
     }
     input:focus {
       border-color: var(--accent);
@@ -64,7 +62,6 @@
       border-radius: 6px;
       font-size: 16px;
       cursor: pointer;
-      transition: background 0.3s ease;
     }
     button:hover {
       background: #2980b9;
@@ -75,7 +72,6 @@
       border-radius: 6px;
       margin-top: 10px;
       overflow-x: auto;
-      animation: fadeIn 0.5s ease;
     }
     .error {
       color: red;
@@ -86,7 +82,6 @@
       text-align: center;
       margin-top: 10px;
       font-weight: bold;
-      animation: fadeIn 0.4s ease;
     }
     #jalaliPreview {
       margin-top: 6px;
@@ -134,6 +129,8 @@
   </div>
 
   <script>
+    const scriptURL = "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec"; // ← اینجا آدرس واقعی اسکریپت رو بذار
+
     const devices = [
       {
         id: "device001",
@@ -194,11 +191,7 @@
 
     document.getElementById('lastUpdated').addEventListener('input', function(e) {
       const val = e.target.value;
-      if (val) {
-        jalaliPreview.textContent = "تاریخ شمسی: " + toJalali(val);
-      } else {
-        jalaliPreview.textContent = "";
-      }
+      jalaliPreview.textContent = val ? "تاریخ شمسی: " + toJalali(val) : "";
     });
 
     document.getElementById('editForm').addEventListener('submit', function(e) {
@@ -211,8 +204,21 @@
         lastUpdated: document.getElementById('lastUpdated').value
       };
       const jalaliDate = toJalali(updatedDevice.lastUpdated);
-      document.getElementById('output').textContent = JSON.stringify(updatedDevice, null, 2) + `\n📅 تاریخ شمسی: ${jalaliDate}`;
-      document.getElementById('successMsg').style.display = 'block';
+
+      fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify(updatedDevice),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(response => {
+        document.getElementById('successMsg').style.display = 'block';
+        document.getElementById('output').textContent =
+          JSON.stringify(updatedDevice, null, 2) + `\n📅 تاریخ شمسی: ${jalaliDate}`;
+      })
+      .catch(error => {
+        alert("❌ خطا در ارسال اطلاعات");
+        console.error("Error!", error.message);
+      });
     });
   </script>
 </body>
