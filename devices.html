@@ -84,6 +84,15 @@
       container.innerHTML = html;
     } catch(err){ alert('❌ خطا در جستجو: '+err.message); console.error(err); }
   }
+  window.addEventListener('load', () => {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  if(id){
+    document.getElementById('searchCode').value = id;
+    searchDevice(); // اجرا کردن جستجو خودکار
+  }
+});
 </script>
 </body>
 </html>
+
