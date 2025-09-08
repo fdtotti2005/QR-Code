@@ -95,7 +95,12 @@ async function searchDevice(){
     currentRecordCode = r["کد دیوایس"];
 
     // پر کردن فرم
-    document.querySelector('[name="deviceName"]').value = r["نام دیوایس"] || '';
+    let select = document.querySelector('[name="deviceName"]');
+    let val = (r["نام دیوایس"] || '').trim();
+    let optionExists = Array.from(select.options).some(opt => opt.value.trim() === val);
+    if(optionExists) select.value = val;
+    else select.value = '';
+
     document.querySelector('[name="deviceCode"]').value = r["کد دیوایس"] || '';
     document.querySelector('[name="issue"]').value = r["ایراد"] || '';
     document.querySelector('[name="issueDate"]').value = r["تاریخ گزارش ایراد"] || '';
@@ -132,21 +137,4 @@ async function deleteDevice(){
     });
     const data = await res.json();
     if(data.status !== 'success') throw new Error(data.message || 'خطا در حذف رکورد');
-    alert('✅ رکورد با موفقیت حذف شد');
-    currentRecordCode = null;
-    document.getElementById('deviceForm').reset();
-    document.getElementById('searchResult').innerHTML = '';
-  } catch(err){ alert('❌ خطا در حذف: '+err.message); console.error(err); }
-}
-
-window.addEventListener('load', () => {
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get('id');
-  if(id){
-    document.getElementById('searchCode').value = id;
-    searchDevice();
-  }
-});
-</script>
-</body>
-</html>
+    alert('✅ رکورد با موفقیت حذف شد
