@@ -25,7 +25,7 @@
     .success, .error { text-align:center; margin-top:12px; font-weight:bold; font-size:14px; }
     .success { color:green; } .error { color:red; }
     .search-row { display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
-    .search-row input { flex:2; } 
+    .search-row input { flex:2; }
     .search-row button { flex:1; }
   </style>
 </head>
@@ -33,9 +33,11 @@
   <div class="container">
     <h2>فرم ثبت اطلاعات دیوایس</h2>
 
-    <form id="deviceForm">
-      <input type="hidden" id="barcodeId" name="barcodeId">
+    <!-- کادر بارکد (خواندنی) -->
+    <label>بارکد دستگاه</label>
+    <input type="text" id="barcodeId" name="barcodeId" readonly>
 
+    <form id="deviceForm">
       <div class="row">
         <div>
           <label>نام دیوایس</label>
@@ -83,6 +85,7 @@
       <button type="button" id="deleteBtn" class="btn-red">❌ حذف</button>
     </form>
 
+    <!-- کادر جستجو -->
     <div class="search-row">
       <input type="text" id="searchCode" placeholder="جستجو بر اساس کد دیوایس">
       <button type="button" id="searchBtn" class="btn-blue">🔍 جستجو</button>
@@ -95,11 +98,11 @@
   <script>
     const scriptURL = "https://script.google.com/macros/s/AKfycbxIHRLz-KTPSIIw5UwAQjQas7WFcDWuNwpymDcrinm8uMHcqvsMKpZfH3iOwTBB_gov/exec";
 
+    // بارکد از URL
     const urlParams = new URLSearchParams(window.location.search);
     const barcodeId = urlParams.get("barcodeId");
     document.getElementById("barcodeId").value = barcodeId || "";
 
-    // بارگذاری داده‌ها برای بارکد
     if (barcodeId) loadDataByBarcode(barcodeId);
 
     function loadDataByBarcode(id) {
@@ -116,63 +119,52 @@
             document.querySelector("[name='currentStatus']").value = r.currentStatus || "";
             document.querySelector("[name='notes']").value = r.notes || "";
           }
-        })
-        .catch(err => console.error("خطا در دریافت اطلاعات", err));
+        }).catch(err=>console.error(err));
     }
 
     // ثبت/ویرایش
-    document.getElementById("deviceForm").addEventListener("submit", e => {
+    document.getElementById("deviceForm").addEventListener("submit", e=>{
       e.preventDefault();
       const formData = new FormData(e.target);
-      fetch(scriptURL, { method: "POST", body: formData })
-        .then(() => {
-          document.getElementById("successMsg").style.display = "block";
-          document.getElementById("errorMsg").style.display = "none";
-        })
-        .catch(err => {
-          document.getElementById("errorMsg").style.display = "block";
-          document.getElementById("successMsg").style.display = "none";
-          console.error("Error!", err.message);
+      fetch(scriptURL, { method:"POST", body:formData })
+        .then(()=> {
+          document.getElementById("successMsg").style.display="block";
+          document.getElementById("errorMsg").style.display="none";
+        }).catch(err=>{
+          document.getElementById("errorMsg").style.display="block";
+          document.getElementById("successMsg").style.display="none";
         });
     });
 
     // حذف رکورد
-    document.getElementById("deleteBtn").addEventListener("click", () => {
+    document.getElementById("deleteBtn").addEventListener("click", ()=>{
       const bid = document.getElementById("barcodeId").value;
-      if (!bid) return;
-      if (!confirm("آیا مطمئن هستید که می‌خواهید این رکورد حذف شود؟")) return;
+      if(!bid) return;
+      if(!confirm("آیا مطمئن هستید که می‌خواهید این رکورد حذف شود؟")) return;
       fetch(`${scriptURL}?action=delete&barcodeId=${bid}`)
-        .then(() => { alert("رکورد حذف شد"); location.reload(); })
-        .catch(err => alert("خطا در حذف رکورد"));
+        .then(()=>{ alert("رکورد حذف شد"); location.reload(); })
+        .catch(err=>alert("خطا در حذف رکورد"));
     });
 
     // جستجو بر اساس کد دیوایس
-    document.getElementById("searchBtn").addEventListener("click", () => {
+    document.getElementById("searchBtn").addEventListener("click", ()=>{
       const code = document.getElementById("searchCode").value.trim();
-      if (!code) return alert("لطفاً کد دیوایس را وارد کنید.");
+      if(!code) return alert("لطفاً کد دیوایس را وارد کنید.");
       fetch(`${scriptURL}?action=search&deviceCode=${encodeURIComponent(code)}`)
-        .then(res => res.json())
-        .then(r => {
-          if (r && r.deviceCode) {
-            document.getElementById("barcodeId").value = r.barcodeId || "";
-            document.getElementById("deviceName").value = r.deviceName || "";
-            document.querySelector("[name='deviceCode']").value = r.deviceCode || "";
-            document.querySelector("[name='issue']").value = r.issue || "";
-            document.querySelector("[name='issueDate']").value = r.issueDate || "";
-            document.querySelector("[name='issueDescription']").value = r.issueDescription || "";
-            document.querySelector("[name='actionsTaken']").value = r.actionsTaken || "";
-            document.querySelector("[name='currentStatus']").value = r.currentStatus || "";
-            document.querySelector("[name='notes']").value = r.notes || "";
-            document.getElementById("successMsg").textContent = "✅ رکورد یافت شد"; 
-            document.getElementById("successMsg").style.display = "block";
-            document.getElementById("errorMsg").style.display = "none";
-          } else {
-            document.getElementById("errorMsg").textContent = "❌ رکورد پیدا نشد";
-            document.getElementById("errorMsg").style.display = "block";
-            document.getElementById("successMsg").style.display = "none";
-          }
-        })
-        .catch(err => alert("خطا در جستجو"));
+        .then(res=>res.json())
+        .then(r=>{
+          if(r && r.deviceCode){
+            document.getElementById("barcodeId").value = r.barcodeId;
+            document.getElementById("deviceName").value = r.deviceName;
+            document.querySelector("[name='deviceCode']").value = r.deviceCode;
+            document.querySelector("[name='issue']").value = r.issue;
+            document.querySelector("[name='issueDate']").value = r.issueDate;
+            document.querySelector("[name='issueDescription']").value = r.issueDescription;
+            document.querySelector("[name='actionsTaken']").value = r.actionsTaken;
+            document.querySelector("[name='currentStatus']").value = r.currentStatus;
+            document.querySelector("[name='notes']").value = r.notes;
+          } else alert("رکورد پیدا نشد");
+        }).catch(err=>alert("خطا در جستجو"));
     });
   </script>
 </body>
