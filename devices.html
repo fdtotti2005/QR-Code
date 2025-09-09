@@ -126,26 +126,4 @@ document.getElementById("deleteBtn").addEventListener("click",()=>{
   .catch(err=>alert("خطا در حذف رکورد"));
 });
 
-// جستجو بر اساس کد دیوایس
-document.getElementById("searchBtn").addEventListener("click",()=>{
-  const code = document.getElementById("searchCode").value.trim();
-  if(!code) return alert("کد دیوایس را وارد کنید");
-  fetch(`${scriptURL}?action=search&deviceCode=${code}`)
-  .then(res=>res.json())
-  .then(data=>{
-    if(data && Object.keys(data).length>0){
-      fillForm(data);
-      document.getElementById("barcodeId").value = data.barcodeId||"";
-      document.getElementById("successMsg").style.display="block";
-      document.getElementById("successMsg").innerText="✅ رکورد پیدا شد";
-      document.getElementById("errorMsg").style.display="none";
-    }else{
-      document.getElementById("errorMsg").style.display="block";
-      document.getElementById("errorMsg").innerText="❌ رکورد پیدا نشد";
-      document.getElementById("successMsg").style.display="none";
-    }
-  }).catch(err=>alert("خطا در جستجو"));
-});
-</script>
-</body>
-</html>
+// جستجو بر اساس کد
