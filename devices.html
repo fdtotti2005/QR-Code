@@ -49,8 +49,8 @@
       <label>ایراد</label>
       <input type="text" name="issue" required>
 
-      <label>تاریخ گزارش ایراد</label>
-      <input type="date" name="issueDate" required>
+      <label>تاریخ گزارش ایراد (متنی)</label>
+      <input type="text" name="issueDate" placeholder="مثلاً: 2025-09-09 یا 9/9/2025">
 
       <label>شرح ایراد</label>
       <textarea name="issueDescription" rows="2"></textarea>
@@ -73,25 +73,25 @@
   </div>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbxEn3Bvb2lISnKOMN3uXOLE2KHjAa9mExVlRk_pwQnwwrDqcl_gIXDiLpOD6TeTbmFj/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxEn3Bvb2lISnKOMN3uXOLE2KHjAa9mExVlRk_pwQnwwrDqcl_gIXDiLpOD6TeTbmFj/exec"; // ← آدرس وب اپت رو اینجا بذار
 
     const urlParams = new URLSearchParams(window.location.search);
     const barcodeId = urlParams.get("barcodeId");
-    document.getElementById("barcodeId").value = barcodeId;
+    document.getElementById("barcodeId").value = barcodeId || "";
 
     if (barcodeId) {
-      fetch(`${scriptURL}?action=get&barcodeId=${barcodeId}`)
+      fetch(`${scriptURL}?action=get&barcodeId=${encodeURIComponent(barcodeId)}`)
         .then(res => res.json())
         .then(data => {
           if (data && data.deviceName) {
-            document.querySelector("[name='deviceName']").value = data.deviceName;
-            document.querySelector("[name='deviceCode']").value = data.deviceCode;
-            document.querySelector("[name='issue']").value = data.issue;
-            document.querySelector("[name='issueDate']").value = data.issueDate;
-            document.querySelector("[name='issueDescription']").value = data.issueDescription;
-            document.querySelector("[name='actionsTaken']").value = data.actionsTaken;
-            document.querySelector("[name='currentStatus']").value = data.currentStatus;
-            document.querySelector("[name='notes']").value = data.notes;
+            document.querySelector("[name='deviceName']").value = data.deviceName || "";
+            document.querySelector("[name='deviceCode']").value = data.deviceCode || "";
+            document.querySelector("[name='issue']").value = data.issue || "";
+            document.querySelector("[name='issueDate']").value = data.issueDate || "";
+            document.querySelector("[name='issueDescription']").value = data.issueDescription || "";
+            document.querySelector("[name='actionsTaken']").value = data.actionsTaken || "";
+            document.querySelector("[name='currentStatus']").value = data.currentStatus || "";
+            document.querySelector("[name='notes']").value = data.notes || "";
           }
         })
         .catch(err => console.error("خطا در دریافت اطلاعات", err));
@@ -115,7 +115,7 @@
     document.getElementById("deleteBtn").addEventListener("click", () => {
       if (!barcodeId) return;
       if (!confirm("آیا مطمئن هستید که می‌خواهید این رکورد حذف شود؟")) return;
-      fetch(`${scriptURL}?action=delete&barcodeId=${barcodeId}`)
+      fetch(`${scriptURL}?action=delete&barcodeId=${encodeURIComponent(barcodeId)}`)
         .then(() => { alert("رکورد حذف شد"); location.reload(); })
         .catch(err => alert("خطا در حذف رکورد"));
     });
