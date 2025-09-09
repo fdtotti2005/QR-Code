@@ -6,18 +6,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
 <style>
-:root{--bg:#f0f2f5;--text:#333;--card:#fff;--accent:#3498db;}
+:root{--bg:#f0f2f5;--text:#333;--card:#fff;}
 body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg);color:var(--text);margin:0;padding:20px;}
 .container{max-width:600px;margin:auto;background:var(--card);padding:20px;border-radius:10px;box-shadow:0 0 8px rgba(0,0,0,0.1);}
 h2{text-align:center;margin-bottom:20px;font-size:18px;}
 .row{display:flex;gap:10px;}
 label{display:block;margin-top:10px;font-weight:bold;font-size:14px;}
-input, textarea, select{width:100%;padding:8px;margin-top:4px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;font-family:inherit;font-size:14px;color:black;}
+input,textarea,select{width:100%;padding:8px;margin-top:4px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;font-family:inherit;font-size:14px;color:black;}
 textarea{resize:vertical;}
 button{margin-top:10px;padding:10px;width:100%;border:none;border-radius:6px;font-size:14px;cursor:pointer;color:black;}
-button.submit{background:rgba(46, 204, 113,0.8);}
-button.delete{background:rgba(231, 76, 60,0.8);}
-button.search{background:rgba(52, 152, 219,0.8);}
+button.submit{background:rgba(46,204,113,0.8);}
+button.delete{background:rgba(231,76,60,0.8);}
+button.search{background:rgba(52,152,219,0.8);}
 button:hover{opacity:0.9;}
 .success,.error{text-align:center;margin-top:12px;font-weight:bold;font-size:14px;}
 .success{color:green;} .error{color:red;}
@@ -29,7 +29,6 @@ button:hover{opacity:0.9;}
 
 <form id="deviceForm">
 <input type="hidden" id="barcodeId" name="barcodeId">
-
 <div class="row">
 <div style="flex:1">
 <label>نام دیوایس</label>
@@ -57,19 +56,14 @@ button:hover{opacity:0.9;}
 
 <label>ایراد</label>
 <input type="text" name="ایراد" required>
-
 <label>تاریخ گزارش ایراد</label>
 <input type="text" name="تاریخ گزارش ایراد">
-
 <label>شرح ایراد</label>
 <textarea name="شرح ایراد" rows="2"></textarea>
-
 <label>اقدامات انجام شده</label>
 <textarea name="اقدامات انجام شده" rows="2"></textarea>
-
 <label>وضعیت فعلی</label>
 <input type="text" name="وضعیت فعلی">
-
 <label>توضیحات تکمیلی</label>
 <textarea name="توضیحات تکمیلی" rows="2"></textarea>
 
@@ -88,20 +82,19 @@ button:hover{opacity:0.9;}
 
 <script>
 const scriptURL = "https://script.google.com/macros/s/AKfycbyVUwT9OfLEbkvpwDqDbcAdj8NxKHrJt9AoWUQZFYayompHZgsYG-UwhhAM5JtKdaSz/exec";
-
 const urlParams = new URLSearchParams(window.location.search);
 const barcodeId = urlParams.get("barcodeId");
-document.getElementById("barcodeId").value = barcodeId;
+document.getElementById("barcodeId").value=barcodeId;
 
 function fillForm(data){
   if(!data) return;
   for(const key in data){
     const el = document.querySelector("[name='"+key+"']");
-    if(el) el.value = data[key] || "";
+    if(el) el.value = data[key]||"";
   }
 }
 
-// --- بارکد اسکن ---
+// بارکد
 if(barcodeId){
   fetch(`${scriptURL}?action=get&barcodeId=${barcodeId}`)
   .then(res=>res.json())
@@ -109,8 +102,8 @@ if(barcodeId){
   .catch(err=>console.error("خطا در دریافت اطلاعات",err));
 }
 
-// --- ثبت/ویرایش ---
-document.getElementById("deviceForm").addEventListener("submit", e=>{
+// ثبت/ویرایش
+document.getElementById("deviceForm").addEventListener("submit",e=>{
   e.preventDefault();
   const formData = new FormData(e.target);
   fetch(scriptURL,{method:"POST",body:formData})
@@ -121,12 +114,11 @@ document.getElementById("deviceForm").addEventListener("submit", e=>{
   .catch(err=>{
     document.getElementById("errorMsg").style.display="block";
     document.getElementById("successMsg").style.display="none";
-    console.error("Error!",err.message);
   });
 });
 
-// --- حذف رکورد ---
-document.getElementById("deleteBtn").addEventListener("click", ()=>{
+// حذف
+document.getElementById("deleteBtn").addEventListener("click",()=>{
   if(!barcodeId) return;
   if(!confirm("آیا مطمئن هستید؟")) return;
   fetch(`${scriptURL}?action=delete&barcodeId=${barcodeId}`)
@@ -134,8 +126,8 @@ document.getElementById("deleteBtn").addEventListener("click", ()=>{
   .catch(err=>alert("خطا در حذف رکورد"));
 });
 
-// --- جستجو بر اساس کد دیوایس ---
-document.getElementById("searchBtn").addEventListener("click", ()=>{
+// جستجو بر اساس کد دیوایس
+document.getElementById("searchBtn").addEventListener("click",()=>{
   const code = document.getElementById("searchCode").value.trim();
   if(!code) return alert("کد دیوایس را وارد کنید");
   fetch(`${scriptURL}?action=search&deviceCode=${code}`)
@@ -143,7 +135,7 @@ document.getElementById("searchBtn").addEventListener("click", ()=>{
   .then(data=>{
     if(data && Object.keys(data).length>0){
       fillForm(data);
-      document.getElementById("barcodeId").value = data.barcodeId || "";
+      document.getElementById("barcodeId").value = data.barcodeId||"";
       document.getElementById("successMsg").style.display="block";
       document.getElementById("successMsg").innerText="✅ رکورد پیدا شد";
       document.getElementById("errorMsg").style.display="none";
