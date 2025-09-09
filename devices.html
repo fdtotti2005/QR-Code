@@ -17,6 +17,7 @@
     button:hover { background:#2980b9; }
     .success, .error { text-align:center; margin-top:12px; font-weight:bold; font-size:14px; }
     .success { color:green; } .error { color:red; }
+    .barcodeField { font-weight:bold; direction:ltr; text-align:left; background:#fafafa; }
   </style>
 </head>
 <body>
@@ -24,7 +25,9 @@
     <h2>فرم ثبت اطلاعات دیوایس</h2>
 
     <form id="deviceForm">
-      <input type="hidden" id="barcodeId" name="barcodeId">
+      <!-- visible readonly barcode field: مهم است که readonly باشه (disabled ارسال نمیشه) -->
+      <label>شناسه بارکد</label>
+      <input type="text" id="barcodeId" name="barcodeId" class="barcodeField" readonly>
 
       <label>نام دیوایس</label>
       <select name="deviceName" id="deviceName" required>
@@ -50,7 +53,7 @@
       <input type="text" name="issue" required>
 
       <label>تاریخ گزارش ایراد</label>
-      <input type="text" name="issueDate" placeholder="مثال: 1404/06/19">
+      <input type="text" name="issueDate" placeholder="مثال: 1404/06/20">
 
       <label>شرح ایراد</label>
       <textarea name="issueDescription" rows="2"></textarea>
@@ -73,25 +76,26 @@
   </div>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbxEn3Bvb2lISnKOMN3uXOLE2KHjAa9mExVlRk_pwQnwwrDqcl_gIXDiLpOD6TeTbmFj/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxIHRLz-KTPSIIw5UwAQjQas7WFcDWuNwpymDcrinm8uMHcqvsMKpZfH3iOwTBB_gov/exec";
 
     const urlParams = new URLSearchParams(window.location.search);
-    const barcodeId = urlParams.get("barcodeId");
+    const barcodeId = urlParams.get("barcodeId") || "";
     document.getElementById("barcodeId").value = barcodeId;
 
     if (barcodeId) {
-      fetch(`${scriptURL}?action=get&barcodeId=${barcodeId}`)
+      fetch(`${scriptURL}?action=get&barcodeId=${encodeURIComponent(barcodeId)}`)
         .then(res => res.json())
-        .then(data => {
-          if (data && data.deviceName) {
-            document.querySelector("[name='deviceName']").value = data.deviceName;
-            document.querySelector("[name='deviceCode']").value = data.deviceCode;
-            document.querySelector("[name='issue']").value = data.issue;
-            document.querySelector("[name='issueDate']").value = data.issueDate;
-            document.querySelector("[name='issueDescription']").value = data.issueDescription;
-            document.querySelector("[name='actionsTaken']").value = data.actionsTaken;
-            document.querySelector("[name='currentStatus']").value = data.currentStatus;
-            document.querySelector("[name='notes']").value = data.notes;
+        .then(resp => {
+          if (resp && resp.status === "ok" && resp.record) {
+            const r = resp.record;
+            document.querySelector("[name='deviceName']").value = r.deviceName || "";
+            document.querySelector("[name='deviceCode']").value = r.deviceCode || "";
+            document.querySelector("[name='issue']").value = r.issue || "";
+            document.querySelector("[name='issueDate']").value = r.issueDate || "";
+            document.querySelector("[name='issueDescription']").value = r.issueDescription || "";
+            document.querySelector("[name='actionsTaken']").value = r.actionsTaken || "";
+            document.querySelector("[name='currentStatus']").value = r.currentStatus || "";
+            document.querySelector("[name='notes']").value = r.notes || "";
           }
         })
         .catch(err => console.error("خطا در دریافت اطلاعات", err));
@@ -101,23 +105,39 @@
       e.preventDefault();
       const formData = new FormData(e.target);
       fetch(scriptURL, { method: "POST", body: formData })
-        .then(() => {
-          document.getElementById("successMsg").style.display = "block";
-          document.getElementById("errorMsg").style.display = "none";
+        .then(r => r.json())
+        .then(res => {
+          if (res && (res.status === "inserted" || res.status === "inserted_reused_row" || res.status === "updated")) {
+            document.getElementById("successMsg").style.display = "block";
+            document.getElementById("errorMsg").style.display = "none";
+          } else {
+            document.getElementById("errorMsg").style.display = "block";
+            document.getElementById("successMsg").style.display = "none";
+            console.error("Unexpected response:", res);
+          }
         })
         .catch(err => {
           document.getElementById("errorMsg").style.display = "block";
           document.getElementById("successMsg").style.display = "none";
-          console.error("Error!", err.message);
+          console.error("Error!", err);
         });
     });
 
     document.getElementById("deleteBtn").addEventListener("click", () => {
-      if (!barcodeId) return;
+      const bid = document.getElementById("barcodeId").value;
+      if (!bid) return alert("بارکد خالی است");
       if (!confirm("آیا مطمئن هستید که می‌خواهید این رکورد حذف شود؟")) return;
-      fetch(`${scriptURL}?action=delete&barcodeId=${barcodeId}`)
-        .then(() => { alert("رکورد حذف شد"); location.reload(); })
-        .catch(err => alert("خطا در حذف رکورد"));
+      fetch(`${scriptURL}?action=delete&barcodeId=${encodeURIComponent(bid)}`)
+        .then(r => r.json())
+        .then(res => {
+          if (res && res.status === "deleted") {
+            alert("رکورد حذف شد");
+            location.reload();
+          } else {
+            alert("رکورد یافت نشد یا خطا");
+          }
+        })
+        .catch(err => { alert("خطا در حذف"); console.error(err); });
     });
   </script>
 </body>
