@@ -32,7 +32,7 @@ button:hover{opacity:0.9;}
 <div class="row">
 <div style="flex:1">
 <label>نام دیوایس</label>
-<select name="نام دیوایس" id="deviceName" required>
+<select name="deviceName" id="deviceName" required>
 <option value="">-- انتخاب کنید --</option>
 <option>Multi Media</option>
 <option>Multi Media Metal</option>
@@ -50,22 +50,22 @@ button:hover{opacity:0.9;}
 </div>
 <div style="flex:1">
 <label>کد دیوایس</label>
-<input type="text" name="کد دیوایس" required>
+<input type="text" name="deviceCode" required>
 </div>
 </div>
 
 <label>ایراد</label>
-<input type="text" name="ایراد" required>
+<input type="text" name="issue" required>
 <label>تاریخ گزارش ایراد</label>
-<input type="text" name="تاریخ گزارش ایراد">
+<input type="text" name="issueDate">
 <label>شرح ایراد</label>
-<textarea name="شرح ایراد" rows="2"></textarea>
+<textarea name="issueDescription" rows="2"></textarea>
 <label>اقدامات انجام شده</label>
-<textarea name="اقدامات انجام شده" rows="2"></textarea>
+<textarea name="actionsTaken" rows="2"></textarea>
 <label>وضعیت فعلی</label>
-<input type="text" name="وضعیت فعلی">
+<input type="text" name="currentStatus">
 <label>توضیحات تکمیلی</label>
-<textarea name="توضیحات تکمیلی" rows="2"></textarea>
+<textarea name="additionalNotes" rows="2"></textarea>
 
 <button type="submit" class="submit">✅ ثبت/ویرایش</button>
 <button type="button" id="deleteBtn" class="delete">❌ حذف</button>
@@ -81,7 +81,7 @@ button:hover{opacity:0.9;}
 </div>
 
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbyVUwT9OfLEbkvpwDqDbcAdj8NxKHrJt9AoWUQZFYayompHZgsYG-UwhhAM5JtKdaSz/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbxxpriK0NSgmi6SabO66iG-HiiaNnfDqctWofnMYuKQeciCnVVU0Wc_9eCB96crZBbX/exec"; // این لینک را با لینک جدید Deploy خود جایگزین کنید
 const urlParams = new URLSearchParams(window.location.search);
 const barcodeId = urlParams.get("barcodeId");
 document.getElementById("barcodeId").value=barcodeId;
@@ -126,4 +126,26 @@ document.getElementById("deleteBtn").addEventListener("click",()=>{
   .catch(err=>alert("خطا در حذف رکورد"));
 });
 
-// جستجو بر اساس کد
+// جستجو بر اساس کد دیوایس
+document.getElementById("searchBtn").addEventListener("click",()=>{
+  const code = document.getElementById("searchCode").value.trim();
+  if(!code) return alert("کد دیوایس را وارد کنید");
+  fetch(`${scriptURL}?action=search&deviceCode=${code}`)
+  .then(res=>res.json())
+  .then(data=>{
+    if(data && Object.keys(data).length>0){
+      fillForm(data);
+      document.getElementById("barcodeId").value = data["barcodeId"]||"";
+      document.getElementById("successMsg").style.display="block";
+      document.getElementById("successMsg").innerText="✅ رکورد پیدا شد";
+      document.getElementById("errorMsg").style.display="none";
+    }else{
+      document.getElementById("errorMsg").style.display="block";
+      document.getElementById("errorMsg").innerText="❌ رکورد پیدا نشد";
+      document.getElementById("successMsg").style.display="none";
+    }
+  }).catch(err=>alert("خطا در جستجو"));
+});
+</script>
+</body>
+</html>
