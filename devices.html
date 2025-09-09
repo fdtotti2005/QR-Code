@@ -81,7 +81,7 @@ button:hover{opacity:0.9;}
 </div>
 
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycby-lH9By62Dt5fQdg8Np_sWXP0-JzMeWH8oUhnn9dMFPCZYolg7XWaVij6bEs3w7slO_g/exec"; // این لینک را با لینک جدید Deploy خود جایگزین کنید
+const scriptURL = "https://script.google.com/macros/s/AKfycby-lH9By62Dt5fQdg8Np_sWXP0-JzMeWH8oUhnn9dMFPCZYolg7XWaVij6bEs3w7slO_g/exec";
 const urlParams = new URLSearchParams(window.location.search);
 const barcodeId = urlParams.get("barcodeId");
 document.getElementById("barcodeId").value=barcodeId;
@@ -106,12 +106,19 @@ if(barcodeId){
 document.getElementById("deviceForm").addEventListener("submit",e=>{
   e.preventDefault();
   const formData = new FormData(e.target);
-  fetch(scriptURL,{method:"POST",body:formData})
+  const data = {};
+  formData.forEach((value, key) => data[key] = value);
+
+  fetch(scriptURL,{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify(data)
+  })
   .then(()=>{
     document.getElementById("successMsg").style.display="block";
     document.getElementById("errorMsg").style.display="none";
   })
-  .catch(err=>{
+  .catch(()=>{
     document.getElementById("errorMsg").style.display="block";
     document.getElementById("successMsg").style.display="none";
   });
@@ -144,13 +151,8 @@ document.getElementById("searchBtn").addEventListener("click",()=>{
       document.getElementById("errorMsg").innerText="❌ رکورد پیدا نشد";
       document.getElementById("successMsg").style.display="none";
     }
-  }).catch(err=>alert("خطا در جستجو"));
+  }).catch(()=>alert("خطا در جستجو"));
 });
 </script>
 </body>
 </html>
-
-
-
-
-
