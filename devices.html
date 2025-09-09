@@ -6,26 +6,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
 <style>
-:root{--bg:#f0f2f5;--text:#333;--card:#fff;}
-body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg);color:var(--text);margin:0;padding:20px;}
-.container{max-width:650px;margin:auto;background:var(--card);padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);}
-h2{text-align:center;margin-bottom:20px;font-size:18px;}
-label{display:block;margin-top:10px;font-weight:bold;font-size:14px;}
-input,textarea,select,button{font-family:inherit;font-size:14px;}
-input,textarea,select{width:100%;padding:8px;margin-top:4px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;color:black;}
-textarea{resize:vertical;}
-.row{display:flex;gap:10px;flex-wrap:wrap;}
-.row .half{flex:1;min-width:48%;}
-button{margin-top:15px;padding:10px;width:100%;border:none;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;}
-button#saveBtn{background:rgba(46,204,113,0.8);color:black;}
-button#deleteBtn{background:rgba(231,76,60,0.8);color:black;}
-button#searchBtn{background:rgba(52,152,219,0.8);color:black;}
-.success,.error{text-align:center;margin-top:12px;font-weight:bold;font-size:14px;}
-.success{color:green;}
-.error{color:red;}
-.search-container{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;}
-.search-container input{flex:1;min-width:60%;}
-@media(max-width:500px){.row .half{min-width:100%;}.search-container input{min-width:100%;}}
+  body{font-family:'Vazir',Tahoma,sans-serif;background:#f0f2f5;color:#333;margin:0;padding:20px;}
+  .container{max-width:650px;margin:auto;background:#fff;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);}
+  h2{text-align:center;margin-bottom:20px;font-size:18px;}
+  label{display:block;margin-top:10px;font-weight:bold;font-size:14px;}
+  input,textarea,select{width:100%;padding:8px;margin-top:4px;border:1px solid #ccc;border-radius:6px;font-family:inherit;font-size:14px;}
+  textarea{resize:vertical;}
+  .row{display:flex;gap:10px;flex-wrap:wrap;}
+  .row .half{flex:1;min-width:48%;}
+  button{margin-top:15px;padding:10px;width:100%;color:black;border:none;border-radius:6px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;}
+  #saveBtn{background:rgba(39,174,96,0.8);}
+  #deleteBtn{background:rgba(231,76,60,0.8);}
+  #searchBtn{background:rgba(52,152,219,0.8);}
+  .success,.error{text-align:center;margin-top:12px;font-weight:bold;font-size:14px;}
+  .success{color:green;} .error{color:red;}
+  .search-container{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;}
+  .search-container input{flex:1;min-width:60%;}
+  @media(max-width:500px){.row .half{min-width:100%;}.search-container input{min-width:100%;}}
 </style>
 </head>
 <body>
@@ -63,7 +60,7 @@ button#searchBtn{background:rgba(52,152,219,0.8);color:black;}
 <label>ایراد</label>
 <input type="text" name="issue" required>
 <label>تاریخ گزارش ایراد</label>
-<input type="text" name="issueDate" placeholder="مثال: 2025-09-09 14:30">
+<input type="text" name="issueDate" placeholder="مثال: 2025-09-09 14:30" required>
 <label>شرح ایراد</label>
 <textarea name="issueDescription" rows="2"></textarea>
 <label>اقدامات انجام شده</label>
@@ -73,7 +70,7 @@ button#searchBtn{background:rgba(52,152,219,0.8);color:black;}
 <label>توضیحات تکمیلی</label>
 <textarea name="notes" rows="2"></textarea>
 
-<button type="submit" id="saveBtn">✅ ثبت/ویرایش</button>
+<button type="submit" id="saveBtn">✅ ثبت/ویرایش اطلاعات</button>
 <button type="button" id="deleteBtn">❌ حذف</button>
 </form>
 
@@ -87,64 +84,75 @@ button#searchBtn{background:rgba(52,152,219,0.8);color:black;}
 </div>
 
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbx_e92xkhj55RzDCkuDuab7Ehj9AA2R_-J92aNScthROiMc2-gJhP88iHnRFb13TfIY/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbx_e92xkhj55RzDCkuDuab7Ehj9AA2R_-J92aNScthROiMc2-gJhP88iHnRFb13TfIY/exec"; // لینک Deploy خودت را اینجا بگذار
+
 const urlParams = new URLSearchParams(window.location.search);
 const barcodeId = urlParams.get("barcodeId");
 document.getElementById("barcodeId").value = barcodeId;
 
-function fillForm(data){
-  if(!data) return;
-  for(const key in data){
-    const el = document.querySelector("[name='"+key+"']");
-    if(el) el.value = data[key]||"";
-  }
-}
-
-// بارگذاری اولیه
+// پر کردن فرم در صورت وجود بارکد
 if(barcodeId){
-  fetch(`${scriptURL}?action=get&barcodeId=${barcodeId}`)
+  fetch(`${scriptURL}?action=get&barcodeId=${encodeURIComponent(barcodeId)}`)
   .then(res=>res.json())
-  .then(data=>fillForm(data))
-  .catch(err=>console.error("خطا در دریافت اطلاعات",err));
+  .then(data=>{
+    if(data && data.deviceName){
+      for(const key in data){
+        const el = document.querySelector("[name='"+key+"']");
+        if(el) el.value = data[key]||"";
+      }
+    }
+  }).catch(err=>console.error("خطا در دریافت اطلاعات",err));
 }
 
-// ثبت/ویرایش
+// ثبت یا ویرایش
 document.getElementById("deviceForm").addEventListener("submit", e=>{
   e.preventDefault();
   const formData = new FormData(e.target);
   fetch(scriptURL,{method:"POST",body:formData})
-  .then(()=>{document.getElementById("successMsg").style.display="block";document.getElementById("errorMsg").style.display="none";})
-  .catch(err=>{document.getElementById("errorMsg").style.display="block";document.getElementById("successMsg").style.display="none";console.error(err);});
+  .then(()=>{
+    document.getElementById("successMsg").style.display="block";
+    document.getElementById("errorMsg").style.display="none";
+  }).catch(err=>{
+    document.getElementById("errorMsg").style.display="block";
+    document.getElementById("successMsg").style.display="none";
+    console.error("خطا در ثبت/ویرایش",err);
+  });
 });
 
-// حذف
+// حذف رکورد
 document.getElementById("deleteBtn").addEventListener("click", ()=>{
   if(!barcodeId) return;
-  if(!confirm("آیا مطمئن هستید؟")) return;
-  fetch(`${scriptURL}?action=delete&barcodeId=${barcodeId}`)
-  .then(()=>{document.getElementById("deviceForm").reset();document.getElementById("successMsg").style.display="block";document.getElementById("successMsg").innerText="✅ رکورد حذف شد";})
-  .catch(err=>alert("خطا در حذف رکورد"));
+  if(!confirm("آیا مطمئن هستید که می‌خواهید این رکورد حذف شود؟")) return;
+  fetch(`${scriptURL}?action=delete&barcodeId=${encodeURIComponent(barcodeId)}`)
+  .then(()=>{ 
+    document.getElementById("deviceForm").reset();
+    document.getElementById("successMsg").style.display="block";
+    document.getElementById("successMsg").textContent="✅ رکورد حذف شد"; 
+  }).catch(err=>alert("خطا در حذف رکورد"));
 });
 
-// جستجو بر اساس deviceCode
+// جستجو بر اساس کد دیوایس
 document.getElementById("searchBtn").addEventListener("click", ()=>{
   const code = document.getElementById("searchCode").value.trim();
-  if(!code) return alert("کد دیوایس را وارد کنید");
+  if(!code) return alert("لطفا کد دیوایس را وارد کنید");
   fetch(`${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`)
   .then(res=>res.json())
   .then(data=>{
     if(data && data.deviceName){
-      fillForm(data);
-      document.getElementById("barcodeId").value = data["barcodeId"]||"";
+      for(const key in data){
+        const el = document.querySelector("[name='"+key+"']");
+        if(el) el.value = data[key]||"";
+      }
+      document.getElementById("barcodeId").value = data.barcodeId||"";
       document.getElementById("successMsg").style.display="block";
-      document.getElementById("successMsg").innerText="✅ رکورد پیدا شد";
+      document.getElementById("successMsg").textContent="✅ رکورد پیدا شد";
       document.getElementById("errorMsg").style.display="none";
     }else{
       document.getElementById("errorMsg").style.display="block";
-      document.getElementById("errorMsg").innerText="❌ رکورد پیدا نشد";
+      document.getElementById("errorMsg").textContent="❌ رکورد پیدا نشد";
       document.getElementById("successMsg").style.display="none";
     }
-  }).catch(err=>alert("خطا در جستجو"));
+  }).catch(err=>console.error("خطا در جستجو",err));
 });
 </script>
 </body>
