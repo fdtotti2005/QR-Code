@@ -1,146 +1,159 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>فرم ثبت اطلاعات دیوایس</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
-  <style>
-    :root { --bg:#f0f2f5; --text:#333; --card:#fff; --accent:#3498db; --green:#28a745cc; --red:#dc3545cc; --blue:#007bffcc; }
-    body { font-family:'Vazir',Tahoma,sans-serif; background:var(--bg); color:var(--text); margin:0; padding:20px; }
-    .container { max-width:600px; margin:auto; background:var(--card); padding:20px; border-radius:10px; box-shadow:0 0 8px rgba(0,0,0,0.1); }
-    h2 { text-align:center; margin-bottom:20px; font-size:18px; }
-    label { display:block; margin-top:10px; font-weight:bold; font-size:14px; }
-    input, textarea, select { width:100%; padding:8px; margin-top:4px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box; font-family:inherit; font-size:14px; color:black; }
-    textarea { resize:vertical; }
-    .row { display:flex; gap:10px; flex-wrap:wrap; }
-    .row > * { flex:1; min-width:100px; }
-    button { margin-top:10px; padding:10px; width:100%; border:none; border-radius:6px; font-size:14px; cursor:pointer; color:black; }
-    #submitBtn { background:var(--green); }
-    #deleteBtn { background:var(--red); }
-    #searchBtn { background:var(--blue); }
-    button:hover { opacity:0.85; }
-    .success, .error { text-align:center; margin-top:12px; font-weight:bold; font-size:14px; }
-    .success { color:green; } .error { color:red; }
-  </style>
+<meta charset="UTF-8">
+<title>فرم ثبت اطلاعات دیوایس</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
+<style>
+:root{--bg:#f0f2f5;--text:#333;--card:#fff;--accent:#3498db;}
+body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg);color:var(--text);margin:0;padding:20px;}
+.container{max-width:600px;margin:auto;background:var(--card);padding:20px;border-radius:10px;box-shadow:0 0 8px rgba(0,0,0,0.1);}
+h2{text-align:center;margin-bottom:20px;font-size:18px;}
+.row{display:flex;gap:10px;}
+label{display:block;margin-top:10px;font-weight:bold;font-size:14px;}
+input, textarea, select{width:100%;padding:8px;margin-top:4px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;font-family:inherit;font-size:14px;color:black;}
+textarea{resize:vertical;}
+button{margin-top:10px;padding:10px;width:100%;border:none;border-radius:6px;font-size:14px;cursor:pointer;color:black;}
+button.submit{background:rgba(46, 204, 113,0.8);}
+button.delete{background:rgba(231, 76, 60,0.8);}
+button.search{background:rgba(52, 152, 219,0.8);}
+button:hover{opacity:0.9;}
+.success,.error{text-align:center;margin-top:12px;font-weight:bold;font-size:14px;}
+.success{color:green;} .error{color:red;}
+</style>
 </head>
 <body>
-  <div class="container">
-    <h2>فرم ثبت اطلاعات دیوایس</h2>
+<div class="container">
+<h2>فرم ثبت اطلاعات دیوایس</h2>
 
-    <form id="deviceForm">
-      <input type="hidden" id="barcodeId" name="barcodeId">
+<form id="deviceForm">
+<input type="hidden" id="barcodeId" name="barcodeId">
 
-      <div class="row">
-        <div>
-          <label>نام دیوایس</label>
-          <select name="deviceName" id="deviceName" required>
-            <option value="">-- انتخاب کنید --</option>
-            <option>Multi Media</option>
-            <option>Multi Media Metal</option>
-            <option>Soul</option>
-            <option>Smart Player</option>
-            <option>TDA</option>
-            <option>RFID</option>
-            <option>Serial GSM</option>
-            <option>Smart GSM</option>
-            <option>MP3</option>
-            <option>IR</option>
-            <option>B1</option>
-            <option>Smart Plug</option>
-          </select>
-        </div>
-        <div>
-          <label>کد دیوایس</label>
-          <input type="text" name="deviceCode" id="deviceCode" required>
-        </div>
-      </div>
+<div class="row">
+<div style="flex:1">
+<label>نام دیوایس</label>
+<select name="نام دیوایس" id="deviceName" required>
+<option value="">-- انتخاب کنید --</option>
+<option>Multi Media</option>
+<option>Multi Media Metal</option>
+<option>Soul</option>
+<option>Smart Player</option>
+<option>TDA</option>
+<option>RFID</option>
+<option>Serial GSM</option>
+<option>Smart GSM</option>
+<option>MP3</option>
+<option>IR</option>
+<option>B1</option>
+<option>Smart Plug</option>
+</select>
+</div>
+<div style="flex:1">
+<label>کد دیوایس</label>
+<input type="text" name="کد دیوایس" required>
+</div>
+</div>
 
-      <label>ایراد</label>
-      <input type="text" name="issue">
+<label>ایراد</label>
+<input type="text" name="ایراد" required>
 
-      <label>تاریخ گزارش ایراد</label>
-      <input type="text" name="issueDate">
+<label>تاریخ گزارش ایراد</label>
+<input type="text" name="تاریخ گزارش ایراد">
 
-      <label>شرح ایراد</label>
-      <textarea name="issueDescription" rows="2"></textarea>
+<label>شرح ایراد</label>
+<textarea name="شرح ایراد" rows="2"></textarea>
 
-      <label>اقدامات انجام شده</label>
-      <textarea name="actionsTaken" rows="2"></textarea>
+<label>اقدامات انجام شده</label>
+<textarea name="اقدامات انجام شده" rows="2"></textarea>
 
-      <label>وضعیت فعلی</label>
-      <input type="text" name="currentStatus">
+<label>وضعیت فعلی</label>
+<input type="text" name="وضعیت فعلی">
 
-      <label>توضیحات تکمیلی</label>
-      <textarea name="notes" rows="2"></textarea>
+<label>توضیحات تکمیلی</label>
+<textarea name="توضیحات تکمیلی" rows="2"></textarea>
 
-      <div class="row">
-        <button type="submit" id="submitBtn">✅ ثبت/ویرایش</button>
-        <button type="button" id="deleteBtn">❌ حذف</button>
-      </div>
-    </form>
+<button type="submit" class="submit">✅ ثبت/ویرایش</button>
+<button type="button" id="deleteBtn" class="delete">❌ حذف</button>
+</form>
 
-    <div class="row" style="margin-top:15px;">
-      <input type="text" id="searchCode" placeholder="جستجو بر اساس کد دیوایس">
-      <button type="button" id="searchBtn">🔍 جستجو</button>
-    </div>
+<div style="margin-top:15px;">
+<input type="text" id="searchCode" placeholder="کد دیوایس را وارد کنید">
+<button id="searchBtn" class="search">🔍 جستجو</button>
+</div>
 
-    <div class="success" id="successMsg" style="display:none;">✅ اطلاعات با موفقیت ثبت شد</div>
-    <div class="error" id="errorMsg" style="display:none;">❌ خطا در پردازش اطلاعات</div>
-  </div>
+<div class="success" id="successMsg" style="display:none;">✅ عملیات موفقیت‌آمیز بود</div>
+<div class="error" id="errorMsg" style="display:none;">❌ خطا در پردازش اطلاعات</div>
+</div>
 
-  <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbxVUwT9OfLEbkvpwDqDbcAdj8NxKHrJt9AoWUQZFYayompHZgsYG-UwhhAM5JtKdaSz/exec";
-    const urlParams = new URLSearchParams(window.location.search);
-    const barcodeId = urlParams.get("barcodeId");
-    document.getElementById("barcodeId").value = barcodeId || "";
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbyVUwT9OfLEbkvpwDqDbcAdj8NxKHrJt9AoWUQZFYayompHZgsYG-UwhhAM5JtKdaSz/exec";
 
-    function fillForm(r){
-      document.getElementById("barcodeId").value = r.barcodeId || "";
-      document.getElementById("deviceName").value = r["نام دیوایس"] || "";
-      document.getElementById("deviceCode").value = r["کد دیوایس"] || "";
-      document.querySelector("[name='issue']").value = r["ایراد"] || "";
-      document.querySelector("[name='issueDate']").value = r["تاریخ گزارش ایراد"] || "";
-      document.querySelector("[name='issueDescription']").value = r["شرح ایراد"] || "";
-      document.querySelector("[name='actionsTaken']").value = r["اقدامات انجام شده"] || "";
-      document.querySelector("[name='currentStatus']").value = r["وضعیت فعلی"] || "";
-      document.querySelector("[name='notes']").value = r["توضیحات تکمیلی"] || "";
+const urlParams = new URLSearchParams(window.location.search);
+const barcodeId = urlParams.get("barcodeId");
+document.getElementById("barcodeId").value = barcodeId;
+
+function fillForm(data){
+  if(!data) return;
+  for(const key in data){
+    const el = document.querySelector("[name='"+key+"']");
+    if(el) el.value = data[key] || "";
+  }
+}
+
+// --- بارکد اسکن ---
+if(barcodeId){
+  fetch(`${scriptURL}?action=get&barcodeId=${barcodeId}`)
+  .then(res=>res.json())
+  .then(data=>fillForm(data))
+  .catch(err=>console.error("خطا در دریافت اطلاعات",err));
+}
+
+// --- ثبت/ویرایش ---
+document.getElementById("deviceForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  fetch(scriptURL,{method:"POST",body:formData})
+  .then(()=>{
+    document.getElementById("successMsg").style.display="block";
+    document.getElementById("errorMsg").style.display="none";
+  })
+  .catch(err=>{
+    document.getElementById("errorMsg").style.display="block";
+    document.getElementById("successMsg").style.display="none";
+    console.error("Error!",err.message);
+  });
+});
+
+// --- حذف رکورد ---
+document.getElementById("deleteBtn").addEventListener("click", ()=>{
+  if(!barcodeId) return;
+  if(!confirm("آیا مطمئن هستید؟")) return;
+  fetch(`${scriptURL}?action=delete&barcodeId=${barcodeId}`)
+  .then(()=>{ alert("رکورد حذف شد"); location.reload(); })
+  .catch(err=>alert("خطا در حذف رکورد"));
+});
+
+// --- جستجو بر اساس کد دیوایس ---
+document.getElementById("searchBtn").addEventListener("click", ()=>{
+  const code = document.getElementById("searchCode").value.trim();
+  if(!code) return alert("کد دیوایس را وارد کنید");
+  fetch(`${scriptURL}?action=search&deviceCode=${code}`)
+  .then(res=>res.json())
+  .then(data=>{
+    if(data && Object.keys(data).length>0){
+      fillForm(data);
+      document.getElementById("barcodeId").value = data.barcodeId || "";
+      document.getElementById("successMsg").style.display="block";
+      document.getElementById("successMsg").innerText="✅ رکورد پیدا شد";
+      document.getElementById("errorMsg").style.display="none";
+    }else{
+      document.getElementById("errorMsg").style.display="block";
+      document.getElementById("errorMsg").innerText="❌ رکورد پیدا نشد";
+      document.getElementById("successMsg").style.display="none";
     }
-
-    if (barcodeId){
-      fetch(`${scriptURL}?action=get&barcodeId=${barcodeId}`)
-        .then(res=>res.json())
-        .then(data=>{ if(data && data.barcodeId) fillForm(data); })
-        .catch(err=>console.error("خطا در دریافت اطلاعات",err));
-    }
-
-    document.getElementById("deviceForm").addEventListener("submit", e=>{
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      fetch(scriptURL,{method:"POST",body:formData})
-        .then(()=>{ document.getElementById("successMsg").style.display="block"; document.getElementById("errorMsg").style.display="none"; })
-        .catch(()=>{ document.getElementById("errorMsg").style.display="block"; document.getElementById("successMsg").style.display="none"; });
-    });
-
-    document.getElementById("deleteBtn").addEventListener("click", ()=>{
-      if(!barcodeId) return;
-      if(!confirm("آیا مطمئن هستید که می‌خواهید این رکورد حذف شود؟")) return;
-      fetch(`${scriptURL}?action=delete&barcodeId=${barcodeId}`)
-        .then(()=>{ alert("رکورد حذف شد"); location.reload(); })
-        .catch(()=>alert("خطا در حذف رکورد"));
-    });
-
-    document.getElementById("searchBtn").addEventListener("click", ()=>{
-      const code = document.getElementById("searchCode").value.trim();
-      if(!code) return alert("کد دیوایس را وارد کنید");
-      fetch(`${scriptURL}?action=search&deviceCode=${encodeURIComponent(code)}`)
-        .then(res=>res.json())
-        .then(data=>{
-          if(data && Object.keys(data).length>0) fillForm(data);
-          else alert("رکوردی پیدا نشد");
-        })
-        .catch(()=>alert("خطا در جستجو"));
-    });
-  </script>
+  }).catch(err=>alert("خطا در جستجو"));
+});
+</script>
 </body>
 </html>
