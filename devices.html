@@ -9,24 +9,24 @@
 <style>
 /* Base Colors & Typography */
 :root {
-  --primary-color: #2c3e50; /* Darker, more professional primary color */
-  --accent-color: #1abc9c; /* A fresh, modern teal for accent */
-  --success-color: #27ae60; /* Slightly darker green for success */
-  --danger-color: #c0392b; /* Slightly darker red for danger */
-  --bg-color: #ecf0f1; /* Lighter background for a cleaner look */
-  --text-color: #34495e; /* Darker text for better readability */
-  --input-bg-color: #ffffff;
-  --border-color: #bdc3c7; /* Softer border color */
-  --readonly-bg: #f5f7fa; /* Slightly off-white for readonly */
-  --shadow-light: rgba(0, 0, 0, 0.08); /* Light shadow for subtle depth */
-  --shadow-medium: rgba(0, 0, 0, 0.15); /* Medium shadow for hover effects */
+  --primary-color: #2c3e50;
+  --accent-color: #3498db;
+  --success-color: #2ecc71;
+  --danger-color: #e74c3c;
+  --bg-color: #f0f2f5;
+  --text-color: #333;
+  --input-bg-color: #fff;
+  --border-color: #ccc;
+  --readonly-bg: #eee;
+  --shadow-light: rgba(0, 0, 0, 0.08);
+  --shadow-medium: rgba(0, 0, 0, 0.15);
 }
 body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem;}
-.container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 4px 15px var(--shadow-light);} /* Stronger shadow for container */
-h2{text-align:center;margin-bottom:1.35rem;font-size:1.08rem;color:var(--primary-color);}
+.container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
+h2{text-align:center;margin-bottom:1.35rem;font-size:1.08rem;}
 
 /* Form Elements */
-label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;color:var(--text-color);}
+label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;}
 input,textarea,select{
   width:100%;
   padding:0.54rem;
@@ -35,13 +35,13 @@ input,textarea,select{
   border-radius:6px;
   font-family:inherit;
   font-size:0.81rem;
-  box-shadow: 0 2px 5px var(--shadow-light); /* Added subtle shadow */
-  transition: border-color 0.2s ease, box-shadow 0.2s ease; /* Smooth transition for shadow */
+  box-shadow: 0 1px 3px var(--shadow-light);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 input:focus, textarea:focus, select:focus {
   outline:none;
   border-color:var(--accent-color);
-  box-shadow: 0 0 8px rgba(26, 188, 156, 0.4); /* Accent color glow on focus */
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
 }
 textarea{resize:vertical;}
 .row{display:flex;gap:0.9rem;flex-wrap:wrap;margin-bottom:0.72rem;}
@@ -80,16 +80,26 @@ button{
   border-radius:6px;
   font-size:0.81rem;
   cursor:pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease; /* Added box-shadow transition */
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   font-family:inherit;
-  box-shadow: 0 2px 5px var(--shadow-light); /* Added button shadow */
+  box-shadow: 0 2px 4px var(--shadow-light);
 }
-button:hover{transform: scale(1.02);
-  box-shadow: 0 5px 15px var(--shadow-medium); /* Deeper shadow on hover */
+button:hover{
+  transform: scale(1.02);
+  box-shadow: 0 4px 8px var(--shadow-medium);
 }
-#saveBtn{background:var(--success-color);}
-#deleteBtn{background:var(--danger-color);}
-#searchBtn{background:var(--accent-color);}
+#saveBtn{
+    background: var(--success-color); /* Fallback */
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+#deleteBtn{
+    background: var(--danger-color); /* Fallback */
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+#searchBtn{
+    background: var(--accent-color); /* Fallback */
+    background: linear-gradient(135deg, #3498db, #2980b9);
+}
 
 /* Floating Message Box */
 .message-container {
@@ -107,33 +117,27 @@ button:hover{transform: scale(1.02);
 .message-container.visible {
     opacity: 0.9;
 }
-.message-box{font-weight:bold;font-size:0.85rem;padding:0.6rem;border-radius:5px;box-shadow:0 2px 10px var(--shadow-medium);}
-.success{color:var(--success-color);background-color:rgba(39, 174, 96, 0.1);border:1px solid var(--success-color);} /* Using new success color */
-.error{color:var(--danger-color);background-color:rgba(192, 57, 43, 0.1);border:1px solid var(--danger-color);} /* Using new danger color */
-
+.message-box{font-weight:bold;font-size:0.85rem;padding:0.6rem;border-radius:5px;box-shadow:0 2px 10px rgba(0,0,0,0.2);}
+.success{color:var(--success-color);background-color:rgba(46, 204, 113, 0.1);border:1px solid var(--success-color);}
+.error{color:var(--danger-color);background-color:rgba(231, 76, 60, 0.1);border:1px solid var(--danger-color);}
 
 /* Search Bar - Inline */
 .search-container{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap; align-items: flex-end;}
 .search-container input{
-  flex:1;
-  min-width:60%;
-  margin-top:0;
-  box-shadow: 0 2px 5px var(--shadow-light); /* Added subtle shadow */
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-.search-container input:focus {
-  border-color:var(--accent-color);
-  box-shadow: 0 0 8px rgba(26, 188, 156, 0.4); /* Accent color glow on focus */
+    flex:1;
+    min-width:60%; 
+    margin-top:0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 .search-container button {
     margin-top: 0;
     width: auto;
     padding: 0.54rem 0.9rem;
     font-size: 0.765rem;
-    box-shadow: 0 2px 5px var(--shadow-light); /* Added button shadow */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .search-container button:hover {
-    box-shadow: 0 5px 15px var(--shadow-medium); /* Deeper shadow on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsive */
@@ -160,7 +164,7 @@ button:hover{transform: scale(1.02);
 
 <div class="row">
 <div class="half">
-<label for="deviceName">نام دیوایس</label>
+<label>نام دیوایس</label>
 <select name="deviceName" id="deviceName" required>
 <option value="">-- انتخاب کنید --</option>
 <option value="Multi Media">Multi Media</option>
@@ -178,8 +182,8 @@ button:hover{transform: scale(1.02);
 </select>
 </div>
 <div class="half">
-<label for="deviceCode">کد دیوایس</label>
-<input type="text" name="deviceCode" id="deviceCode" required>
+<label>کد دیوایس</label>
+<input type="text" name="deviceCode" required>
 </div>
 </div>
 
