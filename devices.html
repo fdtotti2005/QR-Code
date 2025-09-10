@@ -32,30 +32,23 @@ textarea{resize:vertical;}
 .row .half{flex:1;min-width:48%;}
 
 /* Barcode Display */
-.barcode-display {
-  background-color: var(--readonly-bg);
-  padding: 0.8rem;
-  border-radius: 6px;
+.compact-barcode-display {
+  padding: 0.5rem 0;
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   font-size: 1.1rem;
+  color: var(--primary-color);
   font-weight: bold;
 }
-.barcode-display span {
-  color: var(--primary-color);
+.compact-barcode-display span {
   font-family: 'Courier New', Courier, monospace;
+  background-color: var(--readonly-bg);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
 }
 
 /* Buttons */
-.button-group {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
-}
-.button-group button {
-    flex: 1;
-}
-button{padding:0.8rem;width:100%;color:var(--input-bg-color);border:none;border-radius:6px;font-size:0.9rem;cursor:pointer;
+button{margin-top:1.5rem;padding:0.8rem;width:100%;color:var(--input-bg-color);border:none;border-radius:6px;font-size:0.9rem;cursor:pointer;
   transition: transform 0.2s ease, background-color 0.2s ease;
   font-family:inherit;
 }
@@ -75,7 +68,7 @@ button:hover{transform: scale(1.02);}
 .search-container input{flex:1;min-width:60%;}
 
 /* Responsive */
-@media(max-width:500px){.row .half{min-width:100%;}.search-container input{min-width:100%;}body{padding:1rem;} .button-group { flex-direction: column; }}
+@media(max-width:500px){.row .half{min-width:100%;}.search-container input{min-width:100%;}body{padding:1rem;}}
 </style>
 </head>
 <body>
@@ -83,7 +76,7 @@ button:hover{transform: scale(1.02);}
 <h2>فرم ثبت اطلاعات دیوایس</h2>
 
 <form id="deviceForm">
-<div class="barcode-display">
+<div class="compact-barcode-display">
   بارکد فعلی: <span id="barcodeDisplay">---</span>
 </div>
 <input type="hidden" id="barcodeId" name="barcodeId">
@@ -147,7 +140,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const barcodeId = urlParams.get("barcodeId");
 document.getElementById("barcodeId").value = barcodeId || "";
 
-// New line to display the barcode visually
+// نمایش بصری بارکد
 document.getElementById("barcodeDisplay").textContent = barcodeId || "---";
 
 function showMessage(type, message) {
