@@ -85,7 +85,7 @@ button{margin-top:15px;padding:10px;width:100%;color:black;border:none;border-ra
 </div>
 </div>
 
-  <script>
+<script>
 const scriptURL = "https://script.google.com/macros/s/AKfycbx_e92xkhj55RzDCkuDuab7Ehj9AA2R_-J92aNScthROiMc2-gJhP88iHnRFb13TfIY/exec";
 const urlParams = new URLSearchParams(window.location.search);
 const barcodeId = urlParams.get("barcodeId");
@@ -114,7 +114,8 @@ if(barcodeId){
   fetch(`${scriptURL}?action=get&barcodeId=${encodeURIComponent(barcodeId)}`)
     .then(res=>res.json())
     .then(data=>{
-      fillForm(data); // تابع پر کردن فرم را صدا می‌زند
+      console.log("Data received from script:", data); // خط اضافه شده برای عیب یابی
+      fillForm(data); 
     }).catch(err=>console.error("خطا در دریافت اطلاعات", err));
 }
 
@@ -151,6 +152,7 @@ document.getElementById("searchBtn").addEventListener("click", ()=>{
   fetch(`${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`)
     .then(res=>res.json())
     .then(data=>{
+      console.log("Data received from search:", data); // خط اضافه شده برای عیب یابی
       if(Object.keys(data).length > 0){
         fillForm(data);
         document.getElementById("barcodeId").value = data.barcodeId||"";
@@ -165,7 +167,5 @@ document.getElementById("searchBtn").addEventListener("click", ()=>{
     }).catch(err=>console.error(err));
 });
 </script>
-
 </body>
 </html>
-
