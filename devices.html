@@ -18,18 +18,17 @@
   --input-bg-color: #fff;
   --border-color: #ccc;
   --readonly-bg: #eee;
-  --spacing: 0.9rem;
 }
-body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:var(--spacing) * 2;}
-.container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:var(--spacing) * 2;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
-h2{text-align:center;margin-bottom:var(--spacing) * 1.5;font-size:1.08rem;}
+body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:2rem;}
+.container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:2rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
+h2{text-align:center;margin-bottom:1.5rem;font-size:1.08rem;}
 
 /* Form Elements */
-label{display:block;margin-top:var(--spacing) * 0.8;font-weight:bold;font-size:0.81rem;}
-input,textarea,select{width:100%;padding:var(--spacing) * 0.6;margin-top:var(--spacing) * 0.4;border:1px solid var(--border-color);border-radius:6px;font-family:inherit;font-size:0.81rem;}
+label{display:block;margin-top:1.1rem;font-weight:bold;font-size:0.81rem;}
+input,textarea,select{width:100%;padding:0.54rem;margin-top:0.36rem;border:1px solid var(--border-color);border-radius:6px;font-family:inherit;font-size:0.81rem;}
 input:focus, textarea:focus, select:focus {outline:none;border-color:var(--accent-color);}
 textarea{resize:vertical;}
-.row{display:flex;gap:var(--spacing);flex-wrap:wrap;margin-bottom:var(--spacing) * 0.8;}
+.row{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:0.72rem;}
 .row .half{flex:1;min-width:48%;}
 
 /* Compact Barcode Display - Positioned Left */
@@ -49,7 +48,15 @@ textarea{resize:vertical;}
 }
 
 /* Buttons */
-button{margin-top:var(--spacing) * 1.5;padding:0.72rem;width:100%;color:var(--input-bg-color);border:none;border-radius:6px;font-size:0.81rem;cursor:pointer;
+.button-group {
+    display: flex;
+    gap: 1.5rem; /* Increased space between buttons */
+    margin-top: 1.5rem;
+}
+.button-group button {
+    flex: 1;
+}
+button{padding:0.72rem;width:100%;color:var(--input-bg-color);border:none;border-radius:6px;font-size:0.81rem;cursor:pointer;
   transition: transform 0.2s ease, background-color 0.2s ease;
   font-family:inherit;
 }
@@ -59,13 +66,13 @@ button:hover{transform: scale(1.02);}
 #searchBtn{background:var(--accent-color);}
 
 /* Messages */
-.message-box{text-align:center;margin-top:var(--spacing) * 0.8;font-weight:bold;font-size:0.81rem;padding:0.45rem;border-radius:5px;opacity:0;transition:opacity 0.5s ease; margin-bottom: var(--spacing) * 0.8;}
+.message-box{text-align:center;margin-top:1.2rem;font-weight:bold;font-size:0.81rem;padding:0.45rem;border-radius:5px;opacity:0;transition:opacity 0.5s ease;}
 .success{color:var(--success-color);background-color:rgba(46, 204, 113, 0.1);border:1px solid var(--success-color);}
 .error{color:var(--danger-color);background-color:rgba(231, 76, 60, 0.1);border:1px solid var(--danger-color);}
 .message-box.visible{opacity:1;}
 
 /* Search Bar - Inline */
-.search-container{margin-top:var(--spacing) * 0.9;display:flex;gap:var(--spacing);flex-wrap:wrap; align-items: flex-end;}
+.search-container{margin-top:1.2rem;display:flex;gap:1rem;flex-wrap:wrap; align-items: flex-end;}
 .search-container input{flex:1;min-width:60%; margin-top:0;}
 .search-container button {
     margin-top: 0;
@@ -76,8 +83,8 @@ button:hover{transform: scale(1.02);}
 
 /* Responsive */
 @media(max-width:500px){
-  body{padding:0.9rem;}
-  .container{padding:1.35rem;}
+  body{padding:1rem;}
+  .container{padding:1.5rem;}
   .row .half{min-width:100%;}
   .search-container {flex-direction: column; align-items: stretch;}
   .search-container input, .search-container button {width: 100%; margin-top: 0.72rem;}
