@@ -23,7 +23,7 @@
 }
 body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem;}
 .container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
-h2{text-align:center;margin-bottom:1.35rem;font-size:1.5rem;}
+h2{text-align:center;margin-bottom:1.35rem;font-size:1.7rem;}
 
 /* Form Elements */
 label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;}
@@ -203,7 +203,7 @@ button:hover{
 <label>ایراد</label>
 <input type="text" name="issue" required>
 <label>تاریخ گزارش ایراد</label>
-<input type="date" id="issueDate" name="issueDate" placeholder="تاریخ گزارش ایراد">
+<input type="text" id="issueDate" name="issueDate" placeholder="تاریخ گزارش ایراد">
 <label>شرح ایراد</label>
 <textarea name="issueDescription" rows="2"></textarea>
 <label>اقدامات انجام شده</label>
@@ -238,6 +238,33 @@ document.getElementById("barcodeId").value = barcodeId || "";
 
 // نمایش بصری بارکد
 document.getElementById("barcodeDisplay").textContent = barcodeId || "---";
+
+// فعال‌سازی تقویم شمسی با اسکریپت ساده
+document.addEventListener('DOMContentLoaded', () => {
+    const input = document.getElementById('issueDate');
+    if (!input) {
+        console.error("Input field with id 'issueDate' not found.");
+        return;
+    }
+
+    input.addEventListener('click', () => {
+        // ایجاد یک المنت input موقت با type=date برای باز شدن تقویم مرورگر
+        const tempInput = document.createElement('input');
+        tempInput.type = 'date';
+        
+        // وقتی تقویم بسته شد، مقدار رو به input اصلی برمی‌گردونه
+        tempInput.addEventListener('change', () => {
+            const date = new Date(tempInput.value);
+            // تبدیل تاریخ میلادی به شمسی
+            const options = { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Asia/Tehran' };
+            const persianDate = new Intl.DateTimeFormat('fa-IR', options).format(date);
+            input.value = persianDate.replace(/([٠-٩])/g, (d) => String.fromCharCode(d.charCodeAt(0) + 1584));
+        });
+        
+        // اجرای کلیک برای باز شدن تقویم مرورگر
+        tempInput.click();
+    });
+});
 
 function showMessage(type, message) {
     const messageContainer = document.getElementById("messageContainer");
