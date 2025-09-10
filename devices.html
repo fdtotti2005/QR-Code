@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -6,6 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
 <style>
 /* Base Colors & Typography */
 :root {
@@ -45,7 +50,7 @@ input:focus, textarea:focus, select:focus {
 }
 textarea{resize:vertical;}
 .row{display:flex;gap:0.9rem;flex-wrap:wrap;margin-bottom:0.72rem;}
-.row .half{flex:1;min-width:48%;display:flex;flex-direction:column;align-items:center;}
+.row .half{flex:1;min-width:48%;}
 
 /* کارت‌ها */
 .card {
@@ -55,12 +60,9 @@ textarea{resize:vertical;}
   margin-bottom: 1rem;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   border: 1px solid #e0e0e0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-/* Compact Barcode Display */
+/* Compact Barcode Display - Positioned Left */
 .compact-barcode-display {
   padding: 0.45rem 0;
   text-align: right;
@@ -102,17 +104,20 @@ button:hover{
   box-shadow: 0 4px 8px var(--shadow-medium);
 }
 #saveBtn{
+    background: var(--success-color); /* Fallback */
     background: linear-gradient(135deg, #2ecc71, #27ae60);
 }
 #deleteBtn{
+    background: var(--danger-color); /* Fallback */
     background: linear-gradient(135deg, #e74c3c, #c0392b);
 }
 #searchBtn{
+    background: var(--accent-color); /* Fallback */
     background: linear-gradient(135deg, #3498db, #2980b9);
 }
-/* Loading */
+/* New CSS for loading state */
 .loading {
-    pointer-events: none;
+    pointer-events: none; /* Disable clicks */
     opacity: 0.7;
     cursor: wait;
 }
@@ -144,18 +149,23 @@ button:hover{
 .success{color:var(--success-color);background-color:rgba(46, 204, 113, 0.1);border:1px solid var(--success-color);}
 .error{color:var(--danger-color);background-color:rgba(231, 76, 60, 0.1);border:1px solid var(--danger-color);}
 
-/* Search Bar - Inline, full width like buttons */
-.search-container{
-    margin-top:0.5rem;
-    display:flex;
-    gap:0.5rem;
-}
-.search-container input, .search-container button{
+/* Search Bar - Inline */
+.search-container{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap; align-items: flex-end;}
+.search-container input{
     flex:1;
-    min-width:0;
+    min-width:60%; 
+    margin-top:0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
-.search-container button{
-    max-width:200px;
+.search-container button {
+    margin-top: 0;
+    width: auto;
+    padding: 0.54rem 0.9rem;
+    font-size: 0.765rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.search-container button:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsive */
@@ -214,7 +224,7 @@ button:hover{
   <input type="text" name="issue" required>
 
   <label>تاریخ گزارش ایراد</label>
-  <input type="text" name="issueDate" placeholder="تاریخ گزارش ایراد">
+  <input type="text" name="issueDate" id="issueDate" placeholder="تاریخ گزارش ایراد">
 
   <label>شرح ایراد</label>
   <textarea name="issueDescription" rows="2"></textarea>
@@ -254,7 +264,23 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbwiFTGb_w8MRlEDdqqF6K
 const urlParams = new URLSearchParams(window.location.search);
 const barcodeId = urlParams.get("barcodeId");
 document.getElementById("barcodeId").value = barcodeId || "";
+
+// نمایش بصری بارکد
 document.getElementById("barcodeDisplay").textContent = barcodeId || "---";
+
+// فعال‌سازی تاریخ شمسی
+$(document).ready(function() {
+  $("#issueDate").persianDatepicker({
+    format: "YYYY/MM/DD",
+    autoClose: true,
+    initialValue: false,
+    calendar: {
+      persian: {
+        locale: "fa"
+      }
+    }
+  });
+});
 
 function showMessage(type, message) {
     const messageContainer = document.getElementById("messageContainer");
@@ -367,3 +393,4 @@ document.getElementById("searchBtn").addEventListener("click", ()=>{
 </script>
 </body>
 </html>
+
