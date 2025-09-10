@@ -2,12 +2,11 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>‌فرم ثبت اطلاعات ‌دیوایس‌</title>
+<title>فرم ثبت اطلاعات دیوایس‌ها</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-/* Base Colors & Typography */
 :root {
   --primary-color: #2c3e50;
   --accent-color: #3498db;
@@ -18,12 +17,23 @@
   --input-bg-color: #fff;
   --border-color: #ccc;
   --readonly-bg: #eee;
-  --shadow-light: rgba(0, 0, 0, 0.08);
-  --shadow-medium: rgba(0, 0, 0, 0.15);
+  --shadow-light: rgba(0,0,0,0.08);
+  --shadow-medium: rgba(0,0,0,0.15);
+  --card-bg: #ffffff;
+  --input-bg-gradient: linear-gradient(180deg, #fff, #f9f9f9);
 }
 body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem;}
-.container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
+.container{max-width:650px;margin:auto;}
 h2{text-align:center;margin-bottom:1.35rem;font-size:1.2rem;}
+
+/* Card Section */
+.card {
+  background: var(--card-bg);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
 
 /* Form Elements */
 label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;}
@@ -35,19 +45,20 @@ input,textarea,select{
   border-radius:6px;
   font-family:inherit;
   font-size:0.81rem;
-  box-shadow: 0 1px 3px var(--shadow-light);
+  background: var(--input-bg-gradient);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 input:focus, textarea:focus, select:focus {
   outline:none;
   border-color:var(--accent-color);
-  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+  box-shadow: 0 0 5px rgba(52,152,219,0.5);
 }
 textarea{resize:vertical;}
 .row{display:flex;gap:0.9rem;flex-wrap:wrap;margin-bottom:0.72rem;}
 .row .half{flex:1;min-width:48%;}
 
-/* Compact Barcode Display - Positioned Left */
+/* Compact Barcode Display */
 .compact-barcode-display {
   padding: 0.45rem 0;
   text-align: right;
@@ -64,104 +75,35 @@ textarea{resize:vertical;}
 }
 
 /* Buttons */
-.button-group {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 1.35rem;
-}
-.button-group button {
-    flex: 1;
-}
-button{
-  padding:0.72rem;
-  width:100%;
-  color:var(--input-bg-color);
-  border:none;
-  border-radius:6px;
-  font-size:0.81rem;
-  cursor:pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-  font-family:inherit;
-  box-shadow: 0 2px 4px var(--shadow-light);
-}
-button:hover{
-  transform: scale(1.02);
-  box-shadow: 0 4px 8px var(--shadow-medium);
-}
-#saveBtn{
-    background: var(--success-color); /* Fallback */
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
-}
-#deleteBtn{
-    background: var(--danger-color); /* Fallback */
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
-}
-#searchBtn{
-    background: var(--accent-color); /* Fallback */
-    background: linear-gradient(135deg, #3498db, #2980b9);
-}
-/* New CSS for loading state */
-.loading {
-    pointer-events: none; /* Disable clicks */
-    opacity: 0.7;
-    cursor: wait;
-}
-.loading i.fa-spin {
-    animation: spin 1s linear infinite;
-}
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+.button-group { display: flex; gap: 0.5rem; margin-top: 1rem; }
+.button-group button { flex: 1; padding:0.72rem; width:100%; color:var(--input-bg-color); border:none; border-radius:6px; font-size:0.81rem; cursor:pointer; transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease; font-family:inherit; box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
+button:hover{ transform: scale(1.02); box-shadow:0 4px 8px rgba(0,0,0,0.15); }
+#saveBtn{background: linear-gradient(135deg,#2ecc71,#27ae60);}
+#deleteBtn{background: linear-gradient(135deg,#e74c3c,#c0392b);}
+#searchBtn{background: linear-gradient(135deg,#3498db,#2980b9);}
+#scanBtn{background: linear-gradient(135deg,#f39c12,#e67e22);}
 
-/* Floating Message Box */
-.message-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    z-index: 1000;
-    text-align: center;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-.message-container.visible {
-    opacity: 0.9;
-}
-.message-box{font-weight:bold;font-size:0.85rem;padding:0.6rem;border-radius:5px;box-shadow:0 2px 10px rgba(0,0,0,0.2);}
-.success{color:var(--success-color);background-color:rgba(46, 204, 113, 0.1);border:1px solid var(--success-color);}
-.error{color:var(--danger-color);background-color:rgba(231, 76, 60, 0.1);border:1px solid var(--danger-color);}
+/* Floating Message Box with Animation */
+.message-container { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; z-index:1000; text-align:center; pointer-events:none; opacity:0; transition: all 0.5s ease-in-out; }
+.message-container.visible { opacity:0.95; }
+.message-box{font-weight:bold;font-size:0.85rem;padding:0.6rem;border-radius:5px;box-shadow:0 2px 10px rgba(0,0,0,0.2); transform: translateY(-10px); transition: transform 0.3s ease, opacity 0.3s ease;}
+.message-container.visible .message-box { transform: translateY(0); }
+.success{color:var(--success-color);background-color:rgba(46,204,113,0.1);border:1px solid var(--success-color);}
+.error{color:var(--danger-color);background-color:rgba(231,76,60,0.1);border:1px solid var(--danger-color);}
 
-/* Search Bar - Inline */
-.search-container{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap; align-items: flex-end;}
-.search-container input{
-    flex:1;
-    min-width:60%; 
-    margin-top:0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-.search-container button {
-    margin-top: 0;
-    width: auto;
-    padding: 0.54rem 0.9rem;
-    font-size: 0.765rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.search-container button:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
+/* Search Bar */
+.search-container{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap;align-items:flex-end;}
+.search-container input{flex:1;min-width:60%; margin-top:0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);}
+.search-container button{margin-top:0;width:auto;padding:0.54rem 0.9rem;font-size:0.765rem;box-shadow:0 2px 4px rgba(0,0,0,0.1);}
+.search-container button:hover{box-shadow:0 4px 8px rgba(0,0,0,0.2);}
 
 /* Responsive */
 @media(max-width:500px){
   body{padding:0.9rem;}
-  .container{padding:1.35rem;}
   .row .half{min-width:100%;}
-  .search-container {flex-direction: column; align-items: stretch;}
-  .search-container input, .search-container button {width: 100%; margin-top: 0.72rem;}
-  .button-group { flex-direction: column; }
-  .compact-barcode-display { text-align: right; }
+  .search-container{flex-direction:column;align-items:stretch;}
+  .search-container input,.search-container button{width:100%;margin-top:0.72rem;}
+  .button-group{flex-direction:column;}
 }
 </style>
 </head>
@@ -170,48 +112,63 @@ button:hover{
 <h2>فرم ثبت اطلاعات دیوایس‌های معیوب</h2>
 
 <form id="deviceForm">
-<div class="compact-barcode-display">
-  بارکد فعلی: <span id="barcodeDisplay">---</span>
-</div>
-<input type="hidden" id="barcodeId" name="barcodeId">
 
-<div class="row">
-<div class="half">
-<label>نام دیوایس</label>
-<select name="deviceName" id="deviceName" required>
-<option value="">-- انتخاب کنید --</option>
-<option value="Multi Media">Multi Media</option>
-<option value="Multi Media Metal">Multi Media Metal</option>
-<option value="Soul">Soul</option>
-<option value="Smart Player">Smart Player</option>
-<option value="TDA">TDA</option>
-<option value="RFID">RFID</option>
-<option value="Serial GSM">Serial GSM</option>
-<option value="Smart GSM">Smart GSM</option>
-<option value="MP3">MP3</option>
-<option value="IR">IR</option>
-<option value="B1">B1</option>
-<option value="Smart Plug">Smart Plug</option>
-</select>
-</div>
-<div class="half">
-<label>کد دیوایس</label>
-<input type="text" name="deviceCode" required>
-</div>
+<!-- Barcode Display & Scan -->
+<div class="card">
+  <div class="compact-barcode-display">
+    بارکد فعلی: <span id="barcodeDisplay">---</span>
+  </div>
+  <input type="hidden" id="barcodeId" name="barcodeId">
+  <button type="button" id="scanBtn"><i class="fa-solid fa-camera"></i> اسکن بارکد</button>
 </div>
 
-<label>ایراد</label>
-<input type="text" name="issue" required>
-<label>تاریخ گزارش ایراد</label>
-<input type="text" name="issueDate">
-<label>شرح ایراد</label>
-<textarea name="issueDescription" rows="2"></textarea>
-<label>اقدامات انجام شده</label>
-<textarea name="actionsTaken" rows="2"></textarea>
-<label>وضعیت فعلی</label>
-<input type="text" name="currentStatus">
-<label>توضیحات تکمیلی</label>
-<textarea name="notes" rows="2"></textarea>
+<!-- Device Info -->
+<div class="card">
+  <div class="row">
+    <div class="half">
+      <label>نام دیوایس</label>
+      <select name="deviceName" id="deviceName" required>
+        <option value="">-- انتخاب کنید --</option>
+        <option value="Multi Media">Multi Media</option>
+        <option value="Multi Media Metal">Multi Media Metal</option>
+        <option value="Soul">Soul</option>
+        <option value="Smart Player">Smart Player</option>
+        <option value="TDA">TDA</option>
+        <option value="RFID">RFID</option>
+        <option value="Serial GSM">Serial GSM</option>
+        <option value="Smart GSM">Smart GSM</option>
+        <option value="MP3">MP3</option>
+        <option value="IR">IR</option>
+        <option value="B1">B1</option>
+        <option value="Smart Plug">Smart Plug</option>
+      </select>
+    </div>
+    <div class="half">
+      <label>کد دیوایس</label>
+      <input type="text" name="deviceCode" required>
+    </div>
+  </div>
+</div>
+
+<!-- Issue Info -->
+<div class="card">
+  <label>ایراد</label>
+  <input type="text" name="issue" required>
+  <label>تاریخ گزارش ایراد</label>
+  <input type="date" name="issueDate">
+  <label>شرح ایراد</label>
+  <textarea name="issueDescription" rows="2"></textarea>
+</div>
+
+<!-- Actions and Status -->
+<div class="card">
+  <label>اقدامات انجام شده</label>
+  <textarea name="actionsTaken" rows="2"></textarea>
+  <label>وضعیت فعلی</label>
+  <input type="text" name="currentStatus">
+  <label>توضیحات تکمیلی</label>
+  <textarea name="notes" rows="2"></textarea>
+</div>
 
 <div class="button-group">
   <button type="submit" id="saveBtn"><i class="fa-solid fa-floppy-disk"></i> ثبت/ویرایش</button>
@@ -235,145 +192,111 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbwiFTGb_w8MRlEDdqqF6K
 const urlParams = new URLSearchParams(window.location.search);
 const barcodeId = urlParams.get("barcodeId");
 document.getElementById("barcodeId").value = barcodeId || "";
-
-// نمایش بصری بارکد
 document.getElementById("barcodeDisplay").textContent = barcodeId || "---";
 
-function showMessage(type, message) {
-    const messageContainer = document.getElementById("messageContainer");
-    const successMsg = document.getElementById("successMsg");
-    const errorMsg = document.getElementById("errorMsg");
-    
-    // Check if the element exists
-    if (!successMsg || !errorMsg || !messageContainer) {
-        console.error("Message box elements not found.");
-        return;
-    }
-    
-    const targetMsg = (type === "success") ? successMsg : errorMsg;
-    const otherMsg = (type === "success") ? errorMsg : successMsg;
-
-    targetMsg.textContent = message;
-    
-    // Show the message container
-    messageContainer.classList.add("visible");
-    targetMsg.style.display = 'block';
-    otherMsg.style.display = 'none';
-
-    // Hide message after 3 seconds
-    setTimeout(() => {
-        messageContainer.classList.remove("visible");
-    }, 3000);
+function showMessage(type,message){
+  const container=document.getElementById("messageContainer");
+  const success=document.getElementById("successMsg");
+  const error=document.getElementById("errorMsg");
+  if(!success||!error||!container)return;
+  const target=(type==="success")?success:error;
+  const other=(type==="success")?error:success;
+  target.innerHTML=message;
+  container.classList.add("visible");
+  target.style.display="block";
+  other.style.display="none";
+  setTimeout(()=>{container.classList.remove("visible");},3000);
 }
 
-// تابع عمومی برای پر کردن فرم
 function fillForm(data){
-  if(!data) return;
-  if (Object.keys(data).length > 0) {
+  if(!data)return;
+  if(Object.keys(data).length>0){
     for(const key in data){
-      const el = document.querySelector("[name='"+key+"']");
+      const el=document.querySelector("[name='"+key+"']");
       if(el){
-          if(el.type === "radio" || el.type === "checkbox"){
-             el.checked = (el.value === data[key]);
-          } else {
-             el.value = data[key]||"";
-          }
+        if(el.type==="radio"||el.type==="checkbox") el.checked=(el.value===data[key]);
+        else el.value=data[key]||"";
       }
     }
-    document.getElementById("barcodeDisplay").textContent = data.barcodeId || "---";
-    showMessage("success", "✅ رکورد پیدا شد");
-  } else {
-    showMessage("error", "❌ رکورد پیدا نشد");
+    document.getElementById("barcodeDisplay").textContent=data.barcodeId||"---";
+    showMessage("success","✅ رکورد پیدا شد");
+  }else showMessage("error","❌ رکورد پیدا نشد");
+}
+
+// Barcode Scan Button
+document.getElementById("scanBtn").addEventListener("click", async ()=>{
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ 
+    return showMessage("error","❌ مرورگر شما از دوربین پشتیبانی نمی‌کند");
+  }
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}});
+    const video=document.createElement("video");
+    video.srcObject=stream;
+    video.setAttribute("playsinline","");
+    video.play();
+    const canvas=document.createElement("canvas");
+    const ctx=canvas.getContext("2d");
+
+    const scan = () => {
+      if(video.readyState===video.HAVE_ENOUGH_DATA){
+        canvas.width=video.videoWidth;
+        canvas.height=video.videoHeight;
+        ctx.drawImage(video,0,0,canvas.width,canvas.height);
+        const imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
+        // از jsQR یا هر کتابخانه Barcode JS می‌توان استفاده کرد
+        // برای نمونه، فرض می‌کنیم کاربر بارکد را می‌نویسد
+      }
+      requestAnimationFrame(scan);
+    };
+    scan();
+    showMessage("success","📷 دوربین فعال شد (اسکن واقعی با jsQR یا barcode lib نیاز است)");
+  }catch(err){
+    showMessage("error","❌ خطا در فعال کردن دوربین");
   }
 }
 
-// Functions to handle loading state
-function showLoading(buttonId, originalIconClass) {
-    const button = document.getElementById(buttonId);
-    button.dataset.originalIcon = originalIconClass;
-    button.classList.add('loading');
-    button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-}
-
-function hideLoading(buttonId) {
-    const button = document.getElementById(buttonId);
-    button.classList.remove('loading');
-    const originalIconClass = button.dataset.originalIcon;
-    if (originalIconClass) {
-        button.innerHTML = '<i class="' + originalIconClass + '"></i> ' + button.textContent.trim();
-    }
-}
-
-// پر کردن فرم با بارکد در زمان لود صفحه
+// Load form with barcode on page load
 if(barcodeId){
   fetch(`${scriptURL}?action=get&barcodeId=${encodeURIComponent(barcodeId)}`)
     .then(res=>res.json())
-    .then(data=>{
-      fillForm(data);
-    }).catch(err=>{
-      console.error("خطا در دریافت اطلاعات", err);
-      showMessage("error", "❌ خطا در دریافت اطلاعات");
-    });
+    .then(data=>{ fillForm(data); })
+    .catch(err=>{ console.error(err); showMessage("error","❌ خطا در دریافت اطلاعات"); });
 }
 
-// ثبت/ویرایش
-document.getElementById("deviceForm").addEventListener("submit", e=>{
+// Submit Form
+document.getElementById("deviceForm").addEventListener("submit",e=>{
   e.preventDefault();
-  const formData = new FormData(e.target);
-  showLoading('saveBtn', 'fa-solid fa-floppy-disk');
+  const formData=new FormData(e.target);
   fetch(scriptURL,{method:"POST",body:formData})
-    .then(()=>{
-      showMessage("success", "✅ عملیات موفقیت‌آمیز بود");
-    }).catch(err=>{
-      showMessage("error", "❌ خطا در پردازش اطلاعات");
-    }).finally(() => {
-        hideLoading('saveBtn');
-    });
+    .then(()=>showMessage("success","✅ عملیات موفقیت‌آمیز بود"))
+    .catch(err=>showMessage("error","❌ خطا در پردازش اطلاعات"));
 });
 
-// حذف رکورد
-document.getElementById("deleteBtn").addEventListener("click", ()=>{
-  if(!barcodeId) return;
+// Delete
+document.getElementById("deleteBtn").addEventListener("click",()=>{
+  if(!barcodeId)return;
   if(!confirm("آیا مطمئن هستید؟")) return;
-  showLoading('deleteBtn', 'fa-solid fa-trash-can');
   fetch(`${scriptURL}?action=delete&barcodeId=${encodeURIComponent(barcodeId)}`)
     .then(()=>{
       document.getElementById("deviceForm").reset();
-      document.getElementById("barcodeDisplay").textContent = "---";
-      showMessage("success", "✅ رکورد حذف شد");
-    }).catch(err=>{
-      showMessage("error", "❌ خطا در حذف رکورد");
-    }).finally(() => {
-        hideLoading('deleteBtn');
-    });
+      document.getElementById("barcodeDisplay").textContent="---";
+      showMessage("success","✅ رکورد حذف شد");
+    }).catch(err=>showMessage("error","❌ خطا در حذف رکورد"));
 });
 
-// جستجو بر اساس کد دیوایس
-document.getElementById("searchBtn").addEventListener("click", ()=>{
-  const code = document.getElementById("searchCode").value.trim();
-  if(!code) return showMessage("error", "❌ کد دیوایس وارد شود");
-  showLoading('searchBtn', 'fa-solid fa-magnifying-glass');
+// Search
+document.getElementById("searchBtn").addEventListener("click",()=>{
+  const code=document.getElementById("searchCode").value.trim();
+  if(!code) return showMessage("error","❌ کد دیوایس وارد شود");
   fetch(`${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`)
     .then(res=>res.json())
     .then(data=>{
-      if(Object.keys(data).length > 0){
+      if(Object.keys(data).length>0){
         fillForm(data);
-        document.getElementById("barcodeId").value = data.barcodeId||"";
-        showMessage("success", "✅ رکورد پیدا شد");
-      }else{
-        showMessage("error", "❌ رکورد پیدا نشد");
-      }
-    }).catch(err=>{
-      console.error(err);
-      showMessage("error", "❌ خطا در جستجو");
-    }).finally(() => {
-        hideLoading('searchBtn');
-    });
+        document.getElementById("barcodeId").value=data.barcodeId||"";
+      }else showMessage("error","❌ رکورد پیدا نشد");
+    }).catch(err=>showMessage("error","❌ خطا در جستجو"));
 });
 </script>
 </body>
 </html>
-
-
-
-
