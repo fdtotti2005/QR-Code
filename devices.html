@@ -74,12 +74,12 @@ button:hover{transform: scale(1.02);}
     width: 300px;
     z-index: 1000;
     text-align: center;
-    pointer-events: none; /* Allows clicks to pass through */
+    pointer-events: none;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
 .message-container.visible {
-    opacity: 1;
+    opacity: 0.9; /* Increased opacity for better visibility */
 }
 .message-box{font-weight:bold;font-size:0.85rem;padding:0.6rem;border-radius:5px;box-shadow:0 2px 10px rgba(0,0,0,0.2);}
 .success{color:var(--success-color);background-color:rgba(46, 204, 113, 0.1);border:1px solid var(--success-color);}
@@ -203,10 +203,10 @@ function showMessage(type, message) {
     targetMsg.style.display = 'block';
     otherMsg.style.display = 'none';
 
-    // Hide message after 2 seconds
+    // Hide message after 3 seconds
     setTimeout(() => {
         messageContainer.classList.remove("visible");
-    }, 2000);
+    }, 3000);
 }
 
 // تابع عمومی برای پر کردن فرم
