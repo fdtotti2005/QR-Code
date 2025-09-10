@@ -20,20 +20,42 @@
   --readonly-bg: #eee;
 }
 body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:2rem;}
-.container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:2rem;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);}
+.container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:2rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
 h2{text-align:center;margin-bottom:1.5rem;font-size:1.2rem;}
-label{display:block;margin-top:1rem;font-weight:bold;font-size:0.9rem;}
 
 /* Form Elements */
+label{display:block;margin-top:0.8rem;font-weight:bold;font-size:0.9rem;}
 input,textarea,select{width:100%;padding:0.6rem;margin-top:0.4rem;border:1px solid var(--border-color);border-radius:6px;font-family:inherit;font-size:0.9rem;}
 input:focus, textarea:focus, select:focus {outline:none;border-color:var(--accent-color);}
-input[type="text"][name="barcodeId"] {background-color: var(--readonly-bg); font-weight: bold;}
 textarea{resize:vertical;}
-.row{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;}
+.row{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:0.8rem;}
 .row .half{flex:1;min-width:48%;}
 
+/* Barcode Display */
+.barcode-display {
+  background-color: var(--readonly-bg);
+  padding: 0.8rem;
+  border-radius: 6px;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.barcode-display span {
+  color: var(--primary-color);
+  font-family: 'Courier New', Courier, monospace;
+}
+
 /* Buttons */
-button{margin-top:1.5rem;padding:0.8rem;width:100%;color:var(--input-bg-color);border:none;border-radius:6px;font-size:0.9rem;cursor:pointer;
+.button-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+.button-group button {
+    flex: 1;
+}
+button{padding:0.8rem;width:100%;color:var(--input-bg-color);border:none;border-radius:6px;font-size:0.9rem;cursor:pointer;
   transition: transform 0.2s ease, background-color 0.2s ease;
   font-family:inherit;
 }
@@ -53,7 +75,7 @@ button:hover{transform: scale(1.02);}
 .search-container input{flex:1;min-width:60%;}
 
 /* Responsive */
-@media(max-width:500px){.row .half{min-width:100%;}.search-container input{min-width:100%;}body{padding:1rem;}}
+@media(max-width:500px){.row .half{min-width:100%;}.search-container input{min-width:100%;}body{padding:1rem;} .button-group { flex-direction: column; }}
 </style>
 </head>
 <body>
@@ -61,8 +83,10 @@ button:hover{transform: scale(1.02);}
 <h2>فرم ثبت اطلاعات دیوایس</h2>
 
 <form id="deviceForm">
-<label>بارکد</label>
-<input type="text" id="barcodeId" name="barcodeId" readonly>
+<div class="barcode-display">
+  بارکد فعلی: <span id="barcodeDisplay">---</span>
+</div>
+<input type="hidden" id="barcodeId" name="barcodeId">
 
 <div class="row">
 <div class="half">
@@ -102,8 +126,10 @@ button:hover{transform: scale(1.02);}
 <label>توضیحات تکمیلی</label>
 <textarea name="notes" rows="2"></textarea>
 
-<button type="submit" id="saveBtn"><i class="fa-solid fa-floppy-disk"></i> ثبت/ویرایش</button>
-<button type="button" id="deleteBtn"><i class="fa-solid fa-trash-can"></i> حذف</button>
+<div class="button-group">
+  <button type="submit" id="saveBtn"><i class="fa-solid fa-floppy-disk"></i> ثبت/ویرایش</button>
+  <button type="button" id="deleteBtn"><i class="fa-solid fa-trash-can"></i> حذف</button>
+</div>
 </form>
 
 <div class="message-box success" id="successMsg"></div>
@@ -120,6 +146,9 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbwiFTGb_w8MRlEDdqqF6K
 const urlParams = new URLSearchParams(window.location.search);
 const barcodeId = urlParams.get("barcodeId");
 document.getElementById("barcodeId").value = barcodeId || "";
+
+// New line to display the barcode visually
+document.getElementById("barcodeDisplay").textContent = barcodeId || "---";
 
 function showMessage(type, message) {
     const successMsg = document.getElementById("successMsg");
@@ -149,6 +178,7 @@ function fillForm(data){
           }
       }
     }
+    document.getElementById("barcodeDisplay").textContent = data.barcodeId || "---";
     showMessage("success", "✅ رکورد پیدا شد");
   } else {
     showMessage("error", "❌ رکورد پیدا نشد");
@@ -186,6 +216,7 @@ document.getElementById("deleteBtn").addEventListener("click", ()=>{
   fetch(`${scriptURL}?action=delete&barcodeId=${encodeURIComponent(barcodeId)}`)
     .then(()=>{
       document.getElementById("deviceForm").reset();
+      document.getElementById("barcodeDisplay").textContent = "---";
       showMessage("success", "✅ رکورد حذف شد");
     }).catch(err=>{
       showMessage("error", "❌ خطا در حذف رکورد");
