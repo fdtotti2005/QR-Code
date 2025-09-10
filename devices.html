@@ -89,18 +89,25 @@ const urlParams = new URLSearchParams(window.location.search);
 const barcodeId = urlParams.get("barcodeId");
 document.getElementById("barcodeId").value = barcodeId;
 
-// پر کردن فرم با بارکد
+// تابع عمومی برای پر کردن فرم
+function fillForm(data){
+  if(!data) return;
+  // یک شرط ساده برای اطمینان از اینکه داده یک شیء با کلیدهای معتبر است
+  if (Object.keys(data).length > 0) {
+    for(const key in data){
+      const el = document.querySelector("[name='"+key+"']");
+      if(el) el.value = data[key]||"";
+    }
+  }
+}
+
+// پر کردن فرم با بارکد در زمان لود صفحه
 if(barcodeId){
   fetch(`${scriptURL}?action=get&barcodeId=${encodeURIComponent(barcodeId)}`)
     .then(res=>res.json())
     .then(data=>{
-      if(data && data.deviceName){
-        for(const key in data){
-          const el = document.querySelector("[name='"+key+"']");
-          if(el) el.value = data[key]||"";
-        }
-      }
-    }).catch(err=>console.error(err));
+      fillForm(data); // تابع پر کردن فرم را صدا می‌زند
+    }).catch(err=>console.error("خطا در دریافت اطلاعات", err));
 }
 
 // ثبت/ویرایش
@@ -136,11 +143,8 @@ document.getElementById("searchBtn").addEventListener("click", ()=>{
   fetch(`${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`)
     .then(res=>res.json())
     .then(data=>{
-      if(data && data.deviceName){
-        for(const key in data){
-          const el = document.querySelector("[name='"+key+"']");
-          if(el) el.value = data[key]||"";
-        }
+      if(Object.keys(data).length > 0){
+        fillForm(data);
         document.getElementById("barcodeId").value = data.barcodeId||"";
         document.getElementById("successMsg").style.display="block";
         document.getElementById("successMsg").textContent="✅ رکورد پیدا شد";
