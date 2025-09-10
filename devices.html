@@ -27,7 +27,7 @@
 }
 body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem;}
 .container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
-h2{text-align:center;margin-bottom:1.35rem;font-size:1.2rem;}
+h2{text-align:center;margin-bottom:1.35rem;font-size:1.5rem;}
 
 /* Form Elements */
 label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;}
@@ -51,17 +51,7 @@ textarea{resize:vertical;}
 .row{display:flex;gap:0.9rem;flex-wrap:wrap;margin-bottom:0.72rem;}
 .row .half{flex:1;min-width:48%;}
 
-/* کارت‌ها */
-.card {
-  background: #fff;
-  border-radius: 10px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  border: 1px solid #e0e0e0;
-}
-
-/* Compact Barcode Display - Positioned Left */
+/* Compact Barcode Display */
 .compact-barcode-display {
   padding: 0.45rem 0;
   text-align: right;
@@ -77,15 +67,21 @@ textarea{resize:vertical;}
   border-radius: 4px;
 }
 
+/* Cards */
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px var(--shadow-light);
+}
+.card1 { background: #eaf6ff; }   /* آبی خیلی روشن */
+.card2 { background: #e8fdf2; }   /* سبز خیلی روشن */
+.card3 { background: #f5f5f5; }   /* خاکستری روشن */
+
 /* Buttons */
-.button-group {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 1.35rem;
-}
-.button-group button {
-    flex: 1;
-}
+.button-group { display: flex; gap: 0.5rem; margin-top: 1.35rem; }
+.button-group button { flex: 1; }
 button{
   padding:0.72rem;
   width:100%;
@@ -98,74 +94,33 @@ button{
   font-family:inherit;
   box-shadow: 0 2px 4px var(--shadow-light);
 }
-button:hover{
-  transform: scale(1.02);
-  box-shadow: 0 4px 8px var(--shadow-medium);
-}
-#saveBtn{
-    background: var(--success-color); /* Fallback */
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
-}
-#deleteBtn{
-    background: var(--danger-color); /* Fallback */
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
-}
-#searchBtn{
-    background: var(--accent-color); /* Fallback */
-    background: linear-gradient(135deg, #3498db, #2980b9);
-}
-/* New CSS for loading state */
-.loading {
-    pointer-events: none; /* Disable clicks */
-    opacity: 0.7;
-    cursor: wait;
-}
-.loading i.fa-spin {
-    animation: spin 1s linear infinite;
-}
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+button:hover{ transform: scale(1.02); box-shadow: 0 4px 8px var(--shadow-medium); }
+#saveBtn{ background: linear-gradient(135deg, #2ecc71, #27ae60); }
+#deleteBtn{ background: linear-gradient(135deg, #e74c3c, #c0392b); }
+#searchBtn{ background: linear-gradient(135deg, #3498db, #2980b9); }
+
+/* Loading state */
+.loading { pointer-events: none; opacity: 0.7; cursor: wait; }
+.loading i.fa-spin { animation: spin 1s linear infinite; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
 /* Floating Message Box */
 .message-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
+    position: fixed; top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 300px;
-    z-index: 1000;
-    text-align: center;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    width: 300px; z-index: 1000; text-align: center;
+    pointer-events: none; opacity: 0; transition: opacity 0.5s ease-in-out;
 }
-.message-container.visible {
-    opacity: 0.9;
-}
+.message-container.visible { opacity: 0.9; }
 .message-box{font-weight:bold;font-size:0.85rem;padding:0.6rem;border-radius:5px;box-shadow:0 2px 10px rgba(0,0,0,0.2);}
-.success{color:var(--success-color);background-color:rgba(46, 204, 113, 0.1);border:1px solid var(--success-color);}
-.error{color:var(--danger-color);background-color:rgba(231, 76, 60, 0.1);border:1px solid var(--danger-color);}
+.success{color:var(--success-color);background-color:rgba(46,204,113,0.1);border:1px solid var(--success-color);}
+.error{color:var(--danger-color);background-color:rgba(231,76,60,0.1);border:1px solid var(--danger-color);}
 
-/* Search Bar - Inline */
+/* Search Bar */
 .search-container{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap; align-items: flex-end;}
-.search-container input{
-    flex:1;
-    min-width:60%; 
-    margin-top:0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-.search-container button {
-    margin-top: 0;
-    width: auto;
-    padding: 0.54rem 0.9rem;
-    font-size: 0.765rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.search-container button:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
+.search-container input{ flex:1; min-width:60%; margin-top:0; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); }
+.search-container button{ margin-top:0; width:auto; padding:0.54rem 0.9rem; font-size:0.765rem; box-shadow:0 2px 4px rgba(0,0,0,0.1);}
+.search-container button:hover{ box-shadow:0 4px 8px rgba(0,0,0,0.2); }
 
 /* Responsive */
 @media(max-width:500px){
@@ -189,8 +144,8 @@ button:hover{
 </div>
 <input type="hidden" id="barcodeId" name="barcodeId">
 
-<!-- کارت ۱: نام و کد دیوایس -->
-<div class="card">
+<!-- کارت ۱ -->
+<div class="card card1">
   <div class="row">
     <div class="half">
       <label>نام دیوایس</label>
@@ -217,26 +172,22 @@ button:hover{
   </div>
 </div>
 
-<!-- کارت ۲: ایراد -->
-<div class="card">
+<!-- کارت ۲ -->
+<div class="card card2">
   <label>ایراد</label>
   <input type="text" name="issue" required>
-
   <label>تاریخ گزارش ایراد</label>
   <input type="text" name="issueDate" id="issueDate" placeholder="تاریخ گزارش ایراد">
-
   <label>شرح ایراد</label>
   <textarea name="issueDescription" rows="2"></textarea>
 </div>
 
-<!-- کارت ۳: اقدامات و توضیحات -->
-<div class="card">
+<!-- کارت ۳ -->
+<div class="card card3">
   <label>اقدامات انجام شده</label>
   <textarea name="actionsTaken" rows="2"></textarea>
-
   <label>وضعیت فعلی</label>
   <input type="text" name="currentStatus">
-
   <label>توضیحات تکمیلی</label>
   <textarea name="notes" rows="2"></textarea>
 </div>
@@ -253,8 +204,8 @@ button:hover{
 </div>
 
 <div class="search-container">
-<input type="text" id="searchCode" placeholder="جستجو بر اساس کد دیوایس">
-<button type="button" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i> جستجو</button>
+  <input type="text" id="searchCode" placeholder="جستجو بر اساس کد دیوایس">
+  <button type="button" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i> جستجو</button>
 </div>
 </div>
 
@@ -273,11 +224,7 @@ $(document).ready(function() {
     format: "YYYY/MM/DD",
     autoClose: true,
     initialValue: false,
-    calendar: {
-      persian: {
-        locale: "fa"
-      }
-    }
+    calendar: { persian: { locale: "fa" } }
   });
 });
 
@@ -292,22 +239,18 @@ function showMessage(type, message) {
     messageContainer.classList.add("visible");
     targetMsg.style.display = 'block';
     otherMsg.style.display = 'none';
-    setTimeout(() => {
-        messageContainer.classList.remove("visible");
-    }, 3000);
+    setTimeout(() => { messageContainer.classList.remove("visible"); }, 3000);
 }
 
+// پر کردن فرم
 function fillForm(data){
   if(!data) return;
   if (Object.keys(data).length > 0) {
     for(const key in data){
       const el = document.querySelector("[name='"+key+"']");
       if(el){
-          if(el.type === "radio" || el.type === "checkbox"){
-             el.checked = (el.value === data[key]);
-          } else {
-             el.value = data[key]||"";
-          }
+          if(el.type === "radio" || el.type === "checkbox"){ el.checked = (el.value === data[key]); }
+          else { el.value = data[key]||""; }
       }
     }
     document.getElementById("barcodeDisplay").textContent = data.barcodeId || "---";
@@ -317,6 +260,7 @@ function fillForm(data){
   }
 }
 
+// loading state
 function showLoading(buttonId, originalIconClass) {
     const button = document.getElementById(buttonId);
     button.dataset.originalIcon = originalIconClass;
@@ -332,16 +276,15 @@ function hideLoading(buttonId) {
     }
 }
 
+// پر کردن فرم با بارکد
 if(barcodeId){
   fetch(`${scriptURL}?action=get&barcodeId=${encodeURIComponent(barcodeId)}`)
     .then(res=>res.json())
     .then(data=>{ fillForm(data); })
-    .catch(err=>{
-      console.error("خطا در دریافت اطلاعات", err);
-      showMessage("error", "❌ خطا در دریافت اطلاعات");
-    });
+    .catch(err=>{ showMessage("error", "❌ خطا در دریافت اطلاعات"); });
 }
 
+// ثبت/ویرایش
 document.getElementById("deviceForm").addEventListener("submit", e=>{
   e.preventDefault();
   const formData = new FormData(e.target);
@@ -352,6 +295,7 @@ document.getElementById("deviceForm").addEventListener("submit", e=>{
     .finally(() => { hideLoading('saveBtn'); });
 });
 
+// حذف رکورد
 document.getElementById("deleteBtn").addEventListener("click", ()=>{
   if(!barcodeId) return;
   if(!confirm("آیا مطمئن هستید؟")) return;
@@ -361,13 +305,12 @@ document.getElementById("deleteBtn").addEventListener("click", ()=>{
       document.getElementById("deviceForm").reset();
       document.getElementById("barcodeDisplay").textContent = "---";
       showMessage("success", "✅ رکورد حذف شد");
-    }).catch(err=>{
-      showMessage("error", "❌ خطا در حذف رکورد");
-    }).finally(() => {
-        hideLoading('deleteBtn');
-    });
+    })
+    .catch(err=>{ showMessage("error", "❌ خطا در حذف رکورد"); })
+    .finally(() => { hideLoading('deleteBtn'); });
 });
 
+// جستجو
 document.getElementById("searchBtn").addEventListener("click", ()=>{
   const code = document.getElementById("searchCode").value.trim();
   if(!code) return showMessage("error", "❌ کد دیوایس وارد شود");
@@ -382,12 +325,9 @@ document.getElementById("searchBtn").addEventListener("click", ()=>{
       }else{
         showMessage("error", "❌ رکورد پیدا نشد");
       }
-    }).catch(err=>{
-      console.error(err);
-      showMessage("error", "❌ خطا در جستجو");
-    }).finally(() => {
-        hideLoading('searchBtn');
-    });
+    })
+    .catch(err=>{ showMessage("error", "❌ خطا در جستجو"); })
+    .finally(() => { hideLoading('searchBtn'); });
 });
 </script>
 </body>
