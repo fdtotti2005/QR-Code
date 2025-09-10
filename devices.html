@@ -6,7 +6,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="https://unpkg.com/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
 <style>
 /* Base Colors & Typography */
 :root {
@@ -19,19 +22,12 @@
   --input-bg-color: #fff;
   --border-color: #ccc;
   --readonly-bg: #eee;
-  --shadow-light: rgba(0, 0, 0, 0.15); /* Increased shadow */
-  --shadow-medium: rgba(0, 0, 0, 0.25); /* Increased shadow */
+  --shadow-light: rgba(0, 0, 0, 0.08);
+  --shadow-medium: rgba(0, 0, 0, 0.15);
 }
-body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem; text-align: right;}
+body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem;}
 .container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
-h2{text-align:center;margin-bottom:1.35rem;font-size:1.2rem;}
-.taqdim {
-    text-align: center;
-    color: var(--primary-color);
-    font-size: 1rem;
-    font-weight: bold;
-    margin-bottom: 2rem;
-}
+h2{text-align:center;margin-bottom:1.35rem;font-size:1.5rem;}
 
 /* Form Elements */
 label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;}
@@ -54,15 +50,6 @@ input:focus, textarea:focus, select:focus {
 textarea{resize:vertical;}
 .row{display:flex;gap:0.9rem;flex-wrap:wrap;margin-bottom:0.72rem;}
 .row .half{flex:1;min-width:48%;}
-
-/* Card Styling */
-.card {
-    background: var(--input-bg-color);
-    padding: 1.5rem; /* Increased padding */
-    border-radius: 10px; /* Increased border radius */
-    box-shadow: 0 4px 12px var(--shadow-light); /* Increased shadow */
-    margin-bottom: 2rem; /* Increased margin */
-}
 
 /* Compact Barcode Display - Positioned Left */
 .compact-barcode-display {
@@ -103,7 +90,7 @@ button{
 }
 button:hover{
   transform: scale(1.02);
-  box-shadow: 4px 8px var(--shadow-medium);
+  box-shadow: 0 4px 8px var(--shadow-medium);
 }
 #saveBtn{
     background: var(--success-color); /* Fallback */
@@ -157,17 +144,17 @@ button:hover{
     flex:1;
     min-width:60%; 
     margin-top:0;
-    box-shadow: 0 1px 3px var(--shadow-light);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 .search-container button {
     margin-top: 0;
     width: auto;
     padding: 0.54rem 0.9rem;
     font-size: 0.765rem;
-    box-shadow: 0 2px 4px var(--shadow-light);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .search-container button:hover {
-    box-shadow: 4px 8px var(--shadow-medium);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsive */
@@ -192,50 +179,43 @@ button:hover{
 </div>
 <input type="hidden" id="barcodeId" name="barcodeId">
 
-<div class="card">
-    <div class="row">
-        <div class="half">
-            <label>نام دیوایس</label>
-            <select name="deviceName" id="deviceName" required>
-                <option value="">-- انتخاب کنید --</option>
-                <option value="Multi Media">Multi Media</option>
-                <option value="Multi Media Metal">Multi Media Metal</option>
-                <option value="Soul">Soul</option>
-                <option value="Smart Player">Smart Player</option>
-                <option value="TDA">TDA</option>
-                <option value="RFID">RFID</option>
-                <option value="Serial GSM">Serial GSM</option>
-                <option value="Smart GSM">Smart GSM</option>
-                <option value="MP3">MP3</option>
-                <option value="IR">IR</option>
-                <option value="B1">B1</option>
-                <option value="Smart Plug">Smart Plug</option>
-            </select>
-        </div>
-        <div class="half">
-            <label>کد دیوایس</label>
-            <input type="text" name="deviceCode" required>
-        </div>
-    </div>
+<div class="row">
+<div class="half">
+<label>نام دیوایس</label>
+<select name="deviceName" id="deviceName" required>
+<option value="">-- انتخاب کنید --</option>
+<option value="Multi Media">Multi Media</option>
+<option value="Multi Media Metal">Multi Media Metal</option>
+<option value="Soul">Soul</option>
+<option value="Smart Player">Smart Player</option>
+<option value="TDA">TDA</option>
+<option value="RFID">RFID</option>
+<option value="Serial GSM">Serial GSM</option>
+<option value="Smart GSM">Smart GSM</option>
+<option value="MP3">MP3</option>
+<option value="IR">IR</option>
+<option value="B1">B1</option>
+<option value="Smart Plug">Smart Plug</option>
+</select>
+</div>
+<div class="half">
+<label>کد دیوایس</label>
+<input type="text" name="deviceCode" required>
+</div>
 </div>
 
-<div class="card">
-    <label>ایراد</label>
-    <input type="text" name="issue" required>
-    <label>تاریخ گزارش ایراد</label>
-    <input type="text" name="issueDate" id="issueDate">
-    <label>شرح ایراد</label>
-    <textarea name="issueDescription" rows="2"></textarea>
-</div>
-
-<div class="card">
-    <label>اقدامات انجام شده</label>
-    <textarea name="actionsTaken" rows="2"></textarea>
-    <label>وضعیت فعلی</label>
-    <input type="text" name="currentStatus">
-    <label>توضیحات تکمیلی</label>
-    <textarea name="notes" rows="2"></textarea>
-</div>
+<label>ایراد</label>
+<input type="text" name="issue" required>
+<label>تاریخ گزارش ایراد</label>
+<input type="text" name="issueDate" id="issueDate" placeholder="تاریخ گزارش ایراد">
+<label>شرح ایراد</label>
+<textarea name="issueDescription" rows="2"></textarea>
+<label>اقدامات انجام شده</label>
+<textarea name="actionsTaken" rows="2"></textarea>
+<label>وضعیت فعلی</label>
+<input type="text" name="currentStatus">
+<label>توضیحات تکمیلی</label>
+<textarea name="notes" rows="2"></textarea>
 
 <div class="button-group">
   <button type="submit" id="saveBtn"><i class="fa-solid fa-floppy-disk"></i> ثبت/ویرایش</button>
@@ -254,8 +234,6 @@ button:hover{
 </div>
 </div>
 
-<script src="https://unpkg.com/persian-date@1.1.0/dist/persian-date.min.js"></script>
-<script src="https://unpkg.com/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
 <script>
 const scriptURL = "https://script.google.com/macros/s/AKfycbwiFTGb_w8MRlEDdqqF6KqiTkRSm5yqqmLBs0OCWA665-engKt8dcwmqT4_QttYbnLgtw/exec";
 const urlParams = new URLSearchParams(window.location.search);
@@ -265,14 +243,18 @@ document.getElementById("barcodeId").value = barcodeId || "";
 // نمایش بصری بارکد
 document.getElementById("barcodeDisplay").textContent = barcodeId || "---";
 
-// Initialize Persian Date Picker
-document.addEventListener('DOMContentLoaded', (event) => {
-    new PersianDatepicker({
-        target: '#issueDate',
-        format: 'YYYY/MM/DD',
-        autoClose: true,
-        persianDigit: true
-    });
+// فعال‌سازی تاریخ شمسی
+$(document).ready(function() {
+  $("#issueDate").persianDatepicker({
+    format: "YYYY/MM/DD",
+    autoClose: true,
+    initialValue: false,
+    calendar: {
+      persian: {
+        locale: "fa"
+      }
+    }
+  });
 });
 
 function showMessage(type, message) {
