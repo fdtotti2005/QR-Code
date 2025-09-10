@@ -466,8 +466,8 @@ scanBtn.addEventListener('click', () => {
           type : "LiveStream",
           target: scannerContainer,
           constraints: {
-            width: 500,
-            height: 300,
+            width: { min: 640 },
+            height: { min: 480 },
             facingMode: "environment" // or "user" for front camera
           }
         },
@@ -477,7 +477,7 @@ scanBtn.addEventListener('click', () => {
     }, function(err) {
         if (err) {
             console.error("Failed to initialize Quagga:", err);
-            showMessage("error", "❌ خطا در راه‌اندازی دوربین");
+            showMessage("error", "❌ خطا در راه‌اندازی دوربین. لطفاً دسترسی به دوربین را بررسی کنید.");
             return
         }
         Quagga.start();
