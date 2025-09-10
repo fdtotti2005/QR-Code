@@ -37,11 +37,11 @@ textarea{resize:vertical;}
 .row{display:flex;gap:0.9rem;flex-wrap:wrap;margin-bottom:0.72rem;}
 .row .half{flex:1;min-width:48%;}
 
-/* Custom Fonts for comparison */
-#deviceName {
+/* Custom Fonts for Labels */
+label[for="deviceName"] {
     font-family: 'IRAN Sans', Tahoma, sans-serif;
 }
-[name="deviceCode"] {
+label[for="deviceCode"] {
     font-family: 'Dana', Tahoma, sans-serif;
 }
 
@@ -143,7 +143,7 @@ button:hover{transform: scale(1.02);
 
 <div class="row">
 <div class="half">
-<label>نام دیوایس</label>
+<label for="deviceName">نام دیوایس</label>
 <select name="deviceName" id="deviceName" required>
 <option value="">-- انتخاب کنید --</option>
 <option value="Multi Media">Multi Media</option>
@@ -161,8 +161,8 @@ button:hover{transform: scale(1.02);
 </select>
 </div>
 <div class="half">
-<label>کد دیوایس</label>
-<input type="text" name="deviceCode" required>
+<label for="deviceCode">کد دیوایس</label>
+<input type="text" name="deviceCode" id="deviceCode" required>
 </div>
 </div>
 
