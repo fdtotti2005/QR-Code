@@ -1,3 +1,16 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>‌فرم ثبت اطلاعات ‌دیوایس‌</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
+    <style>
 /* Base Colors & Typography */
 :root {
   --primary-color: #2c3e50;
@@ -164,3 +177,717 @@ button:hover{
   .button-group { flex-direction: column; }
   .compact-barcode-display { text-align: right; }
 }
+</style>
+---
+بفرمایید، کل کد کامل با تمام تغییرات اعمال شده برای شما ارسال می‌شود.
+
+```html
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>‌فرم ثبت اطلاعات ‌دیوایس‌</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="[https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css](https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css)" rel="stylesheet" />
+    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+    <link rel="stylesheet" href="[https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css](https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css)"/>
+    <script src="[https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js](https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js)"></script>
+    <script src="[https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.js](https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.js)"></script>
+    <script src="[https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js](https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js)"></script>
+    <style>
+/* Base Colors & Typography */
+:root {
+  --primary-color: #2c3e50;
+  --accent-color: #3498db;
+  --success-color: #2ecc71;
+  --danger-color: #e74c3c;
+  --bg-color: #f0f2f5;
+  --text-color: #333;
+  --input-bg-color: #fff;
+  --border-color: #ccc;
+  --readonly-bg: #eee;
+  --shadow-light: rgba(0, 0, 0, 0.08);
+  --shadow-medium: rgba(0, 0, 0, 0.15);
+}
+body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem;}
+.container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
+h2{text-align:center;margin-bottom:1.35rem;font-size:1.2rem;}
+
+/* Form Elements */
+label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;}
+input,textarea,select{
+  width:100%;
+  padding:0.54rem;
+  margin-top:0.36rem;
+  border:1px solid var(--border-color);
+  border-radius:6px;
+  font-family:inherit;
+  font-size:0.81rem;
+  box-shadow: 0 1px 3px var(--shadow-light);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+input:focus, textarea:focus, select:focus {
+  outline:none;
+  border-color:var(--accent-color);
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+textarea{resize:vertical;}
+.row{display:flex;gap:0.9rem;flex-wrap:wrap;margin-bottom:0.72rem;}
+.row .half{flex:1;min-width:48%;}
+
+/* کارت‌ها */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border: 1px solid #e0e0e0;
+}
+
+/* Compact Barcode Display - Positioned Left */
+.compact-barcode-display {
+  padding: 0.45rem 0;
+  text-align: right;
+  margin-bottom: 0.9rem;
+  font-size: 0.765rem;
+  color: var(--primary-color);
+  font-weight: bold;
+}
+.compact-barcode-display span {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: var(--readonly-bg);
+  padding: 0.09rem 0.36rem;
+  border-radius: 4px;
+}
+
+/* Buttons */
+.button-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.35rem;
+}
+.button-group button {
+    flex: 1;
+}
+button{
+  padding:0.72rem;
+  width:100%;
+  color:var(--input-bg-color);
+  border:none;
+  border-radius:6px;
+  font-size:0.81rem;
+  cursor:pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  font-family:inherit;
+  box-shadow: 0 2px 4px var(--shadow-light);
+}
+button:hover{
+  transform: scale(1.02);
+  box-shadow: 0 4px 8px var(--shadow-medium);
+}
+#saveBtn{
+    background: var(--success-color); /* Fallback */
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+#deleteBtn{
+    background: var(--danger-color); /* Fallback */
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+#searchBtn{
+    background: var(--accent-color); /* Fallback */
+    background: linear-gradient(135deg, #3498db, #2980b9);
+}
+/* New CSS for loading state */
+.loading {
+    pointer-events: none; /* Disable clicks */
+    opacity: 0.7;
+    cursor: wait;
+}
+.loading i.fa-spin {
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Floating Message Box */
+.message-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    z-index: 1000;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+.message-container.visible {
+    opacity: 1;
+}
+.message-box{font-weight:bold;font-size:0.85rem;padding:0.6rem;border-radius:5px;box-shadow:0 2px 10px rgba(0,0,0,0.2);}
+.success{color:var(--success-color);background-color:rgba(46, 204, 113, 0.2);border:1px solid var(--success-color);}
+.error{color:var(--danger-color);background-color:rgba(231, 76, 60, 0.2);border:1px solid var(--danger-color);}
+
+/* Search Bar - Inline */
+.search-container{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap; align-items: flex-end;}
+.search-container input{
+    flex:1;
+    min-width:60%; 
+    margin-top:0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.search-container button {
+    margin-top: 0;
+    width: auto;
+    padding: 0.54rem 0.9rem;
+    font-size: 0.765rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.search-container button:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive */
+@media(max-width:500px){
+  body{padding:0.9rem;}
+  .container{padding:1.35rem;}
+  .row .half{min-width:100%;}
+  .search-container {flex-direction: column; align-items: stretch;}
+  .search-container input, .search-container button {width: 100%; margin-top: 0.72rem;}
+  .button-group { flex-direction: column; }
+  .compact-barcode-display { text-align: right; }
+}
+</style>
+---
+بفرمایید، کل کد کامل با تمام تغییرات اعمال شده برای شما ارسال می‌شود.
+
+```html
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>‌فرم ثبت اطلاعات ‌دیوایس‌</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
+    <style>
+/* Base Colors & Typography */
+:root {
+  --primary-color: #2c3e50;
+  --accent-color: #3498db;
+  --success-color: #2ecc71;
+  --danger-color: #e74c3c;
+  --bg-color: #f0f2f5;
+  --text-color: #333;
+  --input-bg-color: #fff;
+  --border-color: #ccc;
+  --readonly-bg: #eee;
+  --shadow-light: rgba(0, 0, 0, 0.08);
+  --shadow-medium: rgba(0, 0, 0, 0.15);
+}
+body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem;}
+.container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
+h2{text-align:center;margin-bottom:1.35rem;font-size:1.2rem;}
+
+/* Form Elements */
+label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;}
+input,textarea,select{
+  width:100%;
+  padding:0.54rem;
+  margin-top:0.36rem;
+  border:1px solid var(--border-color);
+  border-radius:6px;
+  font-family:inherit;
+  font-size:0.81rem;
+  box-shadow: 0 1px 3px var(--shadow-light);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+input:focus, textarea:focus, select:focus {
+  outline:none;
+  border-color:var(--accent-color);
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+textarea{resize:vertical;}
+.row{display:flex;gap:0.9rem;flex-wrap:wrap;margin-bottom:0.72rem;}
+.row .half{flex:1;min-width:48%;}
+
+/* کارت‌ها */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border: 1px solid #e0e0e0;
+}
+
+/* Compact Barcode Display - Positioned Left */
+.compact-barcode-display {
+  padding: 0.45rem 0;
+  text-align: right;
+  margin-bottom: 0.9rem;
+  font-size: 0.765rem;
+  color: var(--primary-color);
+  font-weight: bold;
+}
+.compact-barcode-display span {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: var(--readonly-bg);
+  padding: 0.09rem 0.36rem;
+  border-radius: 4px;
+}
+
+/* Buttons */
+.button-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.35rem;
+}
+.button-group button {
+    flex: 1;
+}
+button{
+  padding:0.72rem;
+  width:100%;
+  color:var(--input-bg-color);
+  border:none;
+  border-radius:6px;
+  font-size:0.81rem;
+  cursor:pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  font-family:inherit;
+  box-shadow: 0 2px 4px var(--shadow-light);
+}
+button:hover{
+  transform: scale(1.02);
+  box-shadow: 0 4px 8px var(--shadow-medium);
+}
+#saveBtn{
+    background: var(--success-color); /* Fallback */
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+#deleteBtn{
+    background: var(--danger-color); /* Fallback */
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+#searchBtn{
+    background: var(--accent-color); /* Fallback */
+    background: linear-gradient(135deg, #3498db, #2980b9);
+}
+/* New CSS for loading state */
+.loading {
+    pointer-events: none; /* Disable clicks */
+    opacity: 0.7;
+    cursor: wait;
+}
+.loading i.fa-spin {
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Floating Message Box */
+.message-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    z-index: 1000;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+.message-container.visible {
+    opacity: 1;
+}
+.message-box{font-weight:bold;font-size:0.85rem;padding:0.6rem;border-radius:5px;box-shadow:0 2px 10px rgba(0,0,0,0.2);}
+.success{color:var(--success-color);background-color:rgba(46, 204, 113, 0.2);border:1px solid var(--success-color);}
+.error{color:var(--danger-color);background-color:rgba(231, 76, 60, 0.2);border:1px solid var(--danger-color);}
+
+/* Search Bar - Inline */
+.search-container{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap; align-items: flex-end;}
+.search-container input{
+    flex:1;
+    min-width:60%; 
+    margin-top:0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.search-container button {
+    margin-top: 0;
+    width: auto;
+    padding: 0.54rem 0.9rem;
+    font-size: 0.765rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.search-container button:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive */
+@media(max-width:500px){
+  body{padding:0.9rem;}
+  .container{padding:1.35rem;}
+  .row .half{min-width:100%;}
+  .search-container {flex-direction: column; align-items: stretch;}
+  .search-container input, .search-container button {width: 100%; margin-top: 0.72rem;}
+  .button-group { flex-direction: column; }
+  .compact-barcode-display { text-align: right; }
+}
+</style>
+---
+بفرمایید، کل کد کامل با تمام تغییرات اعمال شده برای شما ارسال می‌شود.
+
+```html
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>‌فرم ثبت اطلاعات ‌دیوایس‌</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="[https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css](https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css)" rel="stylesheet" />
+    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+    <link rel="stylesheet" href="[https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css](https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css)"/>
+    <script src="[https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js](https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js)"></script>
+    <script src="[https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.js](https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.js)"></script>
+    <script src="[https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js](https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js)"></script>
+    <style>
+/* Base Colors & Typography */
+:root {
+  --primary-color: #2c3e50;
+  --accent-color: #3498db;
+  --success-color: #2ecc71;
+  --danger-color: #e74c3c;
+  --bg-color: #f0f2f5;
+  --text-color: #333;
+  --input-bg-color: #fff;
+  --border-color: #ccc;
+  --readonly-bg: #eee;
+  --shadow-light: rgba(0, 0, 0, 0.08);
+  --shadow-medium: rgba(0, 0, 0, 0.15);
+}
+body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem;}
+.container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
+h2{text-align:center;margin-bottom:1.35rem;font-size:1.2rem;}
+
+/* Form Elements */
+label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;}
+input,textarea,select{
+  width:100%;
+  padding:0.54rem;
+  margin-top:0.36rem;
+  border:1px solid var(--border-color);
+  border-radius:6px;
+  font-family:inherit;
+  font-size:0.81rem;
+  box-shadow: 0 1px 3px var(--shadow-light);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+input:focus, textarea:focus, select:focus {
+  outline:none;
+  border-color:var(--accent-color);
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+textarea{resize:vertical;}
+.row{display:flex;gap:0.9rem;flex-wrap:wrap;margin-bottom:0.72rem;}
+.row .half{flex:1;min-width:48%;}
+
+/* کارت‌ها */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 2px 6px rgba(0,0,0,0.1);
+  border: 1px solid #e0e0e0;
+}
+
+/* Compact Barcode Display - Positioned Left */
+.compact-barcode-display {
+  padding: 0.45rem 0;
+  text-align: right;
+  margin-bottom: 0.9rem;
+  font-size: 0.765rem;
+  color: var(--primary-color);
+  font-weight: bold;
+}
+.compact-barcode-display span {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: var(--readonly-bg);
+  padding: 0.09rem 0.36rem;
+  border-radius: 4px;
+}
+
+/* Buttons */
+.button-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.35rem;
+}
+.button-group button {
+    flex: 1;
+}
+button{
+  padding:0.72rem;
+  width:100%;
+  color:var(--input-bg-color);
+  border:none;
+  border-radius:6px;
+  font-size:0.81rem;
+  cursor:pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  font-family:inherit;
+  box-shadow: 0 2px 4px var(--shadow-light);
+}
+button:hover{
+  transform: scale(1.02);
+  box-shadow: 0 4px 8px var(--shadow-medium);
+}
+#saveBtn{
+    background: var(--success-color); /* Fallback */
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+#deleteBtn{
+    background: var(--danger-color); /* Fallback */
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+#searchBtn{
+    background: var(--accent-color); /* Fallback */
+    background: linear-gradient(135deg, #3498db, #2980b9);
+}
+/* New CSS for loading state */
+.loading {
+    pointer-events: none; /* Disable clicks */
+    opacity: 0.7;
+    cursor: wait;
+}
+.loading i.fa-spin {
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Floating Message Box */
+.message-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    z-index: 1000;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+.message-container.visible {
+    opacity: 1;
+}
+.message-box{font-weight:bold;font-size:0.85rem;padding:0.6rem;border-radius:5px;box-shadow:0 2px 10px rgba(0,0,0,0.2);}
+.success{color:var(--success-color);background-color:rgba(46, 204, 113, 0.2);border:1px solid var(--success-color);}
+.error{color:var(--danger-color);background-color:rgba(231, 76, 60, 0.2);border:1px solid var(--danger-color);}
+
+/* Search Bar - Inline */
+.search-container{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap; align-items: flex-end;}
+.search-container input{
+    flex:1;
+    min-width:60%; 
+    margin-top:0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.search-container button {
+    margin-top: 0;
+    width: auto;
+    padding: 0.54rem 0.9rem;
+    font-size: 0.765rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.search-container button:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive */
+@media(max-width:500px){
+  body{padding:0.9rem;}
+  .container{padding:1.35rem;}
+  .row .half{min-width:100%;}
+  .search-container {flex-direction: column; align-items: stretch;}
+  .search-container input, .search-container button {width: 100%; margin-top: 0.72rem;}
+  .button-group { flex-direction: column; }
+  .compact-barcode-display { text-align: right; }
+}
+</style>
+---
+بفرمایید، کل کد کامل با تمام تغییرات اعمال شده برای شما ارسال می‌شود.
+
+```html
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>‌فرم ثبت اطلاعات ‌دیوایس‌</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
+    <style>
+/* Base Colors & Typography */
+:root {
+  --primary-color: #2c3e50;
+  --accent-color: #3498db;
+  --success-color: #2ecc71;
+  --danger-color: #e74c3c;
+  --bg-color: #f0f2f5;
+  --text-color: #333;
+  --input-bg-color: #fff;
+  --border-color: #ccc;
+  --readonly-bg: #eee;
+  --shadow-light: rgba(0, 0, 0, 0.08);
+  --shadow-medium: rgba(0, 0, 0, 0.15);
+}
+body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem;}
+.container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
+h2{text-align:center;margin-bottom:1.35rem;font-size:1.2rem;}
+
+/* Form Elements */
+label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;}
+input,textarea,select{
+  width:100%;
+  padding:0.54rem;
+  margin-top:0.36rem;
+  border:1px solid var(--border-color);
+  border-radius:6px;
+  font-family:inherit;
+  font-size:0.81rem;
+  box-shadow: 0 1px 3px var(--shadow-light);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+input:focus, textarea:focus, select:focus {
+  outline:none;
+  border-color:var(--accent-color);
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+textarea{resize:vertical;}
+.row{display:flex;gap:0.9rem;flex-wrap:wrap;margin-bottom:0.72rem;}
+.row .half{flex:1;min-width:48%;}
+
+/* کارت‌ها */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border: 1px solid #e0e0e0;
+}
+
+/* Compact Barcode Display - Positioned Left */
+.compact-barcode-display {
+  padding: 0.45rem 0;
+  text-align: right;
+  margin-bottom: 0.9rem;
+  font-size: 0.765rem;
+  color: var(--primary-color);
+  font-weight: bold;
+}
+.compact-barcode-display span {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: var(--readonly-bg);
+  padding: 0.09rem 0.36rem;
+  border-radius: 4px;
+}
+
+/* Buttons */
+.button-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.35rem;
+}
+.button-group button {
+    flex: 1;
+}
+button{
+  padding:0.72rem;
+  width:100%;
+  color:var(--input-bg-color);
+  border:none;
+  border-radius:6px;
+  font-size:0.81rem;
+  cursor:pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  font-family:inherit;
+  box-shadow: 0 2px 4px var(--shadow-light);
+}
+button:hover{
+  transform: scale(1.02);
+  box-shadow: 0 4px 8px var(--shadow-medium);
+}
+#saveBtn{
+    background: var(--success-color); /* Fallback */
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+#deleteBtn{
+    background: var(--danger-color); /* Fallback */
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+#searchBtn{
+    background: var(--accent-color); /* Fallback */
+    background: linear-gradient(135deg, #3498db, #2980b9);
+}
+/* New CSS for loading state */
+.loading {
+    pointer-events: none; /* Disable clicks */
+    opacity: 0.7;
+    cursor: wait;
+}
+.loading i.fa-spin {
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Floating Message Box */
+.message-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    z-index: 1000;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+.message-container.visible {
+    opacity: 1;
+}
+.message-box{font-weight:bold;font-size:0.85rem;padding:0.6rem;border-radius:5px;box-shadow:0 2px 10px rgba(0,0,0,0.2);}
+.success{color:var(--success-color);background-color:rgba(46, 204, 113, 0.2);border:1px solid var(--success-color);}
+.error{color:var(--danger-color);background-color:rgba(231, 76, 60, 0.2);border:1px solid var(--danger-color);}
+
+/* Search Bar - Inline */
+.search-container{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap; align-items: flex-end;}
+.search-container input{
+    flex:1;
+    min-width:60%; 
+    margin-top:0;
+    box-shadow: 0
