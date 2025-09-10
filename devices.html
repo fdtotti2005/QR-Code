@@ -6,8 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@majidh1/jalalidatepicker/dist/jalali-datepicker.min.css">
-<script src="https://cdn.jsdelivr.net/npm/@majidh1/jalalidatepicker/dist/jalali-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
 <style>
 /* Base Colors & Typography */
 :root {
@@ -25,7 +24,7 @@
 }
 body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem;}
 .container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
-h2{text-align:center;margin-bottom:1.35rem;font-size:1.2rem;}
+h2{text-align:center;margin-bottom:1.35rem;font-size:1.8rem;}
 
 /* Form Elements */
 label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;}
@@ -205,7 +204,7 @@ button:hover{
 <label>ایراد</label>
 <input type="text" name="issue" required>
 <label>تاریخ گزارش ایراد</label>
-<input type="text" name="issueDate" id="issueDate" placeholder="تاریخ گزارش ایراد" data-jdp>
+<input type="text" name="issueDate" id="issueDate" placeholder="تاریخ گزارش ایراد">
 <label>شرح ایراد</label>
 <textarea name="issueDescription" rows="2"></textarea>
 <label>اقدامات انجام شده</label>
@@ -232,6 +231,8 @@ button:hover{
 </div>
 </div>
 
+<script src="https://unpkg.com/persian-date@1.1.0/dist/persian-date.min.js"></script>
+<script src="https://unpkg.com/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
 <script>
 const scriptURL = "https://script.google.com/macros/s/AKfycbwiFTGb_w8MRlEDdqqF6KqiTkRSm5yqqmLBs0OCWA665-engKt8dcwmqT4_QttYbnLgtw/exec";
 const urlParams = new URLSearchParams(window.location.search);
@@ -241,13 +242,14 @@ document.getElementById("barcodeId").value = barcodeId || "";
 // نمایش بصری بارکد
 document.getElementById("barcodeDisplay").textContent = barcodeId || "---";
 
-// فعال‌سازی تقویم شمسی جدید
-jalaliDatepicker.startWatch({
-  minDate: "1400/01/01",
-  maxDate: "1450/12/29",
-  autoHide: true,
-  separatorChar: "/",
-  changeMonthRotateYear: true
+// Initialize Persian Date Picker
+document.addEventListener('DOMContentLoaded', (event) => {
+    new PersianDatepicker({
+        target: '#issueDate',
+        format: 'YYYY/MM/DD',
+        autoClose: true,
+        persianDigit: true
+    });
 });
 
 function showMessage(type, message) {
