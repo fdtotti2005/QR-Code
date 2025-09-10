@@ -94,6 +94,7 @@ document.getElementById("barcodeId").value = barcodeId || "";
 // تابع عمومی برای پر کردن فرم
 function fillForm(data){
   if(!data) return;
+  // یک شرط ساده برای اطمینان از اینکه داده یک شیء با کلیدهای معتبر است
   if (Object.keys(data).length > 0) {
     for(const key in data){
       const el = document.querySelector("[name='"+key+"']");
@@ -113,7 +114,8 @@ if(barcodeId){
   fetch(`${scriptURL}?action=get&barcodeId=${encodeURIComponent(barcodeId)}`)
     .then(res=>res.json())
     .then(data=>{
-      fillForm(data);
+      console.log("Data received from script:", data); // خط اضافه شده برای عیب یابی
+      fillForm(data); 
     }).catch(err=>console.error("خطا در دریافت اطلاعات", err));
 }
 
@@ -150,6 +152,7 @@ document.getElementById("searchBtn").addEventListener("click", ()=>{
   fetch(`${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`)
     .then(res=>res.json())
     .then(data=>{
+      console.log("Data received from search:", data); // خط اضافه شده برای عیب یابی
       if(Object.keys(data).length > 0){
         fillForm(data);
         document.getElementById("barcodeId").value = data.barcodeId||"";
