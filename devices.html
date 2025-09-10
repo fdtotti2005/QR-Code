@@ -100,6 +100,19 @@ button:hover{
     background: var(--accent-color); /* Fallback */
     background: linear-gradient(135deg, #3498db, #2980b9);
 }
+/* New CSS for loading state */
+.loading {
+    pointer-events: none; /* Disable clicks */
+    opacity: 0.7;
+    cursor: wait;
+}
+.loading i.fa-spin {
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 
 /* Floating Message Box */
 .message-container {
@@ -274,6 +287,23 @@ function fillForm(data){
   }
 }
 
+// Functions to handle loading state
+function showLoading(buttonId, originalIconClass) {
+    const button = document.getElementById(buttonId);
+    button.dataset.originalIcon = originalIconClass;
+    button.classList.add('loading');
+    button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+}
+
+function hideLoading(buttonId) {
+    const button = document.getElementById(buttonId);
+    button.classList.remove('loading');
+    const originalIconClass = button.dataset.originalIcon;
+    if (originalIconClass) {
+        button.innerHTML = '<i class="' + originalIconClass + '"></i> ' + button.textContent.trim();
+    }
+}
+
 // پر کردن فرم با بارکد در زمان لود صفحه
 if(barcodeId){
   fetch(`${scriptURL}?action=get&barcodeId=${encodeURIComponent(barcodeId)}`)
@@ -290,11 +320,14 @@ if(barcodeId){
 document.getElementById("deviceForm").addEventListener("submit", e=>{
   e.preventDefault();
   const formData = new FormData(e.target);
+  showLoading('saveBtn', 'fa-solid fa-floppy-disk');
   fetch(scriptURL,{method:"POST",body:formData})
     .then(()=>{
       showMessage("success", "✅ عملیات موفقیت‌آمیز بود");
     }).catch(err=>{
       showMessage("error", "❌ خطا در پردازش اطلاعات");
+    }).finally(() => {
+        hideLoading('saveBtn');
     });
 });
 
@@ -302,6 +335,7 @@ document.getElementById("deviceForm").addEventListener("submit", e=>{
 document.getElementById("deleteBtn").addEventListener("click", ()=>{
   if(!barcodeId) return;
   if(!confirm("آیا مطمئن هستید؟")) return;
+  showLoading('deleteBtn', 'fa-solid fa-trash-can');
   fetch(`${scriptURL}?action=delete&barcodeId=${encodeURIComponent(barcodeId)}`)
     .then(()=>{
       document.getElementById("deviceForm").reset();
@@ -309,6 +343,8 @@ document.getElementById("deleteBtn").addEventListener("click", ()=>{
       showMessage("success", "✅ رکورد حذف شد");
     }).catch(err=>{
       showMessage("error", "❌ خطا در حذف رکورد");
+    }).finally(() => {
+        hideLoading('deleteBtn');
     });
 });
 
@@ -316,6 +352,7 @@ document.getElementById("deleteBtn").addEventListener("click", ()=>{
 document.getElementById("searchBtn").addEventListener("click", ()=>{
   const code = document.getElementById("searchCode").value.trim();
   if(!code) return showMessage("error", "❌ کد دیوایس وارد شود");
+  showLoading('searchBtn', 'fa-solid fa-magnifying-glass');
   fetch(`${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`)
     .then(res=>res.json())
     .then(data=>{
@@ -329,6 +366,8 @@ document.getElementById("searchBtn").addEventListener("click", ()=>{
     }).catch(err=>{
       console.error(err);
       showMessage("error", "❌ خطا در جستجو");
+    }).finally(() => {
+        hideLoading('searchBtn');
     });
 });
 </script>
