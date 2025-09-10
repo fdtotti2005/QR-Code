@@ -11,6 +11,7 @@ body{font-family:'Vazir',Tahoma,sans-serif;background:#f0f2f5;color:#333;margin:
 h2{text-align:center;margin-bottom:20px;font-size:18px;}
 label{display:block;margin-top:10px;font-weight:bold;font-size:14px;}
 input,textarea,select{width:100%;padding:8px;margin-top:4px;border:1px solid #ccc;border-radius:6px;font-family:inherit;font-size:14px;}
+input[type="text"][name="barcodeId"] {background-color: #eee; font-weight: bold;}
 textarea{resize:vertical;}
 .row{display:flex;gap:10px;flex-wrap:wrap;}
 .row .half{flex:1;min-width:48%;}
@@ -30,7 +31,8 @@ button{margin-top:15px;padding:10px;width:100%;color:black;border:none;border-ra
 <h2>فرم ثبت اطلاعات دیوایس</h2>
 
 <form id="deviceForm">
-<input type="text" id="barcodeId" name="barcodeId">
+<label>بارکد</label>
+<input type="text" id="barcodeId" name="barcodeId" readonly>
 
 <div class="row">
 <div class="half">
@@ -164,4 +166,3 @@ document.getElementById("searchBtn").addEventListener("click", ()=>{
 </script>
 </body>
 </html>
-
