@@ -26,8 +26,8 @@
   --shadow-medium: rgba(0, 0, 0, 0.15);
 }
 body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem;}
-.container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
-h2{text-align:center;margin-bottom:1.35rem;font-size:1.5rem;}
+.container{max-width:650px;margin:auto;background:transparent;padding:0;border-radius:10px;}
+h2{text-align:center;margin-bottom:1.35rem;font-size:1.2rem;color:var(--primary-color);}
 
 /* Card Style */
 .card {
@@ -175,10 +175,32 @@ button:hover{
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Center content inside cards */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.card-content .row {
+    width: 100%;
+}
+.card-content .half {
+    flex: 1 1 48%; /* Adjust for responsiveness */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.card-content label {
+    text-align: right;
+    width: 100%;
+}
+
 /* Responsive */
 @media(max-width:500px){
   body{padding:0.9rem;}
-  .container{padding:1.35rem;}
+  .container{padding:0;}
   .row .half{min-width:100%;}
   .search-container {flex-direction: column; align-items: stretch;}
   .search-container input, .search-container button {width: 100%; margin-top: 0.72rem;}
@@ -191,69 +213,84 @@ button:hover{
 <div class="container">
 <h2>فرم ثبت اطلاعات دیوایس‌های معیوب</h2>
 
-<div class="card">
-  <h3>اطلاعات دیوایس</h3>
-  <div class="compact-barcode-display">
-    بارکد فعلی: <span id="barcodeDisplay">---</span>
-  </div>
-  <input type="hidden" id="barcodeId" name="barcodeId">
+<form id="deviceForm">
 
-  <form id="deviceForm">
-    <div class="row">
-      <div class="half">
-        <label>نام دیوایس</label>
-        <select name="deviceName" id="deviceName" required>
-          <option value="">-- انتخاب کنید --</option>
-          <option value="Multi Media">Multi Media</option>
-          <option value="Multi Media Metal">Multi Media Metal</option>
-          <option value="Soul">Soul</option>
-          <option value="Smart Player">Smart Player</option>
-          <option value="TDA">TDA</option>
-          <option value="RFID">RFID</option>
-          <option value="Serial GSM">Serial GSM</option>
-          <option value="Smart GSM">Smart GSM</option>
-          <option value="MP3">MP3</option>
-          <option value="IR">IR</option>
-          <option value="B1">B1</option>
-          <option value="Smart Plug">Smart Plug</option>
-        </select>
+  <div class="card">
+    <h3>اطلاعات دیوایس</h3>
+    <div class="card-content">
+      <div class="compact-barcode-display">
+        بارکد فعلی: <span id="barcodeDisplay">---</span>
       </div>
-      <div class="half">
-        <label>کد دیوایس</label>
-        <input type="text" name="deviceCode" required>
+      <input type="hidden" id="barcodeId" name="barcodeId">
+
+      <div class="row">
+        <div class="half">
+          <label>نام دیوایس</label>
+          <select name="deviceName" id="deviceName" required>
+            <option value="">-- انتخاب کنید --</option>
+            <option value="Multi Media">Multi Media</option>
+            <option value="Multi Media Metal">Multi Media Metal</option>
+            <option value="Soul">Soul</option>
+            <option value="Smart Player">Smart Player</option>
+            <option value="TDA">TDA</option>
+            <option value="RFID">RFID</option>
+            <option value="Serial GSM">Serial GSM</option>
+            <option value="Smart GSM">Smart GSM</option>
+            <option value="MP3">MP3</option>
+            <option value="IR">IR</option>
+            <option value="B1">B1</option>
+            <option value="Smart Plug">Smart Plug</option>
+          </select>
+        </div>
+        <div class="half">
+          <label>کد دیوایس</label>
+          <input type="text" name="deviceCode" required>
+        </div>
       </div>
     </div>
-
-    <label>ایراد</label>
-    <input type="text" name="issue" required>
-    <label>تاریخ گزارش ایراد</label>
-    <input type="text" name="issueDate" id="issueDate" placeholder="تاریخ گزارش ایراد">
-    <label>شرح ایراد</label>
-    <textarea name="issueDescription" rows="2"></textarea>
-    <label>اقدامات انجام شده</label>
-    <textarea name="actionsTaken" rows="2"></textarea>
-    <label>وضعیت فعلی</label>
-    <input type="text" name="currentStatus">
-    <label>توضیحات تکمیلی</label>
-    <textarea name="notes" rows="2"></textarea>
-  </form>
-</div>
-
-<div class="card">
-  <h3>عملیات</h3>
-  <div class="button-group">
-    <button type="submit" form="deviceForm" id="saveBtn"><i class="fa-solid fa-floppy-disk"></i> ثبت/ویرایش</button>
-    <button type="button" id="deleteBtn"><i class="fa-solid fa-trash-can"></i> حذف</button>
   </div>
-</div>
 
-<div class="card">
-  <h3>جستجو</h3>
-  <div class="search-container">
-    <input type="text" id="searchCode" placeholder="جستجو بر اساس کد دیوایس">
-    <button type="button" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i> جستجو</button>
+  <div class="card">
+    <h3>ایرادات</h3>
+    <div class="card-content">
+      <label>ایراد</label>
+      <input type="text" name="issue" required>
+      <label>تاریخ گزارش ایراد</label>
+      <input type="text" name="issueDate" id="issueDate" placeholder="تاریخ گزارش ایراد">
+      <label>شرح ایراد</label>
+      <textarea name="issueDescription" rows="2"></textarea>
+    </div>
   </div>
-</div>
+
+  <div class="card">
+    <h3>اقدامات و توضیحات</h3>
+    <div class="card-content">
+      <label>اقدامات انجام شده</label>
+      <textarea name="actionsTaken" rows="2"></textarea>
+      <label>وضعیت فعلی</label>
+      <input type="text" name="currentStatus">
+      <label>توضیحات تکمیلی</label>
+      <textarea name="notes" rows="2"></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>عملیات</h3>
+    <div class="button-group">
+      <button type="submit" id="saveBtn"><i class="fa-solid fa-floppy-disk"></i> ثبت/ویرایش</button>
+      <button type="button" id="deleteBtn"><i class="fa-solid fa-trash-can"></i> حذف</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>جستجو</h3>
+    <div class="search-container">
+      <input type="text" id="searchCode" placeholder="جستجو بر اساس کد دیوایس">
+      <button type="button" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i> جستجو</button>
+    </div>
+  </div>
+
+</form>
 
 <div class="message-container" id="messageContainer">
     <div class="message-box success" id="successMsg"></div>
