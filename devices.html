@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>‌فرم ثبت اطلاعات ‌دیوایس‌</title>
+<title>فرم ثبت اطلاعات دیوایس</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,7 +11,6 @@
 <script src="https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
 <style>
-/* Base Colors & Typography */
 :root {
   --primary-color: #2c3e50;
   --accent-color: #3498db;
@@ -27,20 +26,21 @@
 }
 body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem;}
 .container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
-h2{text-align:center;margin-bottom:1.35rem;font-size:1.2rem;}
+h2{text-align:center;margin-bottom:1.35rem;font-size:1.5rem;}
 
 /* Form Elements */
-label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;}
+label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;text-align:center;}
 input,textarea,select{
-  width:100%;
+  width:90%;
+  margin:0.36rem auto;
   padding:0.54rem;
-  margin-top:0.36rem;
   border:1px solid var(--border-color);
   border-radius:6px;
   font-family:inherit;
   font-size:0.81rem;
   box-shadow: 0 1px 3px var(--shadow-light);
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  display:block;
 }
 input:focus, textarea:focus, select:focus {
   outline:none;
@@ -48,7 +48,7 @@ input:focus, textarea:focus, select:focus {
   box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
 }
 textarea{resize:vertical;}
-.row{display:flex;gap:0.9rem;flex-wrap:wrap;margin-bottom:0.72rem;}
+.row{display:flex;gap:0.9rem;flex-wrap:wrap;margin-bottom:0.72rem;justify-content:center;}
 .row .half{flex:1;min-width:48%;}
 
 /* کارت‌ها */
@@ -59,9 +59,10 @@ textarea{resize:vertical;}
   margin-bottom: 1rem;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   border: 1px solid #e0e0e0;
+  text-align:center;
 }
 
-/* Compact Barcode Display - Positioned Left */
+/* Compact Barcode Display */
 .compact-barcode-display {
   padding: 0.45rem 0;
   text-align: right;
@@ -103,69 +104,53 @@ button:hover{
   box-shadow: 0 4px 8px var(--shadow-medium);
 }
 #saveBtn{
-    background: var(--success-color); /* Fallback */
     background: linear-gradient(135deg, #2ecc71, #27ae60);
 }
 #deleteBtn{
-    background: var(--danger-color); /* Fallback */
     background: linear-gradient(135deg, #e74c3c, #c0392b);
 }
 #searchBtn{
-    background: var(--accent-color); /* Fallback */
     background: linear-gradient(135deg, #3498db, #2980b9);
 }
-/* New CSS for loading state */
-.loading {
-    pointer-events: none; /* Disable clicks */
-    opacity: 0.7;
-    cursor: wait;
-}
-.loading i.fa-spin {
-    animation: spin 1s linear infinite;
-}
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
 
-/* Floating Message Box */
+/* Loading */
+.loading {pointer-events: none; opacity: 0.7; cursor: wait;}
+.loading i.fa-spin {animation: spin 1s linear infinite;}
+@keyframes spin {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+
+/* Toast Notification */
 .message-container {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
+    bottom: 20px;
+    right: 20px;
+    width: 250px;
     z-index: 1000;
     text-align: center;
     pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
 }
-.message-container.visible {
-    opacity: 0.9;
+.message-box{
+    font-weight:bold;
+    font-size:0.85rem;
+    padding:0.6rem;
+    border-radius:5px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.2);
+    opacity:0;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+    margin-bottom:0.4rem;
 }
-.message-box{font-weight:bold;font-size:0.85rem;padding:0.6rem;border-radius:5px;box-shadow:0 2px 10px rgba(0,0,0,0.2);}
-.success{color:var(--success-color);background-color:rgba(46, 204, 113, 0.1);border:1px solid var(--success-color);}
-.error{color:var(--danger-color);background-color:rgba(231, 76, 60, 0.1);border:1px solid var(--danger-color);}
+.message-container.show .message-box{
+    opacity:1;
+    transform: translateY(0);
+}
+.success{color:var(--success-color);background-color:rgba(46,204,113,0.1);border:1px solid var(--success-color);}
+.error{color:var(--danger-color);background-color:rgba(231,76,60,0.1);border:1px solid var(--danger-color);}
 
-/* Search Bar - Inline */
+/* Search Bar */
 .search-container{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap; align-items: flex-end;}
-.search-container input{
-    flex:1;
-    min-width:60%; 
-    margin-top:0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-.search-container button {
-    margin-top: 0;
-    width: auto;
-    padding: 0.54rem 0.9rem;
-    font-size: 0.765rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.search-container button:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
+.search-container input{flex:1;min-width:60%; margin-top:0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);}
+.search-container button {margin-top:0; width:auto; padding:0.54rem 0.9rem; font-size:0.765rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
+.search-container button:hover {box-shadow: 0 4px 8px rgba(0,0,0,0.2);}
 
 /* Responsive */
 @media(max-width:500px){
@@ -263,131 +248,96 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbwiFTGb_w8MRlEDdqqF6K
 const urlParams = new URLSearchParams(window.location.search);
 const barcodeId = urlParams.get("barcodeId");
 document.getElementById("barcodeId").value = barcodeId || "";
+document.getElementById("barcodeDisplay").textContent = barcodeId || "";
 
-// نمایش بصری بارکد
-document.getElementById("barcodeDisplay").textContent = barcodeId || "---";
-
-// فعال‌سازی تاریخ شمسی
+// تاریخ شمسی
 $(document).ready(function() {
-  $("#issueDate").persianDatepicker({
-    format: "YYYY/MM/DD",
-    autoClose: true,
-    initialValue: false,
-    calendar: {
-      persian: {
-        locale: "fa"
-      }
-    }
-  });
+  $("#issueDate").persianDatepicker({format:"YYYY/MM/DD",autoClose:true,initialValue:false});
 });
 
+// Toast
 function showMessage(type, message) {
-    const messageContainer = document.getElementById("messageContainer");
+    const container = document.getElementById("messageContainer");
     const successMsg = document.getElementById("successMsg");
     const errorMsg = document.getElementById("errorMsg");
-    if (!successMsg || !errorMsg || !messageContainer) return;
-    const targetMsg = (type === "success") ? successMsg : errorMsg;
-    const otherMsg = (type === "success") ? errorMsg : successMsg;
+    const targetMsg = (type==="success")? successMsg : errorMsg;
+    const otherMsg = (type==="success")? errorMsg : successMsg;
     targetMsg.textContent = message;
-    messageContainer.classList.add("visible");
-    targetMsg.style.display = 'block';
-    otherMsg.style.display = 'none';
-    setTimeout(() => {
-        messageContainer.classList.remove("visible");
-    }, 3000);
+    container.classList.add("show");
+    targetMsg.style.display='block';
+    otherMsg.style.display='none';
+    setTimeout(()=>{ container.classList.remove("show"); },3000);
 }
 
 function fillForm(data){
   if(!data) return;
-  if (Object.keys(data).length > 0) {
+  if(Object.keys(data).length>0){
     for(const key in data){
       const el = document.querySelector("[name='"+key+"']");
-      if(el){
-          if(el.type === "radio" || el.type === "checkbox"){
-             el.checked = (el.value === data[key]);
-          } else {
-             el.value = data[key]||"";
-          }
-      }
+      if(el){ el.value=data[key]||""; }
     }
-    document.getElementById("barcodeDisplay").textContent = data.barcodeId || "---";
-    showMessage("success", "✅ رکورد پیدا شد");
-  } else {
-    showMessage("error", "❌ رکورد پیدا نشد");
-  }
+    document.getElementById("barcodeDisplay").textContent=data.barcodeId||"---";
+    showMessage("success","✅ رکورد پیدا شد");
+  } else { showMessage("error","❌ رکورد پیدا نشد"); }
 }
 
-function showLoading(buttonId, originalIconClass) {
-    const button = document.getElementById(buttonId);
-    button.dataset.originalIcon = originalIconClass;
-    button.classList.add('loading');
-    button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+function showLoading(btnId,iconClass){
+  const btn=document.getElementById(btnId);
+  btn.dataset.originalIcon=iconClass;
+  btn.classList.add('loading');
+  btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i>';
 }
-function hideLoading(buttonId) {
-    const button = document.getElementById(buttonId);
-    button.classList.remove('loading');
-    const originalIconClass = button.dataset.originalIcon;
-    if (originalIconClass) {
-        button.innerHTML = '<i class="' + originalIconClass + '"></i> ' + button.textContent.trim();
-    }
+function hideLoading(btnId){
+  const btn=document.getElementById(btnId);
+  btn.classList.remove('loading');
+  const iconClass=btn.dataset.originalIcon;
+  if(iconClass) btn.innerHTML='<i class="'+iconClass+'"></i> '+btn.textContent.trim();
 }
 
 if(barcodeId){
   fetch(`${scriptURL}?action=get&barcodeId=${encodeURIComponent(barcodeId)}`)
     .then(res=>res.json())
     .then(data=>{ fillForm(data); })
-    .catch(err=>{
-      console.error("خطا در دریافت اطلاعات", err);
-      showMessage("error", "❌ خطا در دریافت اطلاعات");
-    });
+    .catch(err=>{ console.error(err); showMessage("error","❌ خطا در دریافت اطلاعات"); });
 }
 
 document.getElementById("deviceForm").addEventListener("submit", e=>{
   e.preventDefault();
   const formData = new FormData(e.target);
-  showLoading('saveBtn', 'fa-solid fa-floppy-disk');
+  showLoading('saveBtn','fa-solid fa-floppy-disk');
   fetch(scriptURL,{method:"POST",body:formData})
-    .then(()=>{ showMessage("success", "✅ عملیات موفقیت‌آمیز بود"); })
-    .catch(err=>{ showMessage("error", "❌ خطا در پردازش اطلاعات"); })
-    .finally(() => { hideLoading('saveBtn'); });
+    .then(()=>{ showMessage("success","✅ عملیات موفقیت‌آمیز بود"); })
+    .catch(()=>{ showMessage("error","❌ خطا در پردازش اطلاعات"); })
+    .finally(()=>{ hideLoading('saveBtn'); });
 });
 
 document.getElementById("deleteBtn").addEventListener("click", ()=>{
   if(!barcodeId) return;
   if(!confirm("آیا مطمئن هستید؟")) return;
-  showLoading('deleteBtn', 'fa-solid fa-trash-can');
+  showLoading('deleteBtn','fa-solid fa-trash-can');
   fetch(`${scriptURL}?action=delete&barcodeId=${encodeURIComponent(barcodeId)}`)
     .then(()=>{
       document.getElementById("deviceForm").reset();
-      document.getElementById("barcodeDisplay").textContent = "---";
-      showMessage("success", "✅ رکورد حذف شد");
-    }).catch(err=>{
-      showMessage("error", "❌ خطا در حذف رکورد");
-    }).finally(() => {
-        hideLoading('deleteBtn');
-    });
+      document.getElementById("barcodeDisplay").textContent="---";
+      showMessage("success","✅ رکورد حذف شد");
+    }).catch(()=>{ showMessage("error","❌ خطا در حذف رکورد"); })
+    .finally(()=>{ hideLoading('deleteBtn'); });
 });
 
 document.getElementById("searchBtn").addEventListener("click", ()=>{
   const code = document.getElementById("searchCode").value.trim();
-  if(!code) return showMessage("error", "❌ کد دیوایس وارد شود");
-  showLoading('searchBtn', 'fa-solid fa-magnifying-glass');
+  if(!code) return showMessage("error","❌ کد دیوایس وارد شود");
+  showLoading('searchBtn','fa-solid fa-magnifying-glass');
   fetch(`${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`)
     .then(res=>res.json())
     .then(data=>{
-      if(Object.keys(data).length > 0){
+      if(Object.keys(data).length>0){
         fillForm(data);
-        document.getElementById("barcodeId").value = data.barcodeId||"";
-        showMessage("success", "✅ رکورد پیدا شد");
-      }else{
-        showMessage("error", "❌ رکورد پیدا نشد");
-      }
-    }).catch(err=>{
-      console.error(err);
-      showMessage("error", "❌ خطا در جستجو");
-    }).finally(() => {
-        hideLoading('searchBtn');
-    });
+        document.getElementById("barcodeId").value=data.barcodeId||"";
+        showMessage("success","✅ رکورد پیدا شد");
+      }else{ showMessage("error","❌ رکورد پیدا نشد"); }
+    }).catch(()=>{ showMessage("error","❌ خطا در جستجو"); })
+    .finally(()=>{ hideLoading('searchBtn'); });
 });
 </script>
 </body>
