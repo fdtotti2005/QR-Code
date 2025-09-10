@@ -31,19 +31,19 @@ textarea{resize:vertical;}
 .row{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:0.8rem;}
 .row .half{flex:1;min-width:48%;}
 
-/* Barcode Display */
+/* Compact Barcode Display - Positioned Right */
 .compact-barcode-display {
-  padding: 0.5rem 0;
-  text-align: center;
+  padding: 0.2rem 0;
+  text-align: left; /* Changed to left for RTL */
   margin-bottom: 1rem;
-  font-size: 1.1rem;
+  font-size: 0.85rem; /* Smaller font size */
   color: var(--primary-color);
   font-weight: bold;
 }
 .compact-barcode-display span {
   font-family: 'Courier New', Courier, monospace;
   background-color: var(--readonly-bg);
-  padding: 0.2rem 0.5rem;
+  padding: 0.1rem 0.4rem;
   border-radius: 4px;
 }
 
@@ -63,12 +63,23 @@ button:hover{transform: scale(1.02);}
 .error{color:var(--danger-color);background-color:rgba(231, 76, 60, 0.1);border:1px solid var(--danger-color);}
 .message-box.visible{opacity:1;}
 
-/* Search Bar */
-.search-container{margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap;}
-.search-container input{flex:1;min-width:60%;}
+/* Search Bar - Inline */
+.search-container{margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap; align-items: flex-end;} /* Added align-items */
+.search-container input{flex:1;min-width:60%; margin-top:0;} /* Removed margin-top for input */
+.search-container button {
+    margin-top: 0; /* Align button with input */
+    width: auto; /* Allow button to size itself */
+    padding: 0.6rem 1rem; /* Adjust padding for smaller button */
+    font-size: 0.85rem;
+}
 
 /* Responsive */
-@media(max-width:500px){.row .half{min-width:100%;}.search-container input{min-width:100%;}body{padding:1rem;}}
+@media(max-width:500px){
+  .row .half{min-width:100%;}
+  .search-container {flex-direction: column; align-items: stretch;}
+  .search-container input, .search-container button {width: 100%; margin-top: 0.8rem;}
+  body{padding:1rem;}
+}
 </style>
 </head>
 <body>
