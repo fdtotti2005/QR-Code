@@ -35,41 +35,7 @@ body{
   border-radius:10px;
   box-shadow:0 0 0.5rem rgba(0,0,0,0.1);
 }
-h2{
-  text-align:center;
-  margin-bottom:1.35rem;
-  font-size:1.2rem;
-}
-
-/* Form Elements */
-label{
-  display:block;
-  margin-top:0.72rem;
-  font-weight:bold;
-  font-size:0.81rem;
-  text-align:right;
-}
-input, textarea, select{
-  width:90%;
-  padding:0.54rem;
-  margin:0.36rem auto 0 auto;
-  border:1px solid var(--border-color);
-  border-radius:6px;
-  font-family:inherit;
-  font-size:0.81rem;
-  box-shadow:0 1px 3px var(--shadow-light);
-  display:block;
-  text-align:left;
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
-}
-input:focus, textarea:focus, select:focus{
-  outline:none;
-  border-color:var(--accent-color);
-  box-shadow:0 0 5px rgba(52,152,219,0.5);
-}
-textarea{resize:vertical;}
-.row{display:flex;gap:0.9rem;flex-wrap:wrap;margin-bottom:0.72rem;}
-.row .half{flex:1;min-width:48%;}
+h2{text-align:center;margin-bottom:1.35rem;font-size:1.2rem;}
 
 /* کارت‌ها */
 .card{
@@ -79,8 +45,38 @@ textarea{resize:vertical;}
   margin-bottom:1rem;
   box-shadow:0 2px 6px rgba(0,0,0,0.1);
   border:1px solid #e0e0e0;
-  text-align:center; /* تمام فیلدها وسط کارت */
 }
+
+/* فیلد و label */
+.field-container{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center; /* وسط کارت */
+  margin-bottom:0.8rem;
+}
+label{
+  align-self:flex-end; /* سمت راست کارت */
+  font-weight:bold;
+  margin-bottom:0.3rem;
+  font-size:0.81rem;
+}
+input,textarea,select{
+  width:90%;
+  padding:0.54rem;
+  border:1px solid var(--border-color);
+  border-radius:6px;
+  font-family:inherit;
+  font-size:0.81rem;
+  box-shadow:0 1px 3px var(--shadow-light);
+  text-align:right; /* متن داخل فیلد سمت راست */
+}
+input:focus, textarea:focus, select:focus{
+  outline:none;
+  border-color:var(--accent-color);
+  box-shadow:0 0 5px rgba(52,152,219,0.5);
+}
+textarea{resize:vertical;}
 
 /* Compact Barcode Display */
 .compact-barcode-display{
@@ -88,7 +84,7 @@ textarea{resize:vertical;}
   text-align:right;
   margin-bottom:0.9rem;
   font-size:0.765rem;
-  color:var(--primary-color);
+  color: var(--primary-color);
   font-weight:bold;
 }
 .compact-barcode-display span{
@@ -121,29 +117,14 @@ button:hover{
   transform: scale(1.02);
   box-shadow:0 4px 8px var(--shadow-medium);
 }
-#saveBtn{
-  background: linear-gradient(135deg,#2ecc71,#27ae60);
-}
-#deleteBtn{
-  background: linear-gradient(135deg,#e74c3c,#c0392b);
-}
-#searchBtn{
-  background: linear-gradient(135deg,#3498db,#2980b9);
-}
+#saveBtn{background: linear-gradient(135deg,#2ecc71,#27ae60);}
+#deleteBtn{background: linear-gradient(135deg,#e74c3c,#c0392b);}
+#searchBtn{background: linear-gradient(135deg,#3498db,#2980b9);}
 
 /* Loading */
-.loading{
-  pointer-events:none;
-  opacity:0.7;
-  cursor:wait;
-}
-.loading i.fa-spin{
-  animation: spin 1s linear infinite;
-}
-@keyframes spin{
-  0%{transform:rotate(0deg);}
-  100%{transform:rotate(360deg);}
-}
+.loading{pointer-events:none;opacity:0.7;cursor:wait;}
+.loading i.fa-spin{animation: spin 1s linear infinite;}
+@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
 
 /* Floating Message Box */
 .message-container{
@@ -177,31 +158,17 @@ button:hover{
   flex-wrap:wrap;
   align-items:flex-end;
 }
-.search-container input{
-  flex:1;
-  min-width:60%;
-  margin-top:0;
-  box-shadow:0 1px 3px rgba(0,0,0,0.1);
-}
-.search-container button{
-  margin-top:0;
-  width:auto;
-  padding:0.54rem 0.9rem;
-  font-size:0.765rem;
-  box-shadow:0 2px 4px rgba(0,0,0,0.1);
-}
-.search-container button:hover{
-  box-shadow:0 4px 8px rgba(0,0,0,0.2);
-}
+.search-container input{flex:1;min-width:60%;margin-top:0;box-shadow:0 1px 3px rgba(0,0,0,0.1);}
+.search-container button{margin-top:0;width:auto;padding:0.54rem 0.9rem;font-size:0.765rem;box-shadow:0 2px 4px rgba(0,0,0,0.1);}
+.search-container button:hover{box-shadow:0 4px 8px rgba(0,0,0,0.2);}
 
 /* Responsive */
 @media(max-width:500px){
   body{padding:0.9rem;}
   .container{padding:1.35rem;}
-  .row .half{min-width:100%;}
+  .button-group{flex-direction:column;}
   .search-container{flex-direction:column;align-items:stretch;}
   .search-container input,.search-container button{width:100%;margin-top:0.72rem;}
-  .button-group{flex-direction:column;}
 }
 </style>
 </head>
@@ -217,50 +184,60 @@ button:hover{
 
 <!-- کارت ۱ -->
 <div class="card">
-  <div class="row">
-    <div class="half">
-      <label>نام دیوایس</label>
-      <select name="deviceName" id="deviceName" required>
-        <option value="">-- انتخاب کنید --</option>
-        <option value="Multi Media">Multi Media</option>
-        <option value="Multi Media Metal">Multi Media Metal</option>
-        <option value="Soul">Soul</option>
-        <option value="Smart Player">Smart Player</option>
-        <option value="TDA">TDA</option>
-        <option value="RFID">RFID</option>
-        <option value="Serial GSM">Serial GSM</option>
-        <option value="Smart GSM">Smart GSM</option>
-        <option value="MP3">MP3</option>
-        <option value="IR">IR</option>
-        <option value="B1">B1</option>
-        <option value="Smart Plug">Smart Plug</option>
-      </select>
-    </div>
-    <div class="half">
-      <label>کد دیوایس</label>
-      <input type="text" name="deviceCode" required>
-    </div>
+  <div class="field-container">
+    <label>نام دیوایس</label>
+    <select name="deviceName" id="deviceName" required>
+      <option value="">-- انتخاب کنید --</option>
+      <option value="Multi Media">Multi Media</option>
+      <option value="Multi Media Metal">Multi Media Metal</option>
+      <option value="Soul">Soul</option>
+      <option value="Smart Player">Smart Player</option>
+      <option value="TDA">TDA</option>
+      <option value="RFID">RFID</option>
+      <option value="Serial GSM">Serial GSM</option>
+      <option value="Smart GSM">Smart GSM</option>
+      <option value="MP3">MP3</option>
+      <option value="IR">IR</option>
+      <option value="B1">B1</option>
+      <option value="Smart Plug">Smart Plug</option>
+    </select>
+  </div>
+  <div class="field-container">
+    <label>کد دیوایس</label>
+    <input type="text" name="deviceCode" required>
   </div>
 </div>
 
 <!-- کارت ۲ -->
 <div class="card">
-  <label>ایراد</label>
-  <input type="text" name="issue" required>
-  <label>تاریخ گزارش ایراد</label>
-  <input type="text" name="issueDate" placeholder="تاریخ گزارش ایراد">
-  <label>شرح ایراد</label>
-  <textarea name="issueDescription" rows="2"></textarea>
+  <div class="field-container">
+    <label>ایراد</label>
+    <input type="text" name="issue" required>
+  </div>
+  <div class="field-container">
+    <label>تاریخ گزارش ایراد</label>
+    <input type="text" name="issueDate" placeholder="تاریخ گزارش ایراد">
+  </div>
+  <div class="field-container">
+    <label>شرح ایراد</label>
+    <textarea name="issueDescription" rows="2"></textarea>
+  </div>
 </div>
 
 <!-- کارت ۳ -->
 <div class="card">
-  <label>اقدامات انجام شده</label>
-  <textarea name="actionsTaken" rows="2"></textarea>
-  <label>وضعیت فعلی</label>
-  <input type="text" name="currentStatus">
-  <label>توضیحات تکمیلی</label>
-  <textarea name="notes" rows="2"></textarea>
+  <div class="field-container">
+    <label>اقدامات انجام شده</label>
+    <textarea name="actionsTaken" rows="2"></textarea>
+  </div>
+  <div class="field-container">
+    <label>وضعیت فعلی</label>
+    <input type="text" name="currentStatus">
+  </div>
+  <div class="field-container">
+    <label>توضیحات تکمیلی</label>
+    <textarea name="notes" rows="2"></textarea>
+  </div>
 </div>
 
 <div class="button-group">
