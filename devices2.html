@@ -376,9 +376,9 @@ document.getElementById("searchBtn").addEventListener("click", function(){
       if(Object.keys(data).length > 0){
         fillForm(data);
         document.getElementById("barcodeId").value = data.barcodeId||"";
-        showMessage("success", "✅ رکورد پیدا شد");
+        showMessage("success", "✅ اطلاعات دوایس پیدا شد");
       }else{
-        showMessage("error", "❌ رکورد پیدا نشد");
+        showMessage("error", "❌ دیوایسی با این اطلاعات پیدا نشد");
       }
     }).catch(err=>{
       console.error(err);
