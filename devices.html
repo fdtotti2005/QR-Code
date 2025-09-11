@@ -6,10 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- تقویم شمسی دقیق -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/md.bootstrappersiandatetimepicker@latest/dist/jquery.md.bootstrap.datetimepicker.style.css">
+<!-- فقط persian-datepicker -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css"/>
 <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/md.bootstrappersiandatetimepicker@latest/dist/jquery.md.bootstrap.datetimepicker.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
 <style>
 :root {
   --primary-color: #2c3e50;
@@ -71,7 +72,6 @@ button:hover{transform:scale(1.02);box-shadow:0 4px 8px var(--shadow-medium);}
   بارکد فعلی: <span id="barcodeDisplay">---</span>
 </div>
 <input type="hidden" id="barcodeId" name="barcodeId">
-<!-- کارت ۱: نام و کد دیوایس -->
 <div class="card">
   <div class="fields-center">
     <label>نام دیوایس</label>
@@ -94,7 +94,6 @@ button:hover{transform:scale(1.02);box-shadow:0 4px 8px var(--shadow-medium);}
     <input type="text" name="deviceCode" required>
   </div>
 </div>
-<!-- کارت ۲: ایراد -->
 <div class="card">
   <div class="fields-center">
     <label>ایراد</label>
@@ -105,7 +104,6 @@ button:hover{transform:scale(1.02);box-shadow:0 4px 8px var(--shadow-medium);}
     <textarea name="issueDescription" rows="2"></textarea>
   </div>
 </div>
-<!-- کارت ۳: اقدامات و توضیحات -->
 <div class="card">
   <div class="fields-center">
     <label>اقدامات انجام شده</label>
@@ -135,17 +133,17 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbwiFTGb_w8MRlEDdqqF6K
 const urlParams = new URLSearchParams(window.location.search);
 const barcodeId = urlParams.get("barcodeId");
 document.getElementById("barcodeId").value = barcodeId || "";
-// نمایش بصری بارکد
 document.getElementById("barcodeDisplay").textContent = barcodeId || "---";
-// فعال‌سازی تقویم شمسی دقیق
+// فقط persian-datepicker با تنظیمات اصلاح‌شده
 $(document).ready(function() {
-  $("#issueDate").MdPersianDateTimePicker({
-    targetTextSelector: "#issueDate",
-    englishNumber: true,
-    enableTimePicker: false,
-    textFormat: "yyyy/MM/dd",
-    selectedDateToShow: "",
-    calendarType: "persian"
+  $("#issueDate").persianDatepicker({
+    format: "YYYY/MM/DD",
+    autoClose: true,
+    initialValue: false,
+    initialValueType: "gregorian",
+    calendar: {
+      persian: {locale: "fa"}
+    }
   });
 });
 function showMessage(type, message) {
