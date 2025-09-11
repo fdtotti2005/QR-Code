@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -8,12 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css"/>
-<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
 <style>
-/* Base Colors & Typography */
 :root {
   --primary-color: #2c3e50;
   --accent-color: #3498db;
@@ -29,9 +22,7 @@
 }
 body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem;}
 .container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
-h2{text-align:center;margin-bottom:1.35rem;font-size:1.2rem;}
-
-/* Form Elements */
+h2{text-align:center;margin-bottom:1.35rem;font-size:1.5rem;}
 label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;}
 input,textarea,select{
   width:100%;
@@ -52,8 +43,6 @@ input:focus, textarea:focus, select:focus {
 textarea{resize:vertical;}
 .row{display:flex;gap:0.9rem;flex-wrap:wrap;margin-bottom:0.72rem;}
 .row .half{flex:1;min-width:48%;}
-
-/* کارت‌ها */
 .card {
   background: #fff;
   border-radius: 10px;
@@ -62,8 +51,6 @@ textarea{resize:vertical;}
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   border: 1px solid #e0e0e0;
 }
-
-/* Compact Barcode Display - Positioned Left */
 .compact-barcode-display {
   padding: 0.45rem 0;
   text-align: right;
@@ -78,8 +65,6 @@ textarea{resize:vertical;}
   padding: 0.09rem 0.36rem;
   border-radius: 4px;
 }
-
-/* Buttons */
 .button-group {
     display: flex;
     gap: 0.5rem;
@@ -116,7 +101,6 @@ button:hover{
     background: var(--accent-color); /* Fallback */
     background: linear-gradient(135deg, #3498db, #2980b9);
 }
-/* New CSS for loading state */
 .loading {
     pointer-events: none; /* Disable clicks */
     opacity: 0.7;
@@ -129,8 +113,6 @@ button:hover{
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-
-/* Floating Message Box */
 .message-container {
     position: fixed;
     top: 50%;
@@ -149,8 +131,6 @@ button:hover{
 .message-box{font-weight:bold;font-size:0.85rem;padding:0.6rem;border-radius:5px;box-shadow:0 2px 10px rgba(0,0,0,0.2);}
 .success{color:var(--success-color);background-color:rgba(46, 204, 113, 0.1);border:1px solid var(--success-color);}
 .error{color:var(--danger-color);background-color:rgba(231, 76, 60, 0.1);border:1px solid var(--danger-color);}
-
-/* Search Bar - Inline */
 .search-container{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap; align-items: flex-end;}
 .search-container input{
     flex:1;
@@ -168,8 +148,6 @@ button:hover{
 .search-container button:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-
-/* Responsive */
 @media(max-width:500px){
   body{padding:0.9rem;}
   .container{padding:1.35rem;}
@@ -179,30 +157,25 @@ button:hover{
   .button-group { flex-direction: column; }
   .compact-barcode-display { text-align: right; }
 }
-
-  /* هم‌اندازه کردن بخش جستجو با دکمه‌های بالا */
 .search-container {
     display: flex;
     gap: 0.5rem;
     margin-top: 1.35rem;
 }
-
 .search-container input,
 .search-container button {
     flex: 1;
-    min-width: 0;              /* جلوگیری از کشیده شدن اضافه */
-    height: 48px;              /* همان ارتفاع دکمه‌های بالا */
+    min-width: 0;
+    height: 48px;
     font-size: 0.81rem;
     border-radius: 6px;
     box-sizing: border-box;
 }
-
 .search-container input {
     border: 1px solid var(--border-color);
     background: var(--input-bg-color);
     padding: 0 0.72rem;
 }
-
 .search-container button {
     border: none;
     color: var(--input-bg-color);
@@ -210,8 +183,6 @@ button:hover{
     background: linear-gradient(135deg, #3498db, #2980b9);
     box-shadow: 0 2px 4px var(--shadow-light);
 }
-
-  
 </style>
 </head>
 <body>
@@ -302,19 +273,7 @@ document.getElementById("barcodeId").value = barcodeId || "";
 // نمایش بصری بارکد
 document.getElementById("barcodeDisplay").textContent = barcodeId || "---";
 
-// فعال‌سازی تاریخ شمسی
-$(document).ready(function() {
-  $("#issueDate").persianDatepicker({
-    format: "YYYY/MM/DD",
-    autoClose: true,
-    initialValue: false,
-    calendar: {
-      persian: {
-        locale: "fa"
-      }
-    }
-  });
-});
+// حذف تقویم و jQuery؛ هیچ کتابخانه‌ای لود نشده و فقط تاریخ به صورت text ساده است
 
 function showMessage(type, message) {
     const messageContainer = document.getElementById("messageContainer");
@@ -377,7 +336,7 @@ if(barcodeId){
     });
 }
 
-document.getElementById("deviceForm").addEventListener("submit", e=>{
+document.getElementById("deviceForm").addEventListener("submit", function(e){
   e.preventDefault();
   const formData = new FormData(e.target);
   showLoading('saveBtn', 'fa-solid fa-floppy-disk');
@@ -387,7 +346,7 @@ document.getElementById("deviceForm").addEventListener("submit", e=>{
     .finally(() => { hideLoading('saveBtn'); });
 });
 
-document.getElementById("deleteBtn").addEventListener("click", ()=>{
+document.getElementById("deleteBtn").addEventListener("click", function(){
   if(!barcodeId) return;
   if(!confirm("آیا مطمئن هستید؟")) return;
   showLoading('deleteBtn', 'fa-solid fa-trash-can');
@@ -403,7 +362,7 @@ document.getElementById("deleteBtn").addEventListener("click", ()=>{
     });
 });
 
-document.getElementById("searchBtn").addEventListener("click", ()=>{
+document.getElementById("searchBtn").addEventListener("click", function(){
   const code = document.getElementById("searchCode").value.trim();
   if(!code) return showMessage("error", "❌ کد دیوایس وارد شود");
   showLoading('searchBtn', 'fa-solid fa-magnifying-glass');
