@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -11,6 +12,7 @@
 <script src="https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
 <style>
+/* Base Colors & Typography */
 :root {
   --primary-color: #2c3e50;
   --accent-color: #3498db;
@@ -28,34 +30,27 @@ body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(
 .container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
 h2{text-align:center;margin-bottom:1.35rem;font-size:1.2rem;}
 
-/* فرم وسط کارت */
-.fields-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.85rem;
+/* Form Elements */
+label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;}
+input,textarea,select{
+  width:100%;
+  padding:0.54rem;
+  margin-top:0.36rem;
+  border:1px solid var(--border-color);
+  border-radius:6px;
+  font-family:inherit;
+  font-size:0.81rem;
+  box-shadow: 0 1px 3px var(--shadow-light);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
-.fields-center input,
-.fields-center select,
-.fields-center textarea {
-  width: 80%;
-  min-width: 160px;
-  max-width: 380px;
-  margin-left: auto;
-  margin-right: auto;
+input:focus, textarea:focus, select:focus {
+  outline:none;
+  border-color:var(--accent-color);
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
 }
-.fields-center label {
-  width: 80%;
-  min-width: 160px;
-  max-width: 380px;
-  align-self: center;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: right;
-  font-weight: bold;
-  font-size: 0.81rem;
-  margin-top: 0.38rem;
-}
+textarea{resize:vertical;}
+.row{display:flex;gap:0.9rem;flex-wrap:wrap;margin-bottom:0.72rem;}
+.row .half{flex:1;min-width:48%;}
 
 /* کارت‌ها */
 .card {
@@ -66,23 +61,6 @@ h2{text-align:center;margin-bottom:1.35rem;font-size:1.2rem;}
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   border: 1px solid #e0e0e0;
 }
-
-/* سایر استایل‌ها مثل قبل */
-input,textarea,select{
-  border:1px solid var(--border-color);
-  border-radius:6px;
-  font-family:inherit;
-  font-size:0.81rem;
-  box-shadow: 0 1px 3px var(--shadow-light);
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
-  padding:0.54rem;
-}
-input:focus, textarea:focus, select:focus {
-  outline:none;
-  border-color:var(--accent-color);
-  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-}
-textarea{resize:vertical;}
 
 /* Compact Barcode Display - Positioned Left */
 .compact-barcode-display {
@@ -194,30 +172,45 @@ button:hover{
 @media(max-width:500px){
   body{padding:0.9rem;}
   .container{padding:1.35rem;}
-  .fields-center input,
-  .fields-center select,
-  .fields-center textarea,
-  .fields-center label {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-  }
+  .row .half{min-width:100%;}
   .search-container {flex-direction: column; align-items: stretch;}
   .search-container input, .search-container button {width: 100%; margin-top: 0.72rem;}
   .button-group { flex-direction: column; }
   .compact-barcode-display { text-align: right; }
 }
-/* هم‌اندازه کردن کادر جستجو و دکمه جستجو با دکمه‌های بالایی */
+
+  /* هم‌اندازه کردن بخش جستجو با دکمه‌های بالا */
+.search-container {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.35rem;
+}
+
 .search-container input,
 .search-container button {
-    height: 42px;         /* هم ارتفاع با دکمه‌های ثبت/ویرایش/حذف */
-    font-size: 0.81rem;   /* هماهنگ با متن دکمه‌ها */
-    border-radius: 6px;   /* یکسان با دکمه‌های بالا */
+    flex: 1;
+    min-width: 0;              /* جلوگیری از کشیده شدن اضافه */
+    height: 48px;              /* همان ارتفاع دکمه‌های بالا */
+    font-size: 0.81rem;
+    border-radius: 6px;
+    box-sizing: border-box;
 }
+
+.search-container input {
+    border: 1px solid var(--border-color);
+    background: var(--input-bg-color);
+    padding: 0 0.72rem;
+}
+
 .search-container button {
-    padding: 0 1rem;      /* فضای داخلی مناسب */
-    flex: 0 0 auto;       /* جلوگیری از کشیده شدن بیش از حد */
+    border: none;
+    color: var(--input-bg-color);
+    cursor: pointer;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    box-shadow: 0 2px 4px var(--shadow-light);
 }
+
+  
 </style>
 </head>
 <body>
@@ -232,54 +225,54 @@ button:hover{
 
 <!-- کارت ۱: نام و کد دیوایس -->
 <div class="card">
-  <div class="fields-center">
-    <label>نام دیوایس</label>
-    <select name="deviceName" id="deviceName" required>
-      <option value="">-- انتخاب کنید --</option>
-      <option value="Multi Media">Multi Media</option>
-      <option value="Multi Media Metal">Multi Media Metal</option>
-      <option value="Soul">Soul</option>
-      <option value="Smart Player">Smart Player</option>
-      <option value="TDA">TDA</option>
-      <option value="RFID">RFID</option>
-      <option value="Serial GSM">Serial GSM</option>
-      <option value="Smart GSM">Smart GSM</option>
-      <option value="MP3">MP3</option>
-      <option value="IR">IR</option>
-      <option value="B1">B1</option>
-      <option value="Smart Plug">Smart Plug</option>
-    </select>
-    <label>کد دیوایس</label>
-    <input type="text" name="deviceCode" required>
+  <div class="row">
+    <div class="half">
+      <label>نام دیوایس</label>
+      <select name="deviceName" id="deviceName" required>
+        <option value="">-- انتخاب کنید --</option>
+        <option value="Multi Media">Multi Media</option>
+        <option value="Multi Media Metal">Multi Media Metal</option>
+        <option value="Soul">Soul</option>
+        <option value="Smart Player">Smart Player</option>
+        <option value="TDA">TDA</option>
+        <option value="RFID">RFID</option>
+        <option value="Serial GSM">Serial GSM</option>
+        <option value="Smart GSM">Smart GSM</option>
+        <option value="MP3">MP3</option>
+        <option value="IR">IR</option>
+        <option value="B1">B1</option>
+        <option value="Smart Plug">Smart Plug</option>
+      </select>
+    </div>
+    <div class="half">
+      <label>کد دیوایس</label>
+      <input type="text" name="deviceCode" required>
+    </div>
   </div>
 </div>
 
 <!-- کارت ۲: ایراد -->
 <div class="card">
-  <div class="fields-center">
-    <label>ایراد</label>
-    <input type="text" name="issue" required>
+  <label>ایراد</label>
+  <input type="text" name="issue" required>
 
-    <label>تاریخ گزارش ایراد</label>
-    <input type="text" name="issueDate" id="issueDate" placeholder="تاریخ گزارش ایراد">
+  <label>تاریخ گزارش ایراد</label>
+  <input type="text" name="issueDate" id="issueDate" placeholder="تاریخ گزارش ایراد">
 
-    <label>شرح ایراد</label>
-    <textarea name="issueDescription" rows="2"></textarea>
-  </div>
+  <label>شرح ایراد</label>
+  <textarea name="issueDescription" rows="2"></textarea>
 </div>
 
 <!-- کارت ۳: اقدامات و توضیحات -->
 <div class="card">
-  <div class="fields-center">
-    <label>اقدامات انجام شده</label>
-    <textarea name="actionsTaken" rows="2"></textarea>
+  <label>اقدامات انجام شده</label>
+  <textarea name="actionsTaken" rows="2"></textarea>
 
-    <label>وضعیت فعلی</label>
-    <input type="text" name="currentStatus">
+  <label>وضعیت فعلی</label>
+  <input type="text" name="currentStatus">
 
-    <label>توضیحات تکمیلی</label>
-    <textarea name="notes" rows="2"></textarea>
-  </div>
+  <label>توضیحات تکمیلی</label>
+  <textarea name="notes" rows="2"></textarea>
 </div>
 
 <div class="button-group">
