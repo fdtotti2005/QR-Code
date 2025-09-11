@@ -6,11 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- فقط persian-datepicker -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css"/>
+
+<!-- تقویم شمسی دقیق و سبک -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/datepicker-fa/dist/datepicker.min.css">
 <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/datepicker-fa/dist/datepicker.min.js"></script>
+
 <style>
 :root {
   --primary-color: #2c3e50;
@@ -134,18 +135,17 @@ const urlParams = new URLSearchParams(window.location.search);
 const barcodeId = urlParams.get("barcodeId");
 document.getElementById("barcodeId").value = barcodeId || "";
 document.getElementById("barcodeDisplay").textContent = barcodeId || "---";
-// فقط persian-datepicker با تنظیمات اصلاح‌شده
+
+// تقویم شمسی دقیق و سبک
 $(document).ready(function() {
-  $("#issueDate").persianDatepicker({
-    format: "YYYY/MM/DD",
+  $('#issueDate').datepicker({
     autoClose: true,
-    initialValue: false,
-    initialValueType: "gregorian",
-    calendar: {
-      persian: {locale: "fa"}
-    }
+    calendarType: 'persian',
+    initialValueType: 'persian',
+    format: 'yyyy/mm/dd'
   });
 });
+
 function showMessage(type, message) {
     const messageContainer = document.getElementById("messageContainer");
     const successMsg = document.getElementById("successMsg");
