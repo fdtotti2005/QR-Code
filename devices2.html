@@ -350,9 +350,12 @@ function fillForm(data){
   }
 }
 
+// اصلاح شده: ذخیره متن و آیکون اصلی دکمه قبل از لودینگ و بازگردانی آن بعد از لودینگ
 function showLoading(buttonId, originalIconClass) {
     const button = document.getElementById(buttonId);
+    // ذخیره متن و آیکون اصلی
     button.dataset.originalIcon = originalIconClass;
+    button.dataset.originalText = button.innerText.replace(/\s*$/, ''); // متن اصلی دکمه (بدون آیکون)
     button.classList.add('loading');
     button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
 }
@@ -360,8 +363,9 @@ function hideLoading(buttonId) {
     const button = document.getElementById(buttonId);
     button.classList.remove('loading');
     const originalIconClass = button.dataset.originalIcon;
-    if (originalIconClass) {
-        button.innerHTML = '<i class="' + originalIconClass + '"></i> ' + button.textContent.trim();
+    const originalText = button.dataset.originalText;
+    if (originalIconClass && originalText !== undefined) {
+        button.innerHTML = `<i class="${originalIconClass}"></i> ${originalText}`;
     }
 }
 
