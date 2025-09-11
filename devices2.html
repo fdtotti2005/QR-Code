@@ -384,7 +384,7 @@ document.getElementById("deviceForm").addEventListener("submit", e=>{
   const formData = new FormData(e.target);
   showLoading('saveBtn', 'fa-solid fa-floppy-disk');
   fetch(scriptURL,{method:"POST",body:formData})
-    .then(()=>{ showMessage("success", "✅ عملیات موفقیت‌آمیز بود"); })
+    .then(()=>{ showMessage("success", "✅ اطلاعات دیوایس ثبت شد"); })
     .catch(err=>{ showMessage("error", "❌ خطا در پردازش اطلاعات"); })
     .finally(() => { hideLoading('saveBtn'); });
 });
@@ -397,9 +397,9 @@ document.getElementById("deleteBtn").addEventListener("click", ()=>{
     .then(()=>{
       document.getElementById("deviceForm").reset();
       document.getElementById("barcodeDisplay").textContent = "---";
-      showMessage("success", "✅ رکورد حذف شد");
+      showMessage("success", "✅ اطلاعات دیوایس حذف شد");
     }).catch(err=>{
-      showMessage("error", "❌ خطا در حذف رکورد");
+      showMessage("error", "❌ خطا در حذف اطلاعات دیوایس");
     }).finally(() => {
         hideLoading('deleteBtn');
     });
@@ -415,9 +415,9 @@ document.getElementById("searchBtn").addEventListener("click", ()=>{
       if(Object.keys(data).length > 0){
         fillForm(data);
         document.getElementById("barcodeId").value = data.barcodeId||"";
-        showMessage("success", "✅ رکورد پیدا شد");
+        showMessage("success", "✅ دیوایس با این اطلاعات پیدا شد");
       }else{
-        showMessage("error", "❌ رکورد پیدا نشد");
+        showMessage("error", "❌ دیوایس با این اطلاعات پیدا نشد");
       }
     }).catch(err=>{
       console.error(err);
