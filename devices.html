@@ -25,48 +25,9 @@
   --shadow-light: rgba(0, 0, 0, 0.08);
   --shadow-medium: rgba(0, 0, 0, 0.15);
 }
-
-/* 🌙 دارک‌مد */
-.dark-mode {
-  --primary-color: #ecf0f1;
-  --accent-color: #3498db;
-  --success-color: #2ecc71;
-  --danger-color: #e74c3c;
-  --bg-color: #1e1e1e;
-  --text-color: #e0e0e0;
-  --input-bg-color: #2b2b2b;
-  --border-color: #555;
-  --readonly-bg: #3a3a3a;
-  --shadow-light: rgba(255, 255, 255, 0.05);
-  --shadow-medium: rgba(255, 255, 255, 0.1);
-}
-
 body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem;}
 .container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
 h2{text-align:center;margin-bottom:1.35rem;font-size:1.2rem;}
-
-/* دکمه دارک‌مد */
-.toggle-dark {
-  position: fixed;
-  top: 15px;
-  left: 15px;
-  z-index: 1100;
-  background: var(--accent-color);
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 2px 6px var(--shadow-medium);
-}
-.toggle-dark:hover {
-  transform: scale(1.1);
-  transition: 0.2s;
-}
 
 /* Form Elements */
 label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;}
@@ -80,8 +41,6 @@ input,textarea,select{
   font-size:0.81rem;
   box-shadow: 0 1px 3px var(--shadow-light);
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
-  background: var(--input-bg-color);
-  color: var(--text-color);
 }
 input:focus, textarea:focus, select:focus {
   outline:none;
@@ -94,15 +53,15 @@ textarea{resize:vertical;}
 
 /* کارت‌ها */
 .card {
-  background: var(--input-bg-color);
+  background: #fff;
   border-radius: 10px;
   padding: 1rem;
   margin-bottom: 1rem;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  border: 1px solid var(--border-color);
+  border: 1px solid #e0e0e0;
 }
 
-/* Compact Barcode Display */
+/* Compact Barcode Display - Positioned Left */
 .compact-barcode-display {
   padding: 0.45rem 0;
   text-align: right;
@@ -144,55 +103,116 @@ button:hover{
   box-shadow: 0 4px 8px var(--shadow-medium);
 }
 #saveBtn{
+    background: var(--success-color); /* Fallback */
     background: linear-gradient(135deg, #2ecc71, #27ae60);
 }
 #deleteBtn{
+    background: var(--danger-color); /* Fallback */
     background: linear-gradient(135deg, #e74c3c, #c0392b);
 }
 #searchBtn{
+    background: var(--accent-color); /* Fallback */
     background: linear-gradient(135deg, #3498db, #2980b9);
 }
-.loading {pointer-events:none;opacity:0.7;cursor:wait;}
-.loading i.fa-spin {animation: spin 1s linear infinite;}
-@keyframes spin {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+/* New CSS for loading state */
+.loading {
+    pointer-events: none; /* Disable clicks */
+    opacity: 0.7;
+    cursor: wait;
+}
+.loading i.fa-spin {
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 
 /* Floating Message Box */
-.message-container {position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;z-index:1000;text-align:center;pointer-events:none;opacity:0;transition:opacity 0.5s;}
-.message-container.visible {opacity:1;}
+.message-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    z-index: 1000;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+.message-container.visible {
+    opacity: 1;
+}
 .message-box{font-weight:bold;font-size:0.85rem;padding:0.6rem;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.3);}
-.success{color:var(--success-color);background-color:rgba(46,204,113,0.2);border:1px solid var(--success-color);}
-.error{color:var(--danger-color);background-color:rgba(231,76,60,0.2);border:1px solid var(--danger-color);}
+.success{color:var(--success-color);background-color:rgba(46, 204, 113, 0.2);border:1px solid var(--success-color);}
+.error{color:var(--danger-color);background-color:rgba(231, 76, 60, 0.2);border:1px solid var(--danger-color);}
 
-/* Search Bar */
-.search-container{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap;align-items:flex-end;}
+/* Search Bar - Inline */
+.search-container{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap; align-items: flex-end;}
 .search-container input{
-    flex:1;min-width:60%;margin-top:0;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    background: var(--input-bg-color);
-    color: var(--text-color);
+    flex:1;
+    min-width:60%; 
+    margin-top:0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 .search-container button {
-    margin-top:0;width:auto;padding:0.54rem 0.9rem;font-size:0.765rem;
-    box-shadow:0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 0;
+    width: auto;
+    padding: 0.54rem 0.9rem;
+    font-size: 0.765rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.search-container button:hover {box-shadow:0 4px 8px rgba(0,0,0,0.2);}
+.search-container button:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 
 /* Responsive */
 @media(max-width:500px){
   body{padding:0.9rem;}
   .container{padding:1.35rem;}
   .row .half{min-width:100%;}
-  .search-container{flex-direction:column;align-items:stretch;}
-  .search-container input,.search-container button{width:100%;margin-top:0.72rem;}
-  .button-group{flex-direction:column;}
-  .compact-barcode-display{text-align:right;}
+  .search-container {flex-direction: column; align-items: stretch;}
+  .search-container input, .search-container button {width: 100%; margin-top: 0.72rem;}
+  .button-group { flex-direction: column; }
+  .compact-barcode-display { text-align: right; }
 }
+
+  /* هم‌اندازه کردن بخش جستجو با دکمه‌های بالا */
+.search-container {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.35rem;
+}
+
+.search-container input,
+.search-container button {
+    flex: 1;
+    min-width: 0;              /* جلوگیری از کشیده شدن اضافه */
+    height: 48px;              /* همان ارتفاع دکمه‌های بالا */
+    font-size: 0.81rem;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.search-container input {
+    border: 1px solid var(--border-color);
+    background: var(--input-bg-color);
+    padding: 0 0.72rem;
+}
+
+.search-container button {
+    border: none;
+    color: var(--input-bg-color);
+    cursor: pointer;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    box-shadow: 0 2px 4px var(--shadow-light);
+}
+
+  
 </style>
 </head>
 <body>
-<!-- دکمه دارک‌مد -->
-<button class="toggle-dark" id="toggleDark"><i class="fa-solid fa-moon"></i></button>
-
 <div class="container">
 <h2>فرم ثبت اطلاعات دیوایس‌های معیوب</h2>
 
@@ -202,7 +222,7 @@ button:hover{
 </div>
 <input type="hidden" id="barcodeId" name="barcodeId">
 
-<!-- کارت‌ها -->
+<!-- کارت ۱: نام و کد دیوایس -->
 <div class="card">
   <div class="row">
     <div class="half">
@@ -230,20 +250,26 @@ button:hover{
   </div>
 </div>
 
+<!-- کارت ۲: ایراد -->
 <div class="card">
   <label>ایراد</label>
   <input type="text" name="issue" required>
+
   <label>تاریخ گزارش ایراد</label>
   <input type="text" name="issueDate" id="issueDate" placeholder="تاریخ گزارش ایراد">
+
   <label>شرح ایراد</label>
   <textarea name="issueDescription" rows="2"></textarea>
 </div>
 
+<!-- کارت ۳: اقدامات و توضیحات -->
 <div class="card">
   <label>اقدامات انجام شده</label>
   <textarea name="actionsTaken" rows="2"></textarea>
+
   <label>وضعیت فعلی</label>
   <input type="text" name="currentStatus">
+
   <label>توضیحات تکمیلی</label>
   <textarea name="notes" rows="2"></textarea>
 </div>
@@ -270,104 +296,135 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbwiFTGb_w8MRlEDdqqF6K
 const urlParams = new URLSearchParams(window.location.search);
 const barcodeId = urlParams.get("barcodeId");
 document.getElementById("barcodeId").value = barcodeId || "";
+
+// نمایش بصری بارکد
 document.getElementById("barcodeDisplay").textContent = barcodeId || "---";
 
-// تاریخ شمسی
+// فعال‌سازی تاریخ شمسی
 $(document).ready(function() {
-  $("#issueDate").persianDatepicker({format:"YYYY/MM/DD",autoClose:true,initialValue:false,calendar:{persian:{locale:"fa"}}});
+  $("#issueDate").persianDatepicker({
+    format: "YYYY/MM/DD",
+    autoClose: true,
+    initialValue: false,
+    calendar: {
+      persian: {
+        locale: "fa"
+      }
+    }
+  });
 });
 
-// پیام
 function showMessage(type, message) {
-    const messageContainer=document.getElementById("messageContainer");
-    const successMsg=document.getElementById("successMsg");
-    const errorMsg=document.getElementById("errorMsg");
-    const targetMsg=(type==="success")?successMsg:errorMsg;
-    const otherMsg=(type==="success")?errorMsg:successMsg;
-    targetMsg.textContent=message;
+    const messageContainer = document.getElementById("messageContainer");
+    const successMsg = document.getElementById("successMsg");
+    const errorMsg = document.getElementById("errorMsg");
+    if (!successMsg || !errorMsg || !messageContainer) return;
+    const targetMsg = (type === "success") ? successMsg : errorMsg;
+    const otherMsg = (type === "success") ? errorMsg : successMsg;
+    targetMsg.textContent = message;
     messageContainer.classList.add("visible");
-    targetMsg.style.display='block';otherMsg.style.display='none';
-    setTimeout(()=>{messageContainer.classList.remove("visible");},4000);
+    targetMsg.style.display = 'block';
+    otherMsg.style.display = 'none';
+    setTimeout(() => {
+        messageContainer.classList.remove("visible");
+    }, 4000);
 }
 
 function fillForm(data){
   if(!data) return;
-  if(Object.keys(data).length>0){
+  if (Object.keys(data).length > 0) {
     for(const key in data){
-      const el=document.querySelector("[name='"+key+"']");
-      if(el){if(el.type==="radio"||el.type==="checkbox"){el.checked=(el.value===data[key]);}else{el.value=data[key]||"";}}
+      const el = document.querySelector("[name='"+key+"']");
+      if(el){
+          if(el.type === "radio" || el.type === "checkbox"){
+             el.checked = (el.value === data[key]);
+          } else {
+             el.value = data[key]||"";
+          }
+      }
     }
-    document.getElementById("barcodeDisplay").textContent=data.barcodeId||"---";
-    showMessage("success","✅ دیوایس با این بارکد پیدا شد");
-  } else {showMessage("error","❌ دیوایس با این بارکد پیدا نشد");}
+    document.getElementById("barcodeDisplay").textContent = data.barcodeId || "---";
+    showMessage("success", "✅ دیوایس با این بارکد پیدا شد");
+  } else {
+    showMessage("error", "❌ دیوایس با این بارکد پیدا نشد");
+  }
 }
 
+// اصلاح شده: ذخیره متن و آیکون اصلی دکمه قبل از لودینگ و بازگردانی آن بعد از لودینگ
 function showLoading(buttonId, originalIconClass) {
-  const button=document.getElementById(buttonId);
-  button.dataset.originalIcon=originalIconClass;
-  button.dataset.originalText=button.innerText.replace(/\s*$/,'');
-  button.classList.add('loading');
-  button.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i>';
+    const button = document.getElementById(buttonId);
+    // ذخیره متن و آیکون اصلی
+    button.dataset.originalIcon = originalIconClass;
+    button.dataset.originalText = button.innerText.replace(/\s*$/, ''); // متن اصلی دکمه (بدون آیکون)
+    button.classList.add('loading');
+    button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
 }
 function hideLoading(buttonId) {
-  const button=document.getElementById(buttonId);
-  button.classList.remove('loading');
-  const originalIconClass=button.dataset.originalIcon;
-  const originalText=button.dataset.originalText;
-  if(originalIconClass&&originalText!==undefined){
-    button.innerHTML=`<i class="${originalIconClass}"></i> ${originalText}`;
-  }
+    const button = document.getElementById(buttonId);
+    button.classList.remove('loading');
+    const originalIconClass = button.dataset.originalIcon;
+    const originalText = button.dataset.originalText;
+    if (originalIconClass && originalText !== undefined) {
+        button.innerHTML = `<i class="${originalIconClass}"></i> ${originalText}`;
+    }
 }
 
 if(barcodeId){
   fetch(`${scriptURL}?action=get&barcodeId=${encodeURIComponent(barcodeId)}`)
-    .then(res=>res.json()).then(data=>{fillForm(data);})
-    .catch(err=>{console.error("خطا",err);showMessage("error","❌ خطا در دریافت اطلاعات");});
+    .then(res=>res.json())
+    .then(data=>{ fillForm(data); })
+    .catch(err=>{
+      console.error("خطا در دریافت اطلاعات", err);
+      showMessage("error", "❌ خطا در دریافت اطلاعات");
+    });
 }
 
-document.getElementById("deviceForm").addEventListener("submit",e=>{
+document.getElementById("deviceForm").addEventListener("submit", e=>{
   e.preventDefault();
-  const formData=new FormData(e.target);
-  showLoading('saveBtn','fa-solid fa-floppy-disk');
+  const formData = new FormData(e.target);
+  showLoading('saveBtn', 'fa-solid fa-floppy-disk');
   fetch(scriptURL,{method:"POST",body:formData})
-    .then(()=>{showMessage("success","✅ اطلاعات دیوایس ثبت شد");})
-    .catch(()=>{showMessage("error","❌ خطا در پردازش اطلاعات");})
-    .finally(()=>{hideLoading('saveBtn');});
+    .then(()=>{ showMessage("success", "✅ اطلاعات دیوایس ثبت شد"); })
+    .catch(err=>{ showMessage("error", "❌ خطا در پردازش اطلاعات"); })
+    .finally(() => { hideLoading('saveBtn'); });
 });
 
-document.getElementById("deleteBtn").addEventListener("click",()=>{
+document.getElementById("deleteBtn").addEventListener("click", ()=>{
   if(!barcodeId) return;
   if(!confirm("آیا مطمئن هستید؟")) return;
-  showLoading('deleteBtn','fa-solid fa-trash-can');
+  showLoading('deleteBtn', 'fa-solid fa-trash-can');
   fetch(`${scriptURL}?action=delete&barcodeId=${encodeURIComponent(barcodeId)}`)
-    .then(()=>{document.getElementById("deviceForm").reset();document.getElementById("barcodeDisplay").textContent="---";showMessage("success","✅ اطلاعات دیوایس حذف شد");})
-    .catch(()=>{showMessage("error","❌ خطا در حذف اطلاعات دیوایس");})
-    .finally(()=>{hideLoading('deleteBtn');});
+    .then(()=>{
+      document.getElementById("deviceForm").reset();
+      document.getElementById("barcodeDisplay").textContent = "---";
+      showMessage("success", "✅ اطلاعات دیوایس حذف شد");
+    }).catch(err=>{
+      showMessage("error", "❌ خطا در حذف اطلاعات دیوایس");
+    }).finally(() => {
+        hideLoading('deleteBtn');
+    });
 });
 
-document.getElementById("searchBtn").addEventListener("click",()=>{
-  const code=document.getElementById("searchCode").value.trim();
-  if(!code) return showMessage("error","❌ کد دیوایس وارد شود");
-  showLoading('searchBtn','fa-solid fa-magnifying-glass');
+document.getElementById("searchBtn").addEventListener("click", ()=>{
+  const code = document.getElementById("searchCode").value.trim();
+  if(!code) return showMessage("error", "❌ کد دیوایس وارد شود");
+  showLoading('searchBtn', 'fa-solid fa-magnifying-glass');
   fetch(`${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`)
-    .then(res=>res.json()).then(data=>{
-      if(Object.keys(data).length>0){
-        fillForm(data);document.getElementById("barcodeId").value=data.barcodeId||"";showMessage("success","✅ دیوایس با این کد پیدا شد");
-      }else{showMessage("error","❌ برای کد وارد شده دیوایسی پیدا نشد");}
-    }).catch(()=>{showMessage("error","❌ خطا در جستجو");})
-    .finally(()=>{hideLoading('searchBtn');});
-});
-
-// 🌙 فعال‌سازی دارک‌مد
-const toggleBtn=document.getElementById("toggleDark");
-toggleBtn.addEventListener("click",()=>{
-  document.body.classList.toggle("dark-mode");
-  const icon=toggleBtn.querySelector("i");
-  if(document.body.classList.contains("dark-mode")){
-    icon.classList.replace("fa-moon","fa-sun");
-  } else {
-    icon.classList.replace("fa-sun","fa-moon");
-  }
+    .then(res=>res.json())
+    .then(data=>{
+      if(Object.keys(data).length > 0){
+        fillForm(data);
+        document.getElementById("barcodeId").value = data.barcodeId||"";
+        showMessage("success", "✅ دیوایس با این کد پیدا شد");
+      }else{
+        showMessage("error", "❌ برای کد وارد شده دیوایسی پیدا نشد");
+      }
+    }).catch(err=>{
+      console.error(err);
+      showMessage("error", "❌ خطا در جستجو");
+    }).finally(() => {
+        hideLoading('searchBtn');
+    });
 });
 </script>
 </body>
