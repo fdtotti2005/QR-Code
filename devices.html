@@ -6,10 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pwt-datepicker/dist/css/persian-datepicker-0.4.5.min.css"/>
 <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment-jalaali/build/moment-jalaali.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pwt-datepicker/dist/js/persian-datepicker-0.4.5.min.js"></script>
 <style>
 /* Base Colors & Typography */
 :root {
@@ -27,7 +28,7 @@
 }
 body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem;}
 .container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
-h2{text-align:center;margin-bottom:1.35rem;font-size:1.5rem;}
+h2{text-align:center;margin-bottom:1.35rem;font-size:1.2rem;}
 
 /* Form Elements */
 label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;}
@@ -296,139 +297,13 @@ document.getElementById("barcodeId").value = barcodeId || "";
 // نمایش بصری بارکد
 document.getElementById("barcodeDisplay").textContent = barcodeId || "---";
 
-// فعال‌سازی تاریخ شمسی
+// فعال‌سازی تاریخ شمسی با کتابخانه‌های جدید
 $(document).ready(function() {
-    // ابتدا تاریخ شمسی امروز را به درستی محاسبه می‌کنیم و مقدار فیلد را پر می‌کنیم.
-    // این کار از تداخلات منطقه زمانی جلوگیری می‌کند.
-    const today = new persianDate();
-    const todayFormatted = today.format("YYYY/MM/DD");
-    $("#issueDate").val(todayFormatted);
-
-    // سپس تاریخ‌نگار را روی فیلد اعمال می‌کنیم.
-    // initialValue: false به این معنی است که مقدار اولیه را از فیلد بگیرد و خودش محاسبه نکند.
-    $("#issueDate").persianDatepicker({
-        format: "YYYY/MM/DD",
+    $("#issueDate").pDatepicker({
+        format: 'YYYY/MM/DD',
         autoClose: true,
-        initialValue: false, 
-        calendar: {
-            persian: {
-                locale: "fa"
-            }
-        },
-        observer: true, // برای شناسایی تغییرات مقدار فیلد
-        checkInitialValue: true, // برای تبدیل مقدار اولیه (اگر وجود داشته باشد) به تاریخ شمسی
-    });
-});
-
-function showMessage(type, message) {
-    const messageContainer = document.getElementById("messageContainer");
-    const successMsg = document.getElementById("successMsg");
-    const errorMsg = document.getElementById("errorMsg");
-    if (!successMsg || !errorMsg || !messageContainer) return;
-    const targetMsg = (type === "success") ? successMsg : errorMsg;
-    const otherMsg = (type === "success") ? errorMsg : successMsg;
-    targetMsg.textContent = message;
-    messageContainer.classList.add("visible");
-    targetMsg.style.display = 'block';
-    otherMsg.style.display = 'none';
-    setTimeout(() => {
-        messageContainer.classList.remove("visible");
-    }, 3000);
-}
-
-function fillForm(data){
-  if(!data) return;
-  if (Object.keys(data).length > 0) {
-    for(const key in data){
-      const el = document.querySelector("[name='"+key+"']");
-      if(el){
-          if(el.type === "radio" || el.type === "checkbox"){
-             el.checked = (el.value === data[key]);
-          } else {
-             el.value = data[key]||"";
-          }
-      }
-    }
-    document.getElementById("barcodeDisplay").textContent = data.barcodeId || "---";
-    showMessage("success", "✅ رکورد پیدا شد");
-  } else {
-    showMessage("error", "❌ رکورد پیدا نشد");
-  }
-}
-
-function showLoading(buttonId, originalIconClass) {
-    const button = document.getElementById(buttonId);
-    button.dataset.originalIcon = originalIconClass;
-    button.classList.add('loading');
-    button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-}
-function hideLoading(buttonId) {
-    const button = document.getElementById(buttonId);
-    button.classList.remove('loading');
-    const originalIconClass = button.dataset.originalIcon;
-    if (originalIconClass) {
-        button.innerHTML = '<i class="' + originalIconClass + '"></i> ' + button.textContent.trim();
-    }
-}
-
-if(barcodeId){
-  fetch(`${scriptURL}?action=get&barcodeId=${encodeURIComponent(barcodeId)}`)
-    .then(res=>res.json())
-    .then(data=>{ fillForm(data); })
-    .catch(err=>{
-      console.error("خطا در دریافت اطلاعات", err);
-      showMessage("error", "❌ خطا در دریافت اطلاعات");
-    });
-}
-
-document.getElementById("deviceForm").addEventListener("submit", e=>{
-  e.preventDefault();
-  const formData = new FormData(e.target);
-  showLoading('saveBtn', 'fa-solid fa-floppy-disk');
-  fetch(scriptURL,{method:"POST",body:formData})
-    .then(()=>{ showMessage("success", "✅ عملیات موفقیت‌آمیز بود"); })
-    .catch(err=>{ showMessage("error", "❌ خطا در پردازش اطلاعات"); })
-    .finally(() => { hideLoading('saveBtn'); });
-});
-
-document.getElementById("deleteBtn").addEventListener("click", ()=>{
-  if(!barcodeId) return;
-  if(!confirm("آیا مطمئن هستید؟")) return;
-  showLoading('deleteBtn', 'fa-solid fa-trash-can');
-  fetch(`${scriptURL}?action=delete&barcodeId=${encodeURIComponent(barcodeId)}`)
-    .then(()=>{
-      document.getElementById("deviceForm").reset();
-      document.getElementById("barcodeDisplay").textContent = "---";
-      showMessage("success", "✅ رکورد حذف شد");
-    }).catch(err=>{
-      showMessage("error", "❌ خطا در حذف رکورد");
-    }).finally(() => {
-        hideLoading('deleteBtn');
-    });
-});
-
-document.getElementById("searchBtn").addEventListener("click", ()=>{
-  const code = document.getElementById("searchCode").value.trim();
-  if(!code) return showMessage("error", "❌ کد دیوایس وارد شود");
-  showLoading('searchBtn', 'fa-solid fa-magnifying-glass');
-  fetch(`${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`)
-    .then(res=>res.json())
-    .then(data=>{
-      if(Object.keys(data).length > 0){
-        fillForm(data);
-        document.getElementById("barcodeId").value = data.barcodeId||"";
-        showMessage("success", "✅ رکورد پیدا شد");
-      }else{
-        showMessage("error", "❌ رکورد پیدا نشد");
-      }
-    }).catch(err=>{
-      console.error(err);
-      showMessage("error", "❌ خطا در جستجو");
-    }).finally(() => {
-        hideLoading('searchBtn');
-    });
-});
-</script>
-</body>
-</html>
-
+        altField: '#issueDate',
+        altFormat: 'YYYY/MM/DD',
+        initialValueType: 'persian',
+        persianDigit: true,
+        observer
