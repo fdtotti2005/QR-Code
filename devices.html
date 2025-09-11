@@ -179,6 +179,18 @@ button:hover{
   .button-group { flex-direction: column; }
   .compact-barcode-display { text-align: right; }
 }
+  /* هم‌اندازه کردن کادر جستجو و دکمه جستجو با دکمه‌های بالایی */
+.search-container input,
+.search-container button {
+    height: 42px;         /* هم ارتفاع با دکمه‌های ثبت/ویرایش/حذف */
+    font-size: 0.81rem;   /* هماهنگ با متن دکمه‌ها */
+    border-radius: 6px;   /* یکسان با دکمه‌های بالا */
+}
+.search-container button {
+    padding: 0 1rem;      /* فضای داخلی مناسب */
+    flex: 0 0 auto;       /* جلوگیری از کشیده شدن بیش از حد */
+}
+
 </style>
 </head>
 <body>
@@ -394,3 +406,4 @@ document.getElementById("searchBtn").addEventListener("click", ()=>{
 </script>
 </body>
 </html>
+
