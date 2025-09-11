@@ -343,7 +343,7 @@ document.getElementById("deviceForm").addEventListener("submit", function(e){
   const formData = new FormData(e.target);
   showLoading('saveBtn', 'fa-solid fa-floppy-disk');
   fetch(scriptURL,{method:"POST",body:formData})
-    .then(()=>{ showMessage("success", "✅ عملیات موفقیت‌آمیز بود"); })
+    .then(()=>{ showMessage("success", "✅ گزارش ثبت شد"); })
     .catch(err=>{ showMessage("error", "❌ خطا در پردازش اطلاعات"); })
     .finally(() => { hideLoading('saveBtn'); });
 });
@@ -357,9 +357,9 @@ document.getElementById("deleteBtn").addEventListener("click", function(){
     .then(()=>{
       document.getElementById("deviceForm").reset();
       document.getElementById("barcodeDisplay").textContent = "---";
-      showMessage("success", "✅ رکورد حذف شد");
+      showMessage("success", "✅ اطلاعات این دیوایس حذف شد");
     }).catch(err=>{
-      showMessage("error", "❌ خطا در حذف رکورد");
+      showMessage("error", "❌ خطا در حذف اطلاعات");
     }).finally(() => {
         hideLoading('deleteBtn');
     });
