@@ -415,9 +415,9 @@ document.getElementById("searchBtn").addEventListener("click", ()=>{
       if(Object.keys(data).length > 0){
         fillForm(data);
         document.getElementById("barcodeId").value = data.barcodeId||"";
-        showMessage("success", "✅ دیوایس با این اطلاعات پیدا شد");
+        showMessage("success", "✅ دیوایس با این کد پیدا شد");
       }else{
-        showMessage("error", "❌ دیوایس با این اطلاعات پیدا نشد");
+        showMessage("error", "❌ برای کد وارد شده دیوایسی پیدا نشد");
       }
     }).catch(err=>{
       console.error(err);
