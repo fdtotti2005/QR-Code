@@ -2,10 +2,12 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>‌فرم ثبت اطلاعات ‌دیوایس‌</title>
+<title>فرم ثبت اطلاعات دیوایس‌های معیوب</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- persian-datepicker styles -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
 <style>
 :root {
   --primary-color: #2c3e50;
@@ -229,7 +231,7 @@ button:hover{
   <input type="text" name="issue" required>
 
   <label>تاریخ گزارش ایراد</label>
-  <input type="text" name="issueDate" id="issueDate" placeholder="تاریخ گزارش ایراد">
+  <input type="text" name="issueDate" id="issueDate" placeholder="تاریخ گزارش ایراد" autocomplete="off" required>
 
   <label>شرح ایراد</label>
   <textarea name="issueDescription" rows="2"></textarea>
@@ -264,205 +266,146 @@ button:hover{
 </div>
 </div>
 
+<!-- persian-date & persian-datepicker scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/persian-date@1.1.0/dist/persian-date.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
+
 <script>
-// مدیریت مرکزی وضعیت فرم و داده‌ها، پیام‌ها و لودینگ
 const scriptURL = "https://script.google.com/macros/s/AKfycbwiFTGb_w8MRlEDdqqF6KqiTkRSm5yqqmLBs0OCWA665-engKt8dcwmqT4_QttYbnLgtw/exec";
 const urlParams = new URLSearchParams(window.location.search);
+const barcodeId = urlParams.get("barcodeId");
+document.getElementById("barcodeId").value = barcodeId || "";
+document.getElementById("barcodeDisplay").textContent = barcodeId || "---";
 
-/** ساختار مدیریت پیام‌ها */
-class MessageManager {
-    constructor() {
-        this.container = document.getElementById("messageContainer");
-        this.successMsg = document.getElementById("successMsg");
-        this.errorMsg = document.getElementById("errorMsg");
-    }
-    show(type, message) {
-        const target = (type === "success") ? this.successMsg : this.errorMsg;
-        const other = (type === "success") ? this.errorMsg : this.successMsg;
-        if (!target || !other || !this.container) return;
-        target.textContent = message;
-        this.container.classList.add("visible");
-        target.style.display = 'block';
-        other.style.display = 'none';
-        setTimeout(() => {
-            this.container.classList.remove("visible");
-        }, 3000);
+// مدیریت پیام‌ها
+function showMessage(type, message) {
+    const messageContainer = document.getElementById("messageContainer");
+    const successMsg = document.getElementById("successMsg");
+    const errorMsg = document.getElementById("errorMsg");
+    if (!successMsg || !errorMsg || !messageContainer) return;
+    const targetMsg = (type === "success") ? successMsg : errorMsg;
+    const otherMsg = (type === "success") ? errorMsg : successMsg;
+    targetMsg.textContent = message;
+    messageContainer.classList.add("visible");
+    targetMsg.style.display = 'block';
+    otherMsg.style.display = 'none';
+    setTimeout(() => {
+        messageContainer.classList.remove("visible");
+    }, 3000);
+}
+
+// لودینگ دکمه
+function showLoading(buttonId, originalIconClass) {
+    const button = document.getElementById(buttonId);
+    button.dataset.originalIcon = originalIconClass;
+    button.classList.add('loading');
+    button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+}
+function hideLoading(buttonId) {
+    const button = document.getElementById(buttonId);
+    button.classList.remove('loading');
+    const originalIconClass = button.dataset.originalIcon;
+    if (originalIconClass) {
+        button.innerHTML = '<i class="' + originalIconClass + '"></i> ' + button.textContent.trim();
     }
 }
 
-/** ساختار مدیریت لودینگ دکمه‌ها */
-class LoadingManager {
-    show(buttonId, iconClass) {
-        const btn = document.getElementById(buttonId);
-        if (!btn) return;
-        btn.dataset.originalIcon = iconClass;
-        btn.classList.add('loading');
-        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
+// تکمیل فرم
+function fillForm(data){
+  if(!data) return;
+  if (Object.keys(data).length > 0) {
+    for(const key in data){
+      const el = document.querySelector("[name='"+key+"']");
+      if(el){
+          el.value = data[key] || "";
+      }
     }
-    hide(buttonId) {
-        const btn = document.getElementById(buttonId);
-        if (!btn) return;
-        btn.classList.remove('loading');
-        const originalIcon = btn.dataset.originalIcon || "";
-        // کل متن دکمه را بعد از آیکون نمایش می‌دهیم
-        let label = btn.textContent.replace(/^\s*[\u200C-\u200F\s]+/, '');
-        // حذف spinner از متن دکمه:
-        btn.innerHTML = `<i class="${originalIcon}"></i> ${label.replace("جستجو", "").replace("ثبت/ویرایش", "").replace("حذف", "")} ${btn.id === "searchBtn" ? "جستجو" : btn.id === "saveBtn" ? "ثبت/ویرایش" : "حذف"}`;
-    }
+    document.getElementById("barcodeDisplay").textContent = data.barcodeId || "---";
+    showMessage("success", "✅ رکورد پیدا شد");
+  } else {
+    showMessage("error", "❌ رکورد پیدا نشد");
+  }
 }
 
-/** مدیریت داده‌های فرم و وضعیت */
-class DeviceFormManager {
-    constructor(formId) {
-        this.form = document.getElementById(formId);
-        this.barcodeDisplay = document.getElementById("barcodeDisplay");
-        this.barcodeInput = document.getElementById("barcodeId");
-        this.fields = [
-            "deviceName", "deviceCode", "issue", "issueDate",
-            "issueDescription", "actionsTaken", "currentStatus", "notes", "barcodeId"
-        ];
-    }
-    getData() {
-        // خروجی به شکل شیء برای ارسال به سرور
-        const data = {};
-        this.fields.forEach(key => {
-            const el = this.form.querySelector(`[name='${key}']`);
-            if (el) data[key] = el.value || "";
-        });
-        return data;
-    }
-    setData(data) {
-        if (!data || typeof data !== "object") return;
-        this.fields.forEach(key => {
-            const el = this.form.querySelector(`[name='${key}']`);
-            if (el) el.value = data[key] || "";
-        });
-        this.barcodeDisplay.textContent = data.barcodeId || "---";
-    }
-    reset() {
-        this.form.reset();
-        this.barcodeDisplay.textContent = "---";
-    }
+// دریافت اطلاعات اولیه اگر بارکد بود
+if(barcodeId){
+  fetch(`${scriptURL}?action=get&barcodeId=${encodeURIComponent(barcodeId)}`)
+    .then(res=>res.json())
+    .then(data=>{ fillForm(data); })
+    .catch(err=>{
+      console.error("خطا در دریافت اطلاعات", err);
+      showMessage("error", "❌ خطا در دریافت اطلاعات");
+    });
 }
 
-/** مدیریت کل اپلیکیشن */
-class DeviceApp {
-    constructor() {
-        this.messageManager = new MessageManager();
-        this.loadingManager = new LoadingManager();
-        this.formManager = new DeviceFormManager("deviceForm");
-        this.barcodeId = urlParams.get("barcodeId") || "";
-        this.formManager.barcodeInput.value = this.barcodeId;
-        this.formManager.barcodeDisplay.textContent = this.barcodeId || "---";
-        // رویدادها
-        this.setEventListeners();
-        // اگر بارکد موجود بود، اطلاعات آن را بگیر
-        if (this.barcodeId) this.fetchDeviceByBarcode(this.barcodeId);
-    }
+// ثبت/ویرایش
+document.getElementById("deviceForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  showLoading('saveBtn', 'fa-solid fa-floppy-disk');
+  fetch(scriptURL,{method:"POST",body:formData})
+    .then(()=>{ showMessage("success", "✅ عملیات موفقیت‌آمیز بود"); })
+    .catch(err=>{ showMessage("error", "❌ خطا در پردازش اطلاعات"); })
+    .finally(() => { hideLoading('saveBtn'); });
+});
 
-    setEventListeners() {
-        // ثبت/ویرایش
-        this.formManager.form.addEventListener("submit", e => {
-            e.preventDefault();
-            this.handleSave();
-        });
-        // حذف
-        document.getElementById("deleteBtn").addEventListener("click", () => {
-            this.handleDelete();
-        });
-        // جستجو
-        document.getElementById("searchBtn").addEventListener("click", () => {
-            this.handleSearch();
-        });
-    }
+// حذف
+document.getElementById("deleteBtn").addEventListener("click", function(){
+  if(!barcodeId) return;
+  if(!confirm("آیا مطمئن هستید؟")) return;
+  showLoading('deleteBtn', 'fa-solid fa-trash-can');
+  fetch(`${scriptURL}?action=delete&barcodeId=${encodeURIComponent(barcodeId)}`)
+    .then(()=>{
+      document.getElementById("deviceForm").reset();
+      document.getElementById("barcodeDisplay").textContent = "---";
+      showMessage("success", "✅ رکورد حذف شد");
+    }).catch(err=>{
+      showMessage("error", "❌ خطا در حذف رکورد");
+    }).finally(() => {
+        hideLoading('deleteBtn');
+    });
+});
 
-    handleSave() {
-        const formData = new FormData(this.formManager.form);
-        this.loadingManager.show('saveBtn', 'fa-solid fa-floppy-disk');
-        fetch(scriptURL, { method: "POST", body: formData })
-            .then(res => {
-                if (res.ok) {
-                    this.messageManager.show("success", "✅ عملیات موفقیت‌آمیز بود");
-                } else {
-                    this.messageManager.show("error", "❌ خطا در پردازش اطلاعات");
-                }
-            })
-            .catch(() => {
-                this.messageManager.show("error", "❌ خطا در پردازش اطلاعات");
-            })
-            .finally(() => {
-                this.loadingManager.hide('saveBtn');
-            });
-    }
+// جستجو
+document.getElementById("searchBtn").addEventListener("click", function(){
+  const code = document.getElementById("searchCode").value.trim();
+  if(!code) return showMessage("error", "❌ کد دیوایس وارد شود");
+  showLoading('searchBtn', 'fa-solid fa-magnifying-glass');
+  fetch(`${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`)
+    .then(res=>res.json())
+    .then(data=>{
+      if(Object.keys(data).length > 0){
+        fillForm(data);
+        document.getElementById("barcodeId").value = data.barcodeId||"";
+        showMessage("success", "✅ رکورد پیدا شد");
+      }else{
+        showMessage("error", "❌ رکورد پیدا نشد");
+      }
+    }).catch(err=>{
+      console.error(err);
+      showMessage("error", "❌ خطا در جستجو");
+    }).finally(() => {
+        hideLoading('searchBtn');
+    });
+});
 
-    handleDelete() {
-        const barcodeId = this.formManager.barcodeInput.value;
-        if (!barcodeId) return;
-        if (!confirm("آیا مطمئن هستید؟")) return;
-        this.loadingManager.show('deleteBtn', 'fa-solid fa-trash-can');
-        fetch(`${scriptURL}?action=delete&barcodeId=${encodeURIComponent(barcodeId)}`)
-            .then(res => {
-                if (res.ok) {
-                    this.formManager.reset();
-                    this.messageManager.show("success", "✅ رکورد حذف شد");
-                } else {
-                    this.messageManager.show("error", "❌ خطا در حذف رکورد");
-                }
-            })
-            .catch(() => {
-                this.messageManager.show("error", "❌ خطا در حذف رکورد");
-            })
-            .finally(() => {
-                this.loadingManager.hide('deleteBtn');
-            });
-    }
-
-    handleSearch() {
-        const code = document.getElementById("searchCode").value.trim();
-        if (!code) {
-            this.messageManager.show("error", "❌ کد دیوایس وارد شود");
-            return;
-        }
-        this.loadingManager.show('searchBtn', 'fa-solid fa-magnifying-glass');
-        fetch(`${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`)
-            .then(res => res.json())
-            .then(data => {
-                if (Object.keys(data).length > 0) {
-                    this.formManager.setData(data);
-                    this.formManager.barcodeInput.value = data.barcodeId || "";
-                    this.messageManager.show("success", "✅ رکورد پیدا شد");
-                } else {
-                    this.messageManager.show("error", "❌ رکورد پیدا نشد");
-                }
-            })
-            .catch(() => {
-                this.messageManager.show("error", "❌ خطا در جستجو");
-            })
-            .finally(() => {
-                this.loadingManager.hide('searchBtn');
-            });
-    }
-
-    fetchDeviceByBarcode(barcodeId) {
-        fetch(`${scriptURL}?action=get&barcodeId=${encodeURIComponent(barcodeId)}`)
-            .then(res => res.json())
-            .then(data => {
-                this.formManager.setData(data);
-                if (Object.keys(data).length > 0) {
-                    this.messageManager.show("success", "✅ رکورد پیدا شد");
-                } else {
-                    this.messageManager.show("error", "❌ رکورد پیدا نشد");
-                }
-            })
-            .catch(() => {
-                this.messageManager.show("error", "❌ خطا در دریافت اطلاعات");
-            });
-    }
-}
-
-// اجرای اپلیکیشن بعد از لود شدن DOM
-document.addEventListener("DOMContentLoaded", () => {
-    new DeviceApp();
+// تقویم شمسی روی فیلد تاریخ گزارش ایراد
+$(function() {
+  $("#issueDate").persianDatepicker({
+    format: "YYYY/MM/DD",
+    observer: true,
+    initialValue: false,
+    autoClose: true,
+    calendarType: "persian",
+    toolbox: {
+      calendarSwitch: {
+          enabled: false
+      }
+    },
+    altField: "#issueDate",
+    altFormat: "YYYY/MM/DD"
+  });
 });
 </script>
 </body>
