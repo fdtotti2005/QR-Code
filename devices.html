@@ -178,39 +178,6 @@ button:hover{
   .button-group { flex-direction: column; }
   .compact-barcode-display { text-align: right; }
 }
-
-  /* هم‌اندازه کردن بخش جستجو با دکمه‌های بالا */
-.search-container {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 1.35rem;
-}
-
-.search-container input,
-.search-container button {
-    flex: 1;
-    min-width: 0;              /* جلوگیری از کشیده شدن اضافه */
-    height: 48px;              /* همان ارتفاع دکمه‌های بالا */
-    font-size: 0.81rem;
-    border-radius: 6px;
-    box-sizing: border-box;
-}
-
-.search-container input {
-    border: 1px solid var(--border-color);
-    background: var(--input-bg-color);
-    padding: 0 0.72rem;
-}
-
-.search-container button {
-    border: none;
-    color: var(--input-bg-color);
-    cursor: pointer;
-    background: linear-gradient(135deg, #3498db, #2980b9);
-    box-shadow: 0 2px 4px var(--shadow-light);
-}
-
-  
 </style>
 </head>
 <body>
@@ -426,3 +393,4 @@ document.getElementById("searchBtn").addEventListener("click", ()=>{
 </script>
 </body>
 </html>
+
