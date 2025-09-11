@@ -307,10 +307,10 @@ $(document).ready(function() {
         locale: "fa"
       }
     },
-    onSelect: function (unix) {
-        var selectedDate = new persianDate(unix).add('day', -1).startOf('day');
-        $("#issueDate").val(selectedDate.format('YYYY/MM/DD'));
-    }
+    onSelect: function(unix) {
+        const selectedDate = new persianDate(unix).add('day', -1);
+        this.setDate(selectedDate.format());
+    }
   });
 });
 
