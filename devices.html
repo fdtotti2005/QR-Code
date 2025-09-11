@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -105,20 +103,20 @@ button:hover{
   box-shadow: 0 4px 8px var(--shadow-medium);
 }
 #saveBtn{
-    background: var(--success-color); /* Fallback */
+    background: var(--success-color);
     background: linear-gradient(135deg, #2ecc71, #27ae60);
 }
 #deleteBtn{
-    background: var(--danger-color); /* Fallback */
+    background: var(--danger-color);
     background: linear-gradient(135deg, #e74c3c, #c0392b);
 }
 #searchBtn{
-    background: var(--accent-color); /* Fallback */
+    background: var(--accent-color);
     background: linear-gradient(135deg, #3498db, #2980b9);
 }
 /* New CSS for loading state */
 .loading {
-    pointer-events: none; /* Disable clicks */
+    pointer-events: none;
     opacity: 0.7;
     cursor: wait;
 }
@@ -150,23 +148,25 @@ button:hover{
 .success{color:var(--success-color);background-color:rgba(46, 204, 113, 0.1);border:1px solid var(--success-color);}
 .error{color:var(--danger-color);background-color:rgba(231, 76, 60, 0.1);border:1px solid var(--danger-color);}
 
-/* Search Bar - Inline */
-.search-container{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap; align-items: flex-end;}
-.search-container input{
-    flex:1;
-    min-width:60%; 
-    margin-top:0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+/* Search Bar - Fixed Size */
+.search-container {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+.search-container input,
+.search-container button {
+    width: 150px;       /* دقیقا مثل دکمه‌های بالا */
+    height: 42px;       /* هم ارتفاع */
+    font-size: 0.81rem;
+    border-radius: 6px;
 }
 .search-container button {
-    margin-top: 0;
-    width: auto;
-    padding: 0.54rem 0.9rem;
-    font-size: 0.765rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.search-container button:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 0;
+    flex: 0 0 auto;
 }
 
 /* Responsive */
@@ -179,18 +179,6 @@ button:hover{
   .button-group { flex-direction: column; }
   .compact-barcode-display { text-align: right; }
 }
-  /* هم‌اندازه کردن کادر جستجو و دکمه جستجو با دکمه‌های بالایی */
-.search-container input,
-.search-container button {
-    height: 42px;         /* هم ارتفاع با دکمه‌های ثبت/ویرایش/حذف */
-    font-size: 0.81rem;   /* هماهنگ با متن دکمه‌ها */
-    border-radius: 6px;   /* یکسان با دکمه‌های بالا */
-}
-.search-container button {
-    padding: 0 1rem;      /* فضای داخلی مناسب */
-    flex: 0 0 auto;       /* جلوگیری از کشیده شدن بیش از حد */
-}
-
 </style>
 </head>
 <body>
@@ -267,8 +255,8 @@ button:hover{
 </div>
 
 <div class="search-container">
-<input type="text" id="searchCode" placeholder="جستجو بر اساس کد دیوایس">
-<button type="button" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i> جستجو</button>
+  <input type="text" id="searchCode" placeholder="جستجو بر اساس کد دیوایس">
+  <button type="button" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i> جستجو</button>
 </div>
 </div>
 
@@ -406,4 +394,3 @@ document.getElementById("searchBtn").addEventListener("click", ()=>{
 </script>
 </body>
 </html>
-
