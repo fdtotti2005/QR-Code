@@ -2,14 +2,14 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>‌فرم ثبت اطلاعات ‌دیوایس‌</title>
+<title>فرم ثبت اطلاعات دیوایس‌</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css"/>
+<!-- تقویم شمسی دقیق -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/md.bootstrappersiandatetimepicker@latest/dist/jquery.md.bootstrap.datetimepicker.style.css">
 <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/md.bootstrappersiandatetimepicker@latest/dist/jquery.md.bootstrap.datetimepicker.js"></script>
 <style>
 :root {
   --primary-color: #2c3e50;
@@ -27,216 +27,50 @@
 body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem;}
 .container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
 h2{text-align:center;margin-bottom:1.35rem;font-size:1.2rem;}
-
-/* فرم وسط کارت */
-.fields-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.85rem;
-}
-.fields-center input,
-.fields-center select,
-.fields-center textarea {
-  width: 80%;
-  min-width: 160px;
-  max-width: 380px;
-  margin-left: auto;
-  margin-right: auto;
-}
-.fields-center label {
-  width: 80%;
-  min-width: 160px;
-  max-width: 380px;
-  align-self: center;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: right;
-  font-weight: bold;
-  font-size: 0.81rem;
-  margin-top: 0.38rem;
-}
-
-/* کارت‌ها */
-.card {
-  background: #fff;
-  border-radius: 10px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  border: 1px solid #e0e0e0;
-}
-
-/* سایر استایل‌ها مثل قبل */
-input,textarea,select{
-  border:1px solid var(--border-color);
-  border-radius:6px;
-  font-family:inherit;
-  font-size:0.81rem;
-  box-shadow: 0 1px 3px var(--shadow-light);
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
-  padding:0.54rem;
-}
-input:focus, textarea:focus, select:focus {
-  outline:none;
-  border-color:var(--accent-color);
-  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-}
+.fields-center {display:flex;flex-direction:column;align-items:center;gap:0.85rem;}
+.fields-center input,.fields-center select,.fields-center textarea {width:80%;min-width:160px;max-width:380px;margin-left:auto;margin-right:auto;}
+.fields-center label {width:80%;min-width:160px;max-width:380px;align-self:center;margin-left:auto;margin-right:auto;text-align:right;font-weight:bold;font-size:0.81rem;margin-top:0.38rem;}
+.card {background:#fff;border-radius:10px;padding:1rem;margin-bottom:1rem;box-shadow:0 2px 6px rgba(0,0,0,0.1);border:1px solid #e0e0e0;}
+input,textarea,select{border:1px solid var(--border-color);border-radius:6px;font-family:inherit;font-size:0.81rem;box-shadow:0 1px 3px var(--shadow-light);transition:box-shadow 0.2s ease,border-color 0.2s ease;padding:0.54rem;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent-color);box-shadow:0 0 5px rgba(52,152,219,0.5);}
 textarea{resize:vertical;}
-
-/* Compact Barcode Display - Positioned Left */
-.compact-barcode-display {
-  padding: 0.45rem 0;
-  text-align: right;
-  margin-bottom: 0.9rem;
-  font-size: 0.765rem;
-  color: var(--primary-color);
-  font-weight: bold;
-}
-.compact-barcode-display span {
-  font-family: 'Courier New', Courier, monospace;
-  background-color: var(--readonly-bg);
-  padding: 0.09rem 0.36rem;
-  border-radius: 4px;
-}
-
-/* Buttons */
-.button-group {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 1.35rem;
-}
-.button-group button {
-    flex: 1;
-}
-button{
-  padding:0.72rem;
-  width:100%;
-  color:var(--input-bg-color);
-  border:none;
-  border-radius:6px;
-  font-size:0.81rem;
-  cursor:pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-  font-family:inherit;
-  box-shadow: 0 2px 4px var(--shadow-light);
-}
-button:hover{
-  transform: scale(1.02);
-  box-shadow: 0 4px 8px var(--shadow-medium);
-}
-#saveBtn{
-    background: var(--success-color); /* Fallback */
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
-}
-#deleteBtn{
-    background: var(--danger-color); /* Fallback */
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
-}
-#searchBtn{
-    background: var(--accent-color); /* Fallback */
-    background: linear-gradient(135deg, #3498db, #2980b9);
-    color: #fff;
-    font-weight: bold;
-}
-/* New CSS for loading state */
-.loading {
-    pointer-events: none; /* Disable clicks */
-    opacity: 0.7;
-    cursor: wait;
-}
-.loading i.fa-spin {
-    animation: spin 1s linear infinite;
-}
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Floating Message Box */
-.message-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    z-index: 1000;
-    text-align: center;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-.message-container.visible {
-    opacity: 0.9;
-}
+.compact-barcode-display {padding:0.45rem 0;text-align:right;margin-bottom:0.9rem;font-size:0.765rem;color:var(--primary-color);font-weight:bold;}
+.compact-barcode-display span {font-family:'Courier New',Courier,monospace;background-color:var(--readonly-bg);padding:0.09rem 0.36rem;border-radius:4px;}
+.button-group {display:flex;gap:0.5rem;margin-top:1.35rem;}
+.button-group button {flex:1;}
+button{padding:0.72rem;width:100%;color:var(--input-bg-color);border:none;border-radius:6px;font-size:0.81rem;cursor:pointer;transition:transform 0.2s ease,background-color 0.2s ease,box-shadow 0.2s ease;font-family:inherit;box-shadow:0 2px 4px var(--shadow-light);}
+button:hover{transform:scale(1.02);box-shadow:0 4px 8px var(--shadow-medium);}
+#saveBtn{background:var(--success-color);background:linear-gradient(135deg,#2ecc71,#27ae60);}
+#deleteBtn{background:var(--danger-color);background:linear-gradient(135deg,#e74c3c,#c0392b);}
+#searchBtn{background:var(--accent-color);background:linear-gradient(135deg,#3498db,#2980b9);color:#fff;font-weight:bold;}
+.loading{pointer-events:none;opacity:0.7;cursor:wait;}
+.loading i.fa-spin {animation:spin 1s linear infinite;}
+@keyframes spin {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+.message-container {position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;z-index:1000;text-align:center;pointer-events:none;opacity:0;transition:opacity 0.5s ease-in-out;}
+.message-container.visible {opacity:0.9;}
 .message-box{font-weight:bold;font-size:0.85rem;padding:0.6rem;border-radius:5px;box-shadow:0 2px 10px rgba(0,0,0,0.2);}
-.success{color:var(--success-color);background-color:rgba(46, 204, 113, 0.1);border:1px solid var(--success-color);}
-.error{color:var(--danger-color);background-color:rgba(231, 76, 60, 0.1);border:1px solid var(--danger-color);}
-
-/* Search Bar - کنار هم و هم‌اندازه دکمه‌ها */
-.search-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 2rem;
-}
-.search-container input {
-  flex: 1;
-  height: 48px;
-  font-size: 0.81rem;
-  border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-  padding: 0 1rem;
-}
-.search-container button {
-  height: 48px;
-  font-size: 0.81rem;
-  border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-  background: var(--accent-color);
-  color: #fff;
-  font-weight: bold;
-  border: none;
-  padding: 0 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+.success{color:var(--success-color);background-color:rgba(46,204,113,0.1);border:1px solid var(--success-color);}
+.error{color:var(--danger-color);background-color:rgba(231,76,60,0.1);border:1px solid var(--danger-color);}
+.search-container {display:flex;flex-direction:row;align-items:center;gap:0.5rem;margin-top:2rem;}
+.search-container input {flex:1;height:48px;font-size:0.81rem;border-radius:6px;box-shadow:0 2px 4px rgba(0,0,0,0.08);padding:0 1rem;}
+.search-container button {height:48px;font-size:0.81rem;border-radius:6px;box-shadow:0 2px 4px rgba(0,0,0,0.08);background:var(--accent-color);color:#fff;font-weight:bold;border:none;padding:0 1.2rem;display:flex;align-items:center;justify-content:center;}
 @media(max-width:500px){
-  .search-container {
-    flex-direction: column;
-    gap: 0.7rem;
-  }
-  .search-container input,
-  .search-container button {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-  }
-  .button-group { flex-direction: column; }
-  .compact-barcode-display { text-align: right; }
-  .fields-center input,
-  .fields-center select,
-  .fields-center textarea,
-  .fields-center label {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-  }
+  .search-container{flex-direction:column;gap:0.7rem;}
+  .search-container input,.search-container button{width:100%;min-width:0;max-width:100%;}
+  .button-group{flex-direction:column;}
+  .compact-barcode-display{text-align:right;}
+  .fields-center input,.fields-center select,.fields-center textarea,.fields-center label{width:100%;min-width:0;max-width:100%;}
 }
 </style>
 </head>
 <body>
 <div class="container">
 <h2>فرم ثبت اطلاعات دیوایس‌های معیوب</h2>
-
 <form id="deviceForm">
 <div class="compact-barcode-display">
   بارکد فعلی: <span id="barcodeDisplay">---</span>
 </div>
 <input type="hidden" id="barcodeId" name="barcodeId">
-
 <!-- کارت ۱: نام و کد دیوایس -->
 <div class="card">
   <div class="fields-center">
@@ -260,76 +94,60 @@ button:hover{
     <input type="text" name="deviceCode" required>
   </div>
 </div>
-
 <!-- کارت ۲: ایراد -->
 <div class="card">
   <div class="fields-center">
     <label>ایراد</label>
     <input type="text" name="issue" required>
-
     <label>تاریخ گزارش ایراد</label>
-    <input type="text" name="issueDate" id="issueDate" placeholder="تاریخ گزارش ایراد">
-
+    <input type="text" name="issueDate" id="issueDate" placeholder="تاریخ گزارش ایراد" autocomplete="off">
     <label>شرح ایراد</label>
     <textarea name="issueDescription" rows="2"></textarea>
   </div>
 </div>
-
 <!-- کارت ۳: اقدامات و توضیحات -->
 <div class="card">
   <div class="fields-center">
     <label>اقدامات انجام شده</label>
     <textarea name="actionsTaken" rows="2"></textarea>
-
     <label>وضعیت فعلی</label>
     <input type="text" name="currentStatus">
-
     <label>توضیحات تکمیلی</label>
     <textarea name="notes" rows="2"></textarea>
   </div>
 </div>
-
 <div class="button-group">
   <button type="submit" id="saveBtn"><i class="fa-solid fa-floppy-disk"></i> ثبت/ویرایش</button>
   <button type="button" id="deleteBtn"><i class="fa-solid fa-trash-can"></i> حذف</button>
 </div>
 </form>
-
 <div class="message-container" id="messageContainer">
     <div class="message-box success" id="successMsg"></div>
     <div class="message-box error" id="errorMsg"></div>
 </div>
-
-<!-- فرم جستجو پایین صفحه -->
 <div class="search-container">
   <input type="text" id="searchCode" placeholder="جستجو بر اساس کد دیوایس">
   <button type="button" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i> جستجو</button>
 </div>
 </div>
-
 <script>
 const scriptURL = "https://script.google.com/macros/s/AKfycbwiFTGb_w8MRlEDdqqF6KqiTkRSm5yqqmLBs0OCWA665-engKt8dcwmqT4_QttYbnLgtw/exec";
 const urlParams = new URLSearchParams(window.location.search);
 const barcodeId = urlParams.get("barcodeId");
 document.getElementById("barcodeId").value = barcodeId || "";
-
 // نمایش بصری بارکد
 document.getElementById("barcodeDisplay").textContent = barcodeId || "---";
-
-// فعال‌سازی تاریخ شمسی
+// فعال‌سازی تقویم شمسی دقیق
 $(document).ready(function() {
-  $("#issueDate").persianDatepicker({
-    format: "YYYY/MM/DD",
-    autoClose: true,
-    initialValue: false,
-    calendar: {
-      persian: {
-        locale: "fa"
-      }
-    }
+  $("#issueDate").MdPersianDateTimePicker({
+    targetTextSelector: "#issueDate",
+    englishNumber: true,
+    enableTimePicker: false,
+    textFormat: "yyyy/MM/dd",
+    selectedDateToShow: "",
+    calendarType: "persian"
   });
 });
-
 function showMessage(type, message) {
     const messageContainer = document.getElementById("messageContainer");
     const successMsg = document.getElementById("successMsg");
@@ -345,7 +163,6 @@ function showMessage(type, message) {
         messageContainer.classList.remove("visible");
     }, 3000);
 }
-
 function fillForm(data){
   if(!data) return;
   if (Object.keys(data).length > 0) {
@@ -365,7 +182,6 @@ function fillForm(data){
     showMessage("error", "❌ رکورد پیدا نشد");
   }
 }
-
 function showLoading(buttonId, originalIconClass) {
     const button = document.getElementById(buttonId);
     button.dataset.originalIcon = originalIconClass;
@@ -380,7 +196,6 @@ function hideLoading(buttonId) {
         button.innerHTML = '<i class="' + originalIconClass + '"></i> ' + button.textContent.trim();
     }
 }
-
 if(barcodeId){
   fetch(`${scriptURL}?action=get&barcodeId=${encodeURIComponent(barcodeId)}`)
     .then(res=>res.json())
@@ -390,7 +205,6 @@ if(barcodeId){
       showMessage("error", "❌ خطا در دریافت اطلاعات");
     });
 }
-
 document.getElementById("deviceForm").addEventListener("submit", e=>{
   e.preventDefault();
   const formData = new FormData(e.target);
@@ -400,7 +214,6 @@ document.getElementById("deviceForm").addEventListener("submit", e=>{
     .catch(err=>{ showMessage("error", "❌ خطا در پردازش اطلاعات"); })
     .finally(() => { hideLoading('saveBtn'); });
 });
-
 document.getElementById("deleteBtn").addEventListener("click", ()=>{
   if(!barcodeId) return;
   if(!confirm("آیا مطمئن هستید؟")) return;
@@ -416,7 +229,6 @@ document.getElementById("deleteBtn").addEventListener("click", ()=>{
         hideLoading('deleteBtn');
     });
 });
-
 document.getElementById("searchBtn").addEventListener("click", ()=>{
   const code = document.getElementById("searchCode").value.trim();
   if(!code) return showMessage("error", "❌ کد دیوایس وارد شود");
