@@ -190,12 +190,21 @@
             }
         }
 
-        // Search logic (for both URL and search button)
         function fetchDeviceData(url, successMessage, failureMessage) {
             showLoading('searchBtn', 'fa-solid fa-magnifying-glass');
             fetch(url)
-                .then(res => res.json())
-                .then(data => {
+                .then(res => res.text())
+                .then(text => {
+                    let data = {};
+                    try {
+                        if (text) {
+                            data = JSON.parse(text);
+                        }
+                    } catch (e) {
+                        console.error("Failed to parse JSON:", e);
+                        data = {};
+                    }
+
                     if (Object.keys(data).length > 0) {
                         fillForm(data);
                         showMessage("success", successMessage);
@@ -203,7 +212,8 @@
                         showMessage("error", failureMessage);
                     }
                 })
-                .catch(() => {
+                .catch(err => {
+                    console.error("Fetch Error:", err);
                     showMessage("error", "❌ خطای شبکه یا خطای نامشخص در جستجو");
                 })
                 .finally(() => {
@@ -224,11 +234,16 @@
                     method: "POST",
                     body: formData
                 })
-                .then(() => {
-                    showMessage("success", "✅ اطلاعات دیوایس با موفقیت ثبت شد");
+                .then(response => response.text())
+                .then(text => {
+                    if (text === "OK") {
+                        showMessage("success", "✅ اطلاعات دیوایس با موفقیت ثبت شد");
+                    } else {
+                        showMessage("error", "❌ خطا در ثبت اطلاعات دیوایس");
+                    }
                 })
                 .catch(() => {
-                    showMessage("error", "❌ خطا در ثبت اطلاعات دیوایس");
+                    showMessage("error", "❌ خطای شبکه یا خطای نامشخص در ثبت اطلاعات");
                 })
                 .finally(() => {
                     hideLoading('saveBtn');
@@ -244,14 +259,19 @@
 
             showLoading('deleteBtn', 'fa-solid fa-trash-can');
             fetch(`${scriptURL}?action=delete&barcodeId=${encodeURIComponent(currentBarcodeId)}`)
-                .then(() => {
-                    document.getElementById("deviceForm").reset();
-                    document.getElementById("barcodeDisplay").textContent = "---";
-                    document.getElementById("barcodeId").value = "";
-                    showMessage("success", "✅ اطلاعات دیوایس با موفقیت حذف شد");
+                .then(response => response.text())
+                .then(text => {
+                    if (text === "Deleted") {
+                        document.getElementById("deviceForm").reset();
+                        document.getElementById("barcodeDisplay").textContent = "---";
+                        document.getElementById("barcodeId").value = "";
+                        showMessage("success", "✅ اطلاعات دیوایس با موفقیت حذف شد");
+                    } else {
+                         showMessage("error", "❌ خطا در حذف اطلاعات دیوایس");
+                    }
                 })
                 .catch(() => {
-                    showMessage("error", "❌ خطا در حذف اطلاعات دیوایس");
+                    showMessage("error", "❌ خطای شبکه یا خطای نامشخص در حذف اطلاعات");
                 })
                 .finally(() => {
                     hideLoading('deleteBtn');
