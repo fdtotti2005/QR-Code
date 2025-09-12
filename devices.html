@@ -274,12 +274,12 @@
         }, 4000);
     }
 
-    function fillForm(data){
-        if(!data) return;
-        for(const key in data){
+    function fillForm(data) {
+        if (!data) return;
+        for (const key in data) {
             const el = document.querySelector(`[name='${key}']`);
-            if(el){
-                if(el.type === "radio" || el.type === "checkbox"){
+            if (el) {
+                if (el.type === "radio" || el.type === "checkbox") {
                     el.checked = (el.value === data[key]);
                 } else {
                     el.value = data[key] || "";
@@ -306,29 +306,33 @@
             button.innerHTML = `<i class="${originalIconClass}"></i> ${originalText}`;
         }
     }
-
-    // --- مدیریت فرآیند جستجو ---
-    function handleFetchResponse(response, successMessage, notFoundMessage) {
-        return response.json().then(data => {
-            if (Object.keys(data).length > 0) {
-                fillForm(data);
-                showMessage("success", successMessage);
-            } else {
-                showMessage("error", notFoundMessage);
-            }
-            return data;
-        });
-    }
-
-    if (barcodeId) {
-        fetch(`${scriptURL}?action=get&barcodeId=${encodeURIComponent(barcodeId)}`)
-            .then(res => handleFetchResponse(res, "✅ دیوایس با این بارکد پیدا شد", "❌ دیوایس با این بارکد پیدا نشد"))
+    
+    // تابع اصلی برای دریافت داده و نمایش پیام
+    function fetchAndHandleData(url, successMessage, notFoundMessage) {
+        return fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                if (Object.keys(data).length > 0) {
+                    fillForm(data);
+                    showMessage("success", successMessage);
+                } else {
+                    showMessage("error", notFoundMessage);
+                }
+            })
             .catch(err => {
                 console.error("Fetch Error:", err);
-                showMessage("error", "❌ خطای شبکه یا خطای نامشخص در دریافت اطلاعات");
+                showMessage("error", "❌ خطای شبکه یا خطای نامشخص");
             });
     }
 
+    // بررسی اولیه در صورت وجود بارکد در URL
+    if (barcodeId) {
+        fetchAndHandleData(`${scriptURL}?action=get&barcodeId=${encodeURIComponent(barcodeId)}`, 
+                           "✅ دیوایس با این بارکد پیدا شد", 
+                           "❌ دیوایس با این بارکد پیدا نشد");
+    }
+
+    // رویداد ارسال فرم (ثبت/ویرایش)
     document.getElementById("deviceForm").addEventListener("submit", e => {
         e.preventDefault();
         const formData = new FormData(e.target);
@@ -349,6 +353,7 @@
             .finally(() => { hideLoading('saveBtn'); });
     });
 
+    // رویداد دکمه حذف
     document.getElementById("deleteBtn").addEventListener("click", () => {
         const currentBarcodeId = document.getElementById("barcodeId").value;
         if (!currentBarcodeId) return showMessage("error", "❌ بارکدی برای حذف انتخاب نشده است");
@@ -374,16 +379,14 @@
             .finally(() => { hideLoading('deleteBtn'); });
     });
 
+    // رویداد دکمه جستجو
     document.getElementById("searchBtn").addEventListener("click", () => {
         const code = document.getElementById("searchCode").value.trim();
         if (!code) return showMessage("error", "❌ کد دیوایس وارد شود");
         showLoading('searchBtn', 'fa-solid fa-magnifying-glass');
-        fetch(`${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`)
-            .then(res => handleFetchResponse(res, "✅ دیوایس با این کد پیدا شد", "❌ برای کد وارد شده دیوایسی پیدا نشد"))
-            .catch(err => {
-                console.error("Fetch Error:", err);
-                showMessage("error", "❌ خطا در جستجو");
-            })
+        fetchAndHandleData(`${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`, 
+                           "✅ دیوایس با این کد پیدا شد", 
+                           "❌ برای کد وارد شده دیوایسی پیدا نشد")
             .finally(() => { hideLoading('searchBtn'); });
     });
 </script>
