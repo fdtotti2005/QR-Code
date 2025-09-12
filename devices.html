@@ -234,20 +234,23 @@ button:hover{
   align-items: flex-end;
 }
 
-.search-container input{
-    flex:1;
-    min-width:60%; 
-    margin-top:0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+.search-container input {
+    flex: 1;          /* بقیه عرض را پر کند */
+    min-width: 0;     
+    height: 48px;     
+    font-size: 0.81rem;
+    border-radius: 6px;
+    box-sizing: border-box;
 }
 
 .search-container button {
-    margin-top: 0;
-    width: auto;
-    padding: 0.54rem 0.9rem;
-    font-size: 0.765rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 120px;     /* اندازه ثابت دکمه جستجو */
+    height: 48px;
+    font-size: 0.81rem;
+    border-radius: 6px;
+    box-sizing: border-box;
 }
+
 
 .search-container button:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -502,4 +505,5 @@ document.getElementById("searchBtn").addEventListener("click", ()=>{
   fetch(`${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`)
     .then(res=>res.json())
     .then(data=>{
+
 
