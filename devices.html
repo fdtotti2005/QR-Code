@@ -407,25 +407,40 @@ document.getElementById("deleteBtn").addEventListener("click", ()=>{
 
 document.getElementById("searchBtn").addEventListener("click", ()=>{
   const code = document.getElementById("searchCode").value.trim();
-  if(!code) return showMessage("error", "❌ کد دیوایس وارد شود");
+  if(!code) {
+    showMessage("error", "❌ کد دیوایس وارد شود");
+    return;
+  }
+
   showLoading('searchBtn', 'fa-solid fa-magnifying-glass');
   fetch(`${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`)
-    .then(res=>res.json())
-    .then(data=>{
-      if(Object.keys(data).length > 0){
-        fillForm(data);
-        document.getElementById("barcodeId").value = data.barcodeId||"";
-        showMessage("success", "✅ دیوایس با این کد پیدا شد");
-      }else{
-        showMessage("error", "❌ برای کد وارد شده دیوایسی پیدا نشد");
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
       }
-    }).catch(err=>{
-      console.error(err);
-      showMessage("error", "❌ خطا در جستجو");
-    }).finally(() => {
-        hideLoading('searchBtn');
+      return res.json();
+    })
+    .then(data => {
+      if (data && Object.keys(data).length > 0) {
+        fillForm(data);
+        document.getElementById("barcodeId").value = data.barcodeId || "";
+        showMessage("success", "✅ دیوایس با این کد پیدا شد");
+      } else {
+        showMessage("error", "❌ برای کد وارد شده دیوایسی پیدا نشد");
+        document.getElementById("deviceForm").reset();
+        document.getElementById("barcodeDisplay").textContent = "---";
+        document.getElementById("barcodeId").value = "";
+      }
+    })
+    .catch(err => {
+      console.error("Error during search:", err);
+      showMessage("error", "❌ خطا در جستجو: " + err.message);
+    })
+    .finally(() => {
+      hideLoading('searchBtn');
     });
 });
 </script>
 </body>
 </html>
+
