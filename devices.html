@@ -234,7 +234,7 @@ button:hover{
   align-items: flex-end;
 }
 
-   .search-container input{
+.search-container input{
     flex:1;
     min-width:60%; 
     margin-top:0;
@@ -248,7 +248,6 @@ button:hover{
     font-size: 0.765rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
 
 .search-container button:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -365,7 +364,7 @@ button:hover{
 /* =======================
    لینک Google Apps Script
 ==========================*/
-const scriptURL = "https://script.google.com/macros/s/AKfycbxNSYF4aK2DM2FJXqSCaBOH-XmblwXA2U8Wm8yv5H0ZKzE_FM6cqXLQTYgKqH2TSiwS/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbzbK4jtClLpqXoXzFnDEx1ZnjqylQ079FE6X7Rhrvq2ZBOiA9FlB6kEIOO6uUaJqiYN8A/exec";
 
 /* =======================
    بارکد از URL
@@ -498,11 +497,8 @@ document.getElementById("deleteBtn").addEventListener("click", ()=>{
 ==========================*/
 document.getElementById("searchBtn").addEventListener("click", ()=>{
   const code = document.getElementById("searchCode").value.trim();
-  if(!code) return showMessage("error", "❌ کد دیوایس وارد را وارد کنید");
+  if(!code) return showMessage("error", "❌ کد دیوایس وارد شود");
   showLoading('searchBtn', 'fa-solid fa-magnifying-glass');
   fetch(`${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`)
     .then(res=>res.json())
     .then(data=>{
-
-
-
