@@ -405,42 +405,65 @@ document.getElementById("deleteBtn").addEventListener("click", ()=>{
     });
 });
 
-document.getElementById("searchBtn").addEventListener("click", ()=>{
-  const code = document.getElementById("searchCode").value.trim();
-  if(!code) {
-    showMessage("error", "❌ کد دیوایس وارد شود");
-    return;
-  }
 
-  showLoading('searchBtn', 'fa-solid fa-magnifying-glass');
-  fetch(`${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`)
-    .then(res => {
-      if (!res.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return res.json();
-    })
-    .then(data => {
-      if (data && Object.keys(data).length > 0) {
-        fillForm(data);
-        document.getElementById("barcodeId").value = data.barcodeId || "";
-        showMessage("success", "✅ دیوایس با این کد پیدا شد");
-      } else {
-        showMessage("error", "❌ برای کد وارد شده دیوایسی پیدا نشد");
-        document.getElementById("deviceForm").reset();
-        document.getElementById("barcodeDisplay").textContent = "---";
-        document.getElementById("barcodeId").value = "";
-      }
-    })
-    .catch(err => {
-      console.error("Error during search:", err);
-      showMessage("error", "❌ خطا در جستجو: " + err.message);
-    })
-    .finally(() => {
-      hideLoading('searchBtn');
-    });
+document.getElementById("searchBtn").addEventListener("click", () => {
+    const code = document.getElementById("searchCode").value.trim();
+    if (!code) {
+        showMessage("error", "❌ کد دیوایس وارد شود");
+        return;
+    }
+
+    showLoading('searchBtn', 'fa-solid fa-magnifying-glass');
+    fetch(`${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`)
+        .then(res => {
+            // Check if response is okay
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
+            // Read the response as text first
+            return res.text();
+        })
+        .then(text => {
+            // Check if the response text is empty or not valid JSON
+            if (!text || text.trim() === '') {
+                throw new Error("Empty response from server.");
+            }
+            try {
+                // Try to parse the text as JSON
+                const data = JSON.parse(text);
+                
+                if (data && Object.keys(data).length > 0) {
+                    fillForm(data);
+                    document.getElementById("barcodeId").value = data.barcodeId || "";
+                    showMessage("success", "✅ دیوایس با این کد پیدا شد");
+                } else {
+                    showMessage("error", "❌ برای کد وارد شده دیوایسی پیدا نشد");
+                    document.getElementById("deviceForm").reset();
+                    document.getElementById("barcodeDisplay").textContent = "---";
+                    document.getElementById("barcodeId").value = "";
+                }
+            } catch (e) {
+                // If parsing fails, it's not a valid JSON response
+                console.error("Failed to parse JSON:", e);
+                // The response might be a direct error message from Apps Script
+                showMessage("error", "❌ خطا در جستجو: " + text.substring(0, 50) + "..."); // Displaying part of the error
+                // You can also throw a custom error to the catch block
+                throw new Error("Invalid JSON received. Response text: " + text);
+            }
+        })
+        .catch(err => {
+            console.error("Final error during search:", err);
+            showMessage("error", "❌ خطا در جستجو");
+        })
+        .finally(() => {
+            hideLoading('searchBtn');
+        });
 });
+
+
+  
 </script>
 </body>
 </html>
+
 
