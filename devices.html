@@ -1,218 +1,271 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>فرم ثبت اطلاعات دیوایس</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css"/>
-<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
-<style>
-:root {
-  --primary-color: #2c3e50;
-  --accent-color: #3498db;
-  --success-color: #2ecc71;
-  --danger-color: #e74c3c;
-  --bg-color: #f0f2f5;
-  --text-color: #333;
-  --input-bg-color: #fff;
-  --border-color: #ccc;
-  --readonly-bg: #eee;
-  --shadow-light: rgba(0, 0, 0, 0.08);
-  --shadow-medium: rgba(0, 0, 0, 0.15);
-}
-body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem;}
-.container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
-h2{text-align:center;margin-bottom:1.35rem;font-size:1.8rem;}
-label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;}
-input,textarea,select{width:100%;padding:0.54rem;margin-top:0.36rem;border:1px solid var(--border-color);border-radius:6px;font-family:inherit;font-size:0.81rem;box-shadow: 0 1px 3px var(--shadow-light);transition: box-shadow 0.2s ease, border-color 0.2s ease;}
-input:focus, textarea:focus, select:focus{outline:none;border-color:var(--accent-color);box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);}
-textarea{resize:vertical;}
-.row{display:flex;gap:0.9rem;flex-wrap:wrap;margin-bottom:0.72rem;}
-.row .half{flex:1;min-width:48%;}
-.card{background:#fff;border-radius:10px;padding:1rem;margin-bottom:1rem;box-shadow:0 2px 6px rgba(0,0,0,0.1);border:1px solid #e0e0e0;}
-.compact-barcode-display{padding:0.45rem 0;text-align:right;margin-bottom:0.9rem;font-size:0.765rem;color:var(--primary-color);font-weight:bold;}
-.compact-barcode-display span{font-family:'Courier New', Courier, monospace;background-color:var(--readonly-bg);padding:0.09rem 0.36rem;border-radius:4px;}
-.button-group{display:flex;gap:0.5rem;margin-top:1.35rem;}
-.button-group button{flex:1;}
-button{padding:0.72rem;width:100%;color:var(--input-bg-color);border:none;border-radius:6px;font-size:0.81rem;cursor:pointer;transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;font-family:inherit;box-shadow:0 2px 4px var(--shadow-light);}
-button:hover{transform: scale(1.02);box-shadow:0 4px 8px var(--shadow-medium);}
-#saveBtn{background: linear-gradient(135deg, #2ecc71, #27ae60);}
-#deleteBtn{background: linear-gradient(135deg, #e74c3c, #c0392b);}
-#searchBtn{background: linear-gradient(135deg, #3498db, #2980b9);}
-.loading{pointer-events:none;opacity:0.7;cursor:wait;}
-.loading i.fa-spin{animation:spin 1s linear infinite;}
-@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
-.message-container{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;z-index:1000;text-align:center;pointer-events:none;opacity:0;transition:opacity 0.5s ease-in-out;}
-.message-container.visible{opacity:1;}
-.message-box{font-weight:bold;font-size:0.85rem;padding:0.6rem;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.3);}
-.success{color:var(--success-color);background-color:rgba(46,204,113,0.2);border:1px solid var(--success-color);}
-.error{color:var(--danger-color);background-color:rgba(231,76,60,0.2);border:1px solid var(--danger-color);}
-.search-container{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap;align-items:flex-end;}
-.search-container input{flex:1;min-width:60%;margin-top:0;box-shadow:0 1px 3px rgba(0,0,0,0.1);}
-.search-container button{margin-top:0;width:auto;padding:0.54rem 0.9rem;font-size:0.765rem;box-shadow:0 2px 4px rgba(0,0,0,0.1);}
-.search-container button:hover{box-shadow:0 4px 8px rgba(0,0,0,0.2);}
-@media(max-width:500px){body{padding:0.9rem;}.container{padding:1.35rem;}.row .half{min-width:100%;}.search-container{flex-direction:column;align-items:stretch;}.search-container input,.search-container button{width:100%;margin-top:0.72rem;}.button-group{flex-direction:column;}.compact-barcode-display{text-align:right;}}
-</style>
+    <meta charset="UTF-8">
+    <title>فرم ثبت اطلاعات دیوایس</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --bg-color: #f0f2f5;
+            --text-color: #333;
+            --input-bg-color: #fff;
+            --border-color: #ccc;
+            --readonly-bg: #eee;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+        }
+        body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem;}
+        .container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
+        h2{text-align:center;margin-bottom:1.35rem;font-size:1.2rem;}
+        label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;}
+        input,textarea,select{width:100%;padding:0.54rem;margin-top:0.36rem;border:1px solid var(--border-color);border-radius:6px;font-family:inherit;font-size:0.81rem;box-shadow: 0 1px 3px var(--shadow-light);transition: box-shadow 0.2s ease, border-color 0.2s ease;}
+        input:focus, textarea:focus, select:focus{outline:none;border-color:var(--accent-color);box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);}
+        textarea{resize:vertical;}
+        .row{display:flex;gap:0.9rem;flex-wrap:wrap;margin-bottom:0.72rem;}
+        .row .half{flex:1;min-width:48%;}
+        .card{background:#fff;border-radius:10px;padding:1rem;margin-bottom:1rem;box-shadow:0 2px 6px rgba(0,0,0,0.1);border:1px solid #e0e0e0;}
+        .compact-barcode-display{padding:0.45rem 0;text-align:right;margin-bottom:0.9rem;font-size:0.765rem;color:var(--primary-color);font-weight:bold;}
+        .compact-barcode-display span{font-family:'Courier New', Courier, monospace;background-color:var(--readonly-bg);padding:0.09rem 0.36rem;border-radius:4px;}
+        .button-group{display:flex;gap:0.5rem;margin-top:1.35rem;}
+        .button-group button{flex:1;}
+        button{padding:0.72rem;width:100%;color:var(--input-bg-color);border:none;border-radius:6px;font-size:0.81rem;cursor:pointer;transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;font-family:inherit;box-shadow:0 2px 4px var(--shadow-light);}
+        button:hover{transform: scale(1.02);box-shadow:0 4px 8px var(--shadow-medium);}
+        #saveBtn{background: linear-gradient(135deg, #2ecc71, #27ae60);}
+        #deleteBtn{background: linear-gradient(135deg, #e74c3c, #c0392b);}
+        #searchBtn{background: linear-gradient(135deg, #3498db, #2980b9);}
+        .loading{pointer-events:none;opacity:0.7;cursor:wait;}
+        .loading i.fa-spin{animation:spin 1s linear infinite;}
+        @keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+        .message-container{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;z-index:1000;text-align:center;pointer-events:none;opacity:0;transition:opacity 0.5s ease-in-out;}
+        .message-container.visible{opacity:1;}
+        .message-box{font-weight:bold;font-size:0.85rem;padding:0.6rem;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.3);}
+        .success{color:var(--success-color);background-color:rgba(46,204,113,0.2);border:1px solid var(--success-color);}
+        .error{color:var(--danger-color);background-color:rgba(231,76,60,0.2);border:1px solid var(--danger-color);}
+        .search-container{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap;align-items:flex-end;}
+        .search-container input{flex:1;min-width:60%;margin-top:0;box-shadow:0 1px 3px rgba(0,0,0,0.1);}
+        .search-container button{margin-top:0;width:auto;padding:0.54rem 0.9rem;font-size:0.765rem;box-shadow:0 2px 4px rgba(0,0,0,0.1);}
+        .search-container button:hover{box-shadow:0 4px 8px rgba(0,0,0,0.2);}
+        @media(max-width:500px){body{padding:0.9rem;}.container{padding:1.35rem;}.row .half{min-width:100%;}.search-container{flex-direction:column;align-items:stretch;}.search-container input,.search-container button{width:100%;margin-top:0.72rem;}.button-group{flex-direction:column;}.compact-barcode-display{text-align:right;}}
+    </style>
 </head>
 <body>
-<div class="container">
-<h2>فرم ثبت اطلاعات دیوایس‌های معیوب</h2>
-<form id="deviceForm">
-<div class="compact-barcode-display">بارکد فعلی: <span id="barcodeDisplay">---</span></div>
-<input type="hidden" id="barcodeId" name="barcodeId">
-<div class="card">
-  <div class="row">
-    <div class="half">
-      <label>نام دیوایس</label>
-      <select name="deviceName" id="deviceName" required>
-        <option value="">-- انتخاب کنید --</option>
-        <option value="Multi Media">Multi Media</option>
-        <option value="Multi Media Metal">Multi Media Metal</option>
-        <option value="Soul">Soul</option>
-        <option value="Smart Player">Smart Player</option>
-        <option value="TDA">TDA</option>
-        <option value="RFID">RFID</option>
-        <option value="Serial GSM">Serial GSM</option>
-        <option value="Smart GSM">Smart GSM</option>
-        <option value="MP3">MP3</option>
-        <option value="IR">IR</option>
-        <option value="B1">B1</option>
-        <option value="Smart Plug">Smart Plug</option>
-      </select>
+    <div class="container">
+        <h2>فرم ثبت اطلاعات دیوایس‌های معیوب</h2>
+        <form id="deviceForm">
+            <div class="compact-barcode-display">بارکد فعلی: <span id="barcodeDisplay">---</span></div>
+            <input type="hidden" id="barcodeId" name="barcodeId">
+            <div class="card">
+                <div class="row">
+                    <div class="half">
+                        <label>نام دیوایس</label>
+                        <select name="deviceName" id="deviceName" required>
+                            <option value="">-- انتخاب کنید --</option>
+                            <option value="Multi Media">Multi Media</option>
+                            <option value="Multi Media Metal">Multi Media Metal</option>
+                            <option value="Soul">Soul</option>
+                            <option value="Smart Player">Smart Player</option>
+                            <option value="TDA">TDA</option>
+                            <option value="RFID">RFID</option>
+                            <option value="Serial GSM">Serial GSM</option>
+                            <option value="Smart GSM">Smart GSM</option>
+                            <option value="MP3">MP3</option>
+                            <option value="IR">IR</option>
+                            <option value="B1">B1</option>
+                            <option value="Smart Plug">Smart Plug</option>
+                        </select>
+                    </div>
+                    <div class="half">
+                        <label>کد دیوایس</label>
+                        <input type="text" name="deviceCode" required>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <label>ایراد</label>
+                <input type="text" name="issue" required>
+                <label>تاریخ گزارش ایراد</label>
+                <input type="text" name="issueDate" id="issueDate" placeholder="تاریخ گزارش ایراد">
+                <label>شرح ایراد</label>
+                <textarea name="issueDescription" rows="2"></textarea>
+            </div>
+            <div class="card">
+                <label>اقدامات انجام شده</label>
+                <textarea name="actionsTaken" rows="2"></textarea>
+                <label>وضعیت فعلی</label>
+                <input type="text" name="currentStatus">
+                <label>توضیحات تکمیلی</label>
+                <textarea name="notes" rows="2"></textarea>
+            </div>
+            <div class="button-group">
+                <button type="submit" id="saveBtn"><i class="fa-solid fa-floppy-disk"></i> ثبت/ویرایش</button>
+                <button type="button" id="deleteBtn"><i class="fa-solid fa-trash-can"></i> حذف</button>
+            </div>
+        </form>
+        <div class="message-container" id="messageContainer">
+            <div class="message-box success" id="successMsg"></div>
+            <div class="message-box error" id="errorMsg"></div>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchCode" placeholder="جستجو بر اساس کد دیوایس">
+            <button type="button" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i> جستجو</button>
+        </div>
     </div>
-    <div class="half">
-      <label>کد دیوایس</label>
-      <input type="text" name="deviceCode" required>
-    </div>
-  </div>
-</div>
-<div class="card">
-  <label>ایراد</label>
-  <input type="text" name="issue" required>
-  <label>تاریخ گزارش ایراد</label>
-  <input type="text" name="issueDate" id="issueDate" placeholder="تاریخ گزارش ایراد">
-  <label>شرح ایراد</label>
-  <textarea name="issueDescription" rows="2"></textarea>
-</div>
-<div class="card">
-  <label>اقدامات انجام شده</label>
-  <textarea name="actionsTaken" rows="2"></textarea>
-  <label>وضعیت فعلی</label>
-  <input type="text" name="currentStatus">
-  <label>توضیحات تکمیلی</label>
-  <textarea name="notes" rows="2"></textarea>
-</div>
-<div class="button-group">
-  <button type="submit" id="saveBtn"><i class="fa-solid fa-floppy-disk"></i> ثبت/ویرایش</button>
-  <button type="button" id="deleteBtn"><i class="fa-solid fa-trash-can"></i> حذف</button>
-</div>
-</form>
-<div class="message-container" id="messageContainer">
-  <div class="message-box success" id="successMsg"></div>
-  <div class="message-box error" id="errorMsg"></div>
-</div>
-<div class="search-container">
-<input type="text" id="searchCode" placeholder="جستجو بر اساس کد دیوایس">
-<button type="button" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i> جستجو</button>
-</div>
-<script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbzbK4jtClLpqXoXzFnDEx1ZnjqylQ079FE6X7Rhrvq2ZBOiA9FlB6kEIOO6uUaJqiYN8A/exec";
-const urlParams = new URLSearchParams(window.location.search);
-const barcodeId = urlParams.get("barcodeId");
-document.getElementById("barcodeId").value = barcodeId || "";
-document.getElementById("barcodeDisplay").textContent = barcodeId || "---";
-$(document).ready(function() {
-  $("#issueDate").persianDatepicker({format:"YYYY/MM/DD",autoClose:true,initialValue:false,calendar:{persian:{locale:"fa"}}});
-});
-function showMessage(type,message){
-  const container=document.getElementById("messageContainer");
-  const success=document.getElementById("successMsg");
-  const error=document.getElementById("errorMsg");
-  if(!success||!error||!container)return;
-  const target=(type==="success")?success:error;
-  const other=(type==="success")?error:success;
-  target.textContent=message;
-  container.classList.add("visible");
-  target.style.display='block';other.style.display='none';
-  setTimeout(()=>{container.classList.remove("visible");},4000);
-}
-function fillForm(data){
-  if(!data)return;
-  if(Object.keys(data).length>0){
-    for(const key in data){
-      const el=document.querySelector("[name='"+key+"']");
-      if(el){
-        if(el.type==="radio"||el.type==="checkbox"){el.checked=(el.value===data[key]);}
-        else{el.value=data[key]||"";}
-      }
-    }
-    document.getElementById("barcodeDisplay").textContent=data.barcodeId||"---";
-    showMessage("success","✅ دیوایس با این بارکد پیدا شد");
-  }else{
-    showMessage("error","❌ دیوایس با این بارکد پیدا نشد");
-  }
-}
-function showLoading(buttonId,iconClass){
-  const btn=document.getElementById(buttonId);
-  btn.dataset.originalIcon=iconClass;
-  btn.dataset.originalText=btn.innerText.replace(/\s*$/,'');
-  btn.classList.add('loading');
-  btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i>';
-}
-function hideLoading(buttonId){
-  const btn=document.getElementById(buttonId);
-  btn.classList.remove('loading');
-  const icon=btn.dataset.originalIcon,text=btn.dataset.originalText;
-  if(icon&&text!==undefined){btn.innerHTML=`<i class="${icon}"></i> ${text}`;}
-}
-if(barcodeId){
-  fetch(`${scriptURL}?action=get&barcodeId=${encodeURIComponent(barcodeId)}`)
-    .then(res=>res.json())
-    .then(data=>{fillForm(data);})
-    .catch(err=>{console.error(err);showMessage("error","❌ خطا در دریافت اطلاعات");});
-}
-document.getElementById("deviceForm").addEventListener("submit",e=>{
-  e.preventDefault();
-  const formData=new FormData(e.target);
-  showLoading('saveBtn','fa-solid fa-floppy-disk');
-  fetch(scriptURL,{method:"POST",body:formData})
-    .then(()=>{showMessage("success","✅ اطلاعات دیوایس ثبت شد");})
-    .catch(()=>{showMessage("error","❌ خطا در پردازش اطلاعات");})
-    .finally(()=>{hideLoading('saveBtn');});
-});
-document.getElementById("deleteBtn").addEventListener("click",()=>{
-  if(!barcodeId)return;
-  if(!confirm("آیا مطمئن هستید؟"))return;
-  showLoading('deleteBtn','fa-solid fa-trash-can');
-  fetch(`${scriptURL}?action=delete&barcodeId=${encodeURIComponent(barcodeId)}`)
-    .then(()=>{
-      document.getElementById("deviceForm").reset();
-      document.getElementById("barcodeDisplay").textContent="---";
-      showMessage("success","✅ اطلاعات دیوایس حذف شد");
-    }).catch(()=>{showMessage("error","❌ خطا در حذف اطلاعات دیوایس");})
-    .finally(()=>{hideLoading('deleteBtn');});
-});
-document.getElementById("searchBtn").addEventListener("click",()=>{
-  const code=document.getElementById("searchCode").value.trim();
-  if(!code)return showMessage("error","❌ کد دیوایس وارد شود");
-  showLoading('searchBtn','fa-solid fa-magnifying-glass');
-  fetch(`${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`)
-    .then(res=>res.json())
-    .then(data=>{
-      if(Object.keys(data).length>0){
-        fillForm(data);
-        document.getElementById("barcodeId").value=data.barcodeId||"";
-        showMessage("success","✅ دیوایس با این کد پیدا شد");
-      }else{showMessage("error","❌ برای کد وارد شده دیوایسی پیدا نشد");}
-    }).catch(()=>{showMessage("error","❌ خطا در جستجو");})
-    .finally(()=>{hideLoading('searchBtn');});
-});
-</script>
-</div>
+    <script>
+        const scriptURL = "https://script.google.com/macros/s/AKfycbzbK4jtClLpqXoXzFnDEx1ZnjqylQ079FE6X7Rhrvq2ZBOiA9FlB6kEIOO6uUaJqiYN8A/exec";
+        const urlParams = new URLSearchParams(window.location.search);
+        const barcodeId = urlParams.get("barcodeId");
+        document.getElementById("barcodeId").value = barcodeId || "";
+        document.getElementById("barcodeDisplay").textContent = barcodeId || "---";
+
+        $(document).ready(function() {
+            $("#issueDate").persianDatepicker({
+                format: "YYYY/MM/DD",
+                autoClose: true,
+                initialValue: false,
+                calendar: {
+                    persian: {
+                        locale: "fa"
+                    }
+                }
+            });
+        });
+
+        function showMessage(type, message) {
+            const container = document.getElementById("messageContainer");
+            const success = document.getElementById("successMsg");
+            const error = document.getElementById("errorMsg");
+            if (!success || !error || !container) return;
+
+            const target = (type === "success") ? success : error;
+            const other = (type === "success") ? error : success;
+            target.textContent = message;
+            container.classList.add("visible");
+            target.style.display = 'block';
+            other.style.display = 'none';
+            setTimeout(() => {
+                container.classList.remove("visible");
+            }, 4000);
+        }
+
+        function fillForm(data) {
+            if (!data) return;
+            for (const key in data) {
+                const el = document.querySelector(`[name='${key}']`);
+                if (el) {
+                    if (el.type === "radio" || el.type === "checkbox") {
+                        el.checked = (el.value === data[key]);
+                    } else {
+                        el.value = data[key] || "";
+                    }
+                }
+            }
+            document.getElementById("barcodeDisplay").textContent = data.barcodeId || "---";
+        }
+
+        function showLoading(buttonId, iconClass) {
+            const btn = document.getElementById(buttonId);
+            btn.dataset.originalIcon = iconClass;
+            btn.dataset.originalText = btn.innerText.replace(/\s*$/,'');
+            btn.classList.add('loading');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+        }
+
+        function hideLoading(buttonId) {
+            const btn = document.getElementById(buttonId);
+            btn.classList.remove('loading');
+            const icon = btn.dataset.originalIcon;
+            const text = btn.dataset.originalText;
+            if (icon && text !== undefined) {
+                btn.innerHTML = `<i class="${icon}"></i> ${text}`;
+            }
+        }
+
+        // Search logic (for both URL and search button)
+        function fetchDeviceData(url, successMessage, failureMessage) {
+            showLoading('searchBtn', 'fa-solid fa-magnifying-glass');
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    if (Object.keys(data).length > 0) {
+                        fillForm(data);
+                        showMessage("success", successMessage);
+                    } else {
+                        showMessage("error", failureMessage);
+                    }
+                })
+                .catch(() => {
+                    showMessage("error", "❌ خطای شبکه یا خطای نامشخص در جستجو");
+                })
+                .finally(() => {
+                    hideLoading('searchBtn');
+                });
+        }
+
+        if (barcodeId) {
+            const url = `${scriptURL}?action=get&barcodeId=${encodeURIComponent(barcodeId)}`;
+            fetchDeviceData(url, "✅ دیوایس با این بارکد پیدا شد", "❌ دیوایس با این بارکد پیدا نشد");
+        }
+
+        document.getElementById("deviceForm").addEventListener("submit", e => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            showLoading('saveBtn', 'fa-solid fa-floppy-disk');
+            fetch(scriptURL, {
+                    method: "POST",
+                    body: formData
+                })
+                .then(() => {
+                    showMessage("success", "✅ اطلاعات دیوایس با موفقیت ثبت شد");
+                })
+                .catch(() => {
+                    showMessage("error", "❌ خطا در ثبت اطلاعات دیوایس");
+                })
+                .finally(() => {
+                    hideLoading('saveBtn');
+                });
+        });
+
+        document.getElementById("deleteBtn").addEventListener("click", () => {
+            const currentBarcodeId = document.getElementById("barcodeId").value;
+            if (!currentBarcodeId) {
+                return showMessage("error", "❌ بارکدی برای حذف انتخاب نشده است");
+            }
+            if (!confirm("آیا مطمئن هستید که می‌خواهید این مورد را حذف کنید؟")) return;
+
+            showLoading('deleteBtn', 'fa-solid fa-trash-can');
+            fetch(`${scriptURL}?action=delete&barcodeId=${encodeURIComponent(currentBarcodeId)}`)
+                .then(() => {
+                    document.getElementById("deviceForm").reset();
+                    document.getElementById("barcodeDisplay").textContent = "---";
+                    document.getElementById("barcodeId").value = "";
+                    showMessage("success", "✅ اطلاعات دیوایس با موفقیت حذف شد");
+                })
+                .catch(() => {
+                    showMessage("error", "❌ خطا در حذف اطلاعات دیوایس");
+                })
+                .finally(() => {
+                    hideLoading('deleteBtn');
+                });
+        });
+
+        document.getElementById("searchBtn").addEventListener("click", () => {
+            const code = document.getElementById("searchCode").value.trim();
+            if (!code) {
+                return showMessage("error", "❌ کد دیوایس وارد شود");
+            }
+            const url = `${scriptURL}?action=getByCode&deviceCode=${encodeURIComponent(code)}`;
+            fetchDeviceData(url, "✅ دیوایس با این کد پیدا شد", "❌ برای کد وارد شده دیوایسی پیدا نشد");
+        });
+    </script>
 </body>
 </html>
-
