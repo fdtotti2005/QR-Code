@@ -181,7 +181,7 @@
         <input type="hidden" id="barcodeId" name="barcodeId">
 
 
-        <!-- کارت انتخاب نام و کد دستگاه -->
+        <!-- کارت اول -->
         <div class="card">
             <div class="row">
                 <div class="half">
@@ -211,7 +211,7 @@
         </div>
 
 
-         <!-- کارت اول -->
+         <!-- کارت دوم -->
         <div class="card">
             <label>ایراد</label>
             <input type="text" name="issue" required>
@@ -221,7 +221,7 @@
             <textarea name="issueDescription" rows="2"></textarea>
         </div>
 
-         <!-- کارت دوم -->
+         <!-- کارت سوم -->
         <div class="card">
             <label>اقدامات انجام شده</label>
             <textarea name="actionsTaken" rows="2"></textarea>
@@ -252,7 +252,7 @@
 
 <script>
         // آدرس اسکریپت گوگل
-    const scriptURL = "https://script.google.com/macros/s/AKfycbzbK4jtClLpqXoXzFnDEx1ZnjqylQ079FE6X7Rhrvq2ZBOiA9FlB6kEIOO6uUaJqiYN8A/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxeZBc5ac1z0uJ4xSTvw1JARbmi_qtK-Ebs9gXkDbnId9gcq2KaIx4ITaAfi8-UVZRw7Q/exec";
 
     const urlParams = new URLSearchParams(window.location.search);
     const barcodeId = urlParams.get("barcodeId");
@@ -414,6 +414,7 @@
 </script>
 </body>
 </html>
+
 
 
 
