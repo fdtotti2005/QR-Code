@@ -26,8 +26,12 @@
         }
         body{font-family:'Vazir',Tahoma,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;padding:1.8rem;}
         .container{max-width:650px;margin:auto;background:var(--input-bg-color);padding:1.8rem;border-radius:10px;box-shadow:0 0 0.5rem rgba(0,0,0,0.1);}
+         
+        /* تیتر اصلی */
         h2{text-align:center;margin-bottom:1.35rem;font-size:1.2rem;}
         label{display:block;margin-top:0.72rem;font-weight:bold;font-size:0.81rem;}
+
+        /* استایل ورودی‌ها */
         input,textarea,select{
             width:100%;
             padding:0.54rem;
@@ -39,6 +43,7 @@
             box-shadow: 0 1px 3px var(--shadow-light);
             transition: box-shadow 0.2s ease, border-color 0.2s ease;
         }
+        
         input:focus, textarea:focus, select:focus {
             outline:none;
             border-color:var(--accent-color);
@@ -175,6 +180,8 @@
         </div>
         <input type="hidden" id="barcodeId" name="barcodeId">
 
+
+        <!-- کارت انتخاب نام و کد دستگاه -->
         <div class="card">
             <div class="row">
                 <div class="half">
@@ -203,6 +210,8 @@
             </div>
         </div>
 
+
+         <!-- کارت اول -->
         <div class="card">
             <label>ایراد</label>
             <input type="text" name="issue" required>
@@ -212,6 +221,7 @@
             <textarea name="issueDescription" rows="2"></textarea>
         </div>
 
+         <!-- کارت دوم -->
         <div class="card">
             <label>اقدامات انجام شده</label>
             <textarea name="actionsTaken" rows="2"></textarea>
@@ -227,6 +237,8 @@
         </div>
     </form>
 
+
+     <!-- پیام‌های موفقیت یا خطا -->
     <div class="message-container" id="messageContainer">
         <div class="message-box success" id="successMsg"></div>
         <div class="message-box error" id="errorMsg"></div>
@@ -239,12 +251,17 @@
 </div>
 
 <script>
+        // آدرس اسکریپت گوگل
     const scriptURL = "https://script.google.com/macros/s/AKfycbzbK4jtClLpqXoXzFnDEx1ZnjqylQ079FE6X7Rhrvq2ZBOiA9FlB6kEIOO6uUaJqiYN8A/exec";
+
     const urlParams = new URLSearchParams(window.location.search);
     const barcodeId = urlParams.get("barcodeId");
     document.getElementById("barcodeId").value = barcodeId || "";
     document.getElementById("barcodeDisplay").textContent = barcodeId || "---";
 
+
+
+    // تقویم شمسی
     $(document).ready(function() {
         $("#issueDate").persianDatepicker({
             format: "YYYY/MM/DD",
@@ -270,9 +287,12 @@
         messageContainer.classList.add("visible");
         targetMsg.style.display = 'block';
         otherMsg.style.display = 'none';
+        
+           // پیام بعد از ۴ ثانیه محو شود
         setTimeout(() => {
             messageContainer.classList.remove("visible");
         }, 4000);
+        
     }
 
     function fillForm(data) {
@@ -290,6 +310,7 @@
         document.getElementById("barcodeDisplay").textContent = data.barcodeId || "---";
     }
 
+    // نمایش لودینگ روی دکمه‌ها
     function showLoading(buttonId, originalIconClass) {
         const button = document.getElementById(buttonId);
         button.dataset.originalIcon = originalIconClass;
@@ -393,5 +414,6 @@
 </script>
 </body>
 </html>
+
 
 
