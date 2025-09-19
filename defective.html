@@ -5,59 +5,32 @@
 <title>محصولات معیوب</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 <style>
-body {
-    font-family: 'Vazir', Tahoma, sans-serif;
-    background: #f0f2f5;
-    margin: 0;
-    padding: 1.8rem;
-    color: #333;
-}
-.container {
-    max-width: 900px;
-    margin: auto;
-    background: #fff;
-    padding: 1.8rem;
-    border-radius: 10px;
-    box-shadow: 0 0 0.5rem rgba(0,0,0,0.1);
-}
-h2 {
-    text-align: center;
-    margin-bottom: 1.35rem;
-    font-size: 1.2rem;
-}
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-}
-th, td {
-    border: 1px solid #ccc;
-    padding: 0.6rem;
-    text-align: center;
-    font-size: 0.85rem;
-}
-th {
-    background-color: #3498db;
-    color: white;
-}
-tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-.loading {
-    text-align: center;
-    margin-top: 2rem;
-    font-size: 1rem;
-    color: #3498db;
-}
+    body { font-family:'Vazir',Tahoma,sans-serif; background: #f0f2f5; color:#333; margin:0; padding:1.8rem; }
+    h2 { text-align:center; margin-bottom:1.35rem; font-size:1.2rem; }
+    table { width:100%; border-collapse:collapse; margin-bottom:1.8rem; }
+    th, td { border:1px solid #ccc; padding:0.6rem; text-align:right; font-size:0.81rem; }
+    th { background-color:#3498db; color:#fff; }
+    tr:nth-child(even) { background-color:#f9f9f9; }
+    @media(max-width:600px) {
+        table, thead, tbody, th, td, tr { display:block; }
+        th { position:absolute; top:-9999px; left:-9999px; }
+        tr { margin-bottom:0.72rem; border:1px solid #ccc; border-radius:6px; padding:0.72rem; background:#fff; }
+        td { border:none; padding:0.36rem; text-align:right; position:relative; }
+        td:before {
+            content: attr(data-label);
+            font-weight:bold;
+            display:inline-block;
+            width: 120px;
+        }
+    }
 </style>
 </head>
 <body>
 <div class="container">
-    <h2>لیست محصولات معیوب</h2>
-    <div class="loading" id="loading">در حال بارگذاری...</div>
-    <table id="defectiveTable" style="display:none;">
+    <h2>محصولات معیوب</h2>
+    <table id="defectiveTable">
         <thead>
             <tr>
                 <th>بارکد</th>
@@ -72,34 +45,25 @@ tr:nth-child(even) {
 </div>
 
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbx3q3CL8wqJ8omzV8p__JA7NQ3drp0Z1mJ_eLwwB293sc0XGEBYbCo5o2h4s7CH5bjwxQ/exec"; 
-const table = document.getElementById("defectiveTable").querySelector("tbody");
-const loading = document.getElementById("loading");
-
-fetch(`${scriptURL}?action=getAllDefective`)
-.then(res => res.json())
-.then(data => {
-    loading.style.display = "none";
-    if (data.length === 0) {
-        table.innerHTML = "<tr><td colspan='5'>محصول معیوبی یافت نشد</td></tr>";
-    } else {
-        data.forEach(row => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td>${row.barcodeId || ""}</td>
-                <td>${row.deviceName || ""}</td>
-                <td>${row.deviceCode || ""}</td>
-                <td>${row.issue || ""}</td>
-                <td>${row.issueDescription || ""}</td>
-            `;
-            table.appendChild(tr);
+$(document).ready(function(){
+    fetch('https://script.google.com/macros/s/AKfycbx3q3CL8wqJ8omzV8p__JA7NQ3drp0Z1mJ_eLwwB293sc0XGEBYbCo5o2h4s7CH5bjwxQ/exec') // آدرس Web App گوگل اسکریپت
+    .then(response => response.json())
+    .then(data => {
+        const tbody = $('#defectiveTable tbody');
+        data.forEach(item => {
+            const row = `<tr>
+                <td data-label="بارکد">${item.barcodeId}</td>
+                <td data-label="نام دیوایس">${item.deviceName}</td>
+                <td data-label="کد دیوایس">${item.deviceCode}</td>
+                <td data-label="ایراد">${item.issue}</td>
+                <td data-label="شرح ایراد">${item.issueDescription}</td>
+            </tr>`;
+            tbody.append(row);
         });
-    }
-    document.getElementById("defectiveTable").style.display = "table";
-})
-.catch(err => {
-    loading.textContent = "خطا در بارگذاری داده‌ها";
-    console.error(err);
+    })
+    .catch(err => {
+        console.error('Error fetching defective products:', err);
+    });
 });
 </script>
 </body>
