@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>محصولات معیوب</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
+  <style>
+    body { font-family: Vazir, sans-serif; padding: 20px; background: #f9f9f9; }
+    h1 { text-align: center; margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; background: #fff; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background: #eee; }
+  </style>
+</head>
+<body>
+
+<h1>لیست محصولات معیوب</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>بارکد</th>
+      <th>نام محصول</th>
+      <th>ایراد</th>
+      <th>اقدامات انجام شده</th>
+    </tr>
+  </thead>
+  <tbody id="defective-list">
+    <!-- ردیف‌ها با جاوااسکریپت اضافه می‌شن -->
+  </tbody>
+</table>
+
+<script>
+  // این آرایه نمونه است، بعداً می‌تونی داده‌ها رو از گوگل شیت یا دیتابیس بگیری
+  const allProducts = [
+    { barcode: "12345", name: "محصول A", defectiveCount: 2, issue: "شکستگی", actionTaken: "تعویض شد" },
+    { barcode: "12346", name: "محصول B", defectiveCount: 0, issue: "", actionTaken: "" },
+    { barcode: "12347", name: "محصول C", defectiveCount: 1, issue: "خطای تولید", actionTaken: "مرجوع شد" }
+  ];
+
+  const defectiveProducts = allProducts.filter(p => p.defectiveCount > 0);
+
+  const tableBody = document.getElementById("defective-list");
+
+  defectiveProducts.forEach(p => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${p.barcode}</td>
+      <td>${p.name}</td>
+      <td>${p.issue}</td>
+      <td>${p.actionTaken}</td>
+    `;
+    tableBody.appendChild(row);
+  });
+</script>
+
+</body>
+</html>
