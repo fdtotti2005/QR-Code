@@ -236,7 +236,16 @@
     <button type="button" id="deleteBtn"><i class="fa-solid fa-trash-can"></i> حذف</button>
 </div>
 
-<!-- دکمه محصولات معیوب در ردیف جدا -->
+
+
+
+<!-- گروه دکمه‌ها: ثبت و حذف -->
+<div class="button-group">
+    <button type="submit" id="saveBtn"><i class="fa-solid fa-floppy-disk"></i> ثبت/ویرایش</button>
+    <button type="button" id="deleteBtn"><i class="fa-solid fa-trash-can"></i> حذف</button>
+</div>
+
+<!-- دکمه محصولات معیوب زیر دکمه‌ها -->
 <div style="margin-top:0.5rem; display:flex; justify-content:center;">
     <button 
         type="button"
@@ -247,7 +256,7 @@
             border-radius: 6px;
             font-size: 14px;
             cursor: pointer;
-            width: 120px; /* همان عرض دکمه‌های بالا */
+            width: 120px; 
             padding: 0.72rem;
             transition: 0.3s;
         "
@@ -259,13 +268,17 @@
     </button>
 </div>
 
+<!-- جستجو -->
+<div class="search-container">
+    <input type="text" id="searchCode" placeholder="جستجو بر اساس کد دیوایس">
+    <button type="button" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i> جستجو</button>
+</div>
+
+
+
+
 
         
-
-        
-            <button type="submit" id="saveBtn"><i class="fa-solid fa-floppy-disk"></i> ثبت/ویرایش</button>
-            <button type="button" id="deleteBtn"><i class="fa-solid fa-trash-can"></i> حذف</button>
-        </div>
     </form>
 
     <div class="message-container" id="messageContainer">
