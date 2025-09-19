@@ -171,38 +171,6 @@
     </style>
 </head>
 <body>
-   
-
-
-
-<div style="margin-top:5px; text-align:center;">
-  <button 
-    class="btn" 
-    style="
-      background-color: orange; 
-      color: white; 
-      border: none; 
-      padding: 8px 16px; 
-      border-radius: 6px; 
-      font-size: 14px; 
-      cursor: pointer; 
-      width: 120px;  /* اندازه مشابه دکمه‌های ثبت و حذف */
-      transition: 0.3s;
-    "
-    onmouseover="this.style.backgroundColor='#ff9900';"
-    onmouseout="this.style.backgroundColor='orange';"
-    onclick="window.location.href='defective.html'"
-  >
-    محصولات معیوب
-  </button>
-</div>
-
-
-    
-
-
-    
-
 <div class="container">
     <h2>فرم ثبت اطلاعات دیوایس‌های معیوب</h2>
 
@@ -257,7 +225,35 @@
             <textarea name="notes" rows="2"></textarea>
         </div>
 
-        <div class="button-group">
+
+
+<div class="button-group">
+    <button type="submit" id="saveBtn"><i class="fa-solid fa-floppy-disk"></i> ثبت/ویرایش</button>
+    <button type="button" id="deleteBtn"><i class="fa-solid fa-trash-can"></i> حذف</button>
+    
+    <!-- اینجا دکمه محصولات معیوب را اضافه کن -->
+    <button 
+        type="button"
+        style="
+            background-color: orange;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            flex: 1;
+            padding: 0.72rem;
+            transition: 0.3s;
+        "
+        onmouseover="this.style.backgroundColor='#ff9900';"
+        onmouseout="this.style.backgroundColor='orange';"
+        onclick="window.location.href='defective.html'"
+    >
+        محصولات معیوب
+    </button>
+</div>
+
+        
             <button type="submit" id="saveBtn"><i class="fa-solid fa-floppy-disk"></i> ثبت/ویرایش</button>
             <button type="button" id="deleteBtn"><i class="fa-solid fa-trash-can"></i> حذف</button>
         </div>
