@@ -1,59 +1,60 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa">
 <head>
   <meta charset="UTF-8">
-  <title>محصولات معیوب</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Generator</title>
   <style>
-    body { font-family: Vazir, sans-serif; padding: 20px; background: #f9f9f9; }
-    h1 { text-align: center; margin-bottom: 20px; }
-    table { width: 100%; border-collapse: collapse; background: #fff; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    th { background: #eee; }
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    input[type="text"] {
+      width: 80%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #qrCode {
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
+  <h1>تولید کد QR</h1>
+  <input type="text" id="urlInput" placeholder="آدرس URL را وارد کنید">
+  <button onclick="generateQRCode()">تولید کد QR</button>
+  <div id="qrCode"></div>
 
-<h1>لیست محصولات معیوب</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>بارکد</th>
-      <th>نام محصول</th>
-      <th>ایراد</th>
-      <th>اقدامات انجام شده</th>
-    </tr>
-  </thead>
-  <tbody id="defective-list">
-    <!-- ردیف‌ها با جاوااسکریپت اضافه می‌شن -->
-  </tbody>
-</table>
-
-<script>
-  // این آرایه نمونه است، بعداً می‌تونی داده‌ها رو از گوگل شیت یا دیتابیس بگیری
-  const allProducts = [
-    { barcode: "12345", name: "محصول A", defectiveCount: 2, issue: "شکستگی", actionTaken: "تعویض شد" },
-    { barcode: "12346", name: "محصول B", defectiveCount: 0, issue: "", actionTaken: "" },
-    { barcode: "12347", name: "محصول C", defectiveCount: 1, issue: "خطای تولید", actionTaken: "مرجوع شد" }
-  ];
-
-  const defectiveProducts = allProducts.filter(p => p.defectiveCount > 0);
-
-  const tableBody = document.getElementById("defective-list");
-
-  defectiveProducts.forEach(p => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${p.barcode}</td>
-      <td>${p.name}</td>
-      <td>${p.issue}</td>
-      <td>${p.actionTaken}</td>
-    `;
-    tableBody.appendChild(row);
-  });
-</script>
-
+  <script>
+    function generateQRCode() {
+      var url = document.getElementById('urlInput').value;
+      if (url) {
+        var qrCodeUrl = 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' + encodeURIComponent(url);
+        var img = document.createElement('img');
+        img.src = qrCodeUrl;
+        img.alt = 'QR Code';
+        img.style.marginTop = '20px';
+        var qrCodeDiv = document.getElementById('qrCode');
+        qrCodeDiv.innerHTML = '';
+        qrCodeDiv.appendChild(img);
+      } else {
+        alert('لطفاً یک URL وارد کنید.');
+      }
+    }
+  </script>
 </body>
 </html>
