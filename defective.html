@@ -1,60 +1,106 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Code Generator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 50px;
-    }
-    input[type="text"] {
-      width: 80%;
-      padding: 10px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    button {
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    #qrCode {
-      margin-top: 20px;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>محصولات معیوب</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+body {
+    font-family: 'Vazir', Tahoma, sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    padding: 1.8rem;
+    color: #333;
+}
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: #fff;
+    padding: 1.8rem;
+    border-radius: 10px;
+    box-shadow: 0 0 0.5rem rgba(0,0,0,0.1);
+}
+h2 {
+    text-align: center;
+    margin-bottom: 1.35rem;
+    font-size: 1.2rem;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+th, td {
+    border: 1px solid #ccc;
+    padding: 0.6rem;
+    text-align: center;
+    font-size: 0.85rem;
+}
+th {
+    background-color: #3498db;
+    color: white;
+}
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+.loading {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1rem;
+    color: #3498db;
+}
+</style>
 </head>
 <body>
-  <h1>تولید کد QR</h1>
-  <input type="text" id="urlInput" placeholder="آدرس URL را وارد کنید">
-  <button onclick="generateQRCode()">تولید کد QR</button>
-  <div id="qrCode"></div>
+<div class="container">
+    <h2>لیست محصولات معیوب</h2>
+    <div class="loading" id="loading">در حال بارگذاری...</div>
+    <table id="defectiveTable" style="display:none;">
+        <thead>
+            <tr>
+                <th>بارکد</th>
+                <th>نام دیوایس</th>
+                <th>کد دیوایس</th>
+                <th>ایراد</th>
+                <th>شرح ایراد</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 
-  <script>
-    function generateQRCode() {
-      var url = document.getElementById('urlInput').value;
-      if (url) {
-        var qrCodeUrl = 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' + encodeURIComponent(url);
-        var img = document.createElement('img');
-        img.src = qrCodeUrl;
-        img.alt = 'QR Code';
-        img.style.marginTop = '20px';
-        var qrCodeDiv = document.getElementById('qrCode');
-        qrCodeDiv.innerHTML = '';
-        qrCodeDiv.appendChild(img);
-      } else {
-        alert('لطفاً یک URL وارد کنید.');
-      }
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbx3q3CL8wqJ8omzV8p__JA7NQ3drp0Z1mJ_eLwwB293sc0XGEBYbCo5o2h4s7CH5bjwxQ/exec"; 
+const table = document.getElementById("defectiveTable").querySelector("tbody");
+const loading = document.getElementById("loading");
+
+fetch(`${scriptURL}?action=getAllDefective`)
+.then(res => res.json())
+.then(data => {
+    loading.style.display = "none";
+    if (data.length === 0) {
+        table.innerHTML = "<tr><td colspan='5'>محصول معیوبی یافت نشد</td></tr>";
+    } else {
+        data.forEach(row => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${row.barcodeId || ""}</td>
+                <td>${row.deviceName || ""}</td>
+                <td>${row.deviceCode || ""}</td>
+                <td>${row.issue || ""}</td>
+                <td>${row.issueDescription || ""}</td>
+            `;
+            table.appendChild(tr);
+        });
     }
-  </script>
+    document.getElementById("defectiveTable").style.display = "table";
+})
+.catch(err => {
+    loading.textContent = "خطا در بارگذاری داده‌ها";
+    console.error(err);
+});
+</script>
 </body>
 </html>
